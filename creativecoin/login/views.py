@@ -177,9 +177,10 @@ def load_user(id):
 
 @auth.route('/logintest')
 def test():
-    # return render_template('email/token.html', 
-    #         message="Account is already verified. You can now use CreativeCoin and all its features.", 
-    #         button="Login",
-    #         href=url_for("auth.login"))
-    headers = {'content-type': 'application/json'}
-    return requests.post('/login', data={"test":"foo"})
+    mail = EmailSender()
+    params = {"firstname": "HOOOO"}
+    body = mail.prepare_body(params, path="verify-email.html")
+    if not mail.send_mail("jeppbautista@gmail.com", "Confirm your email address", body):
+        return "Email sending failed"
+
+    return "TAENG YAN"

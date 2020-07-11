@@ -8,7 +8,7 @@ class Config:
 
     SMTP = "mail.creativecoin.net"
     SMTP_PORT = 465
-    SMTP_USER = "noreply@creativecoin.net"
+    SMTP_USER = "admin@creativecoin.net"
     SMTP_PASS = "TBCcsbn7270$$$$$"
     SMTP_FROM = "CreativeCoin<admin@creativecoin.net>"
 

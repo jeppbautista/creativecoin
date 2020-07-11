@@ -24,7 +24,7 @@ class EmailSender:
         return body
 
 
-    def send_mail(self, to, subject, body):
+    def send_mail(self, to, subject, body):      
         try:
             msg = MIMEMultipart('alternative')
             msg['Subject'] = subject
