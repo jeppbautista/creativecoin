@@ -30,10 +30,10 @@
                             <tr>
                                 <th scope="col">Payment ID</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
                                 <th scope="col">Phone</th>
                                 <th scope="col">Mode of Payment</th>
+                                <th scope="col">Amount(PHP)</th>
+                                <th scope="col">Amount(USD)</th>
                                 <th scope="col">Payment date</th>
                                 <th scope="col">Reference ID</th>
                             </tr>
@@ -95,6 +95,8 @@
         var tbl_body = document.createElement("tbody");
         var odd_even = false;
 
+        console.log(data);
+
         $.each(data, function () {
             var tbl_row = tbl_body.insertRow();
             var id = this.id;
@@ -105,13 +107,13 @@
             cell = tbl_row.insertCell();
             cell.appendChild(document.createTextNode(this.email.toString()))
             cell = tbl_row.insertCell();
-            cell.appendChild(document.createTextNode(this.firstname.toString()))
-            cell = tbl_row.insertCell();
-            cell.appendChild(document.createTextNode(this.lastname.toString()))
-            cell = tbl_row.insertCell();
             cell.appendChild(document.createTextNode(this.phonenumber.toString()))
             cell = tbl_row.insertCell();
             cell.appendChild(document.createTextNode(this.category.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.amount_php.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.amount_usd.toString()))
             cell = tbl_row.insertCell();
             cell.appendChild(document.createTextNode(this.created.toString()))
             cell = tbl_row.insertCell();

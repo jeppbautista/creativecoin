@@ -93,7 +93,9 @@ def _payments(raw_payments):
                 'phonenumber': raw_payment.phonenumber,
                 'category': raw_payment.Payment.category,
                 'created': utils.serialize_datetime(raw_payment.Payment.created),
-                'reference': raw_payment.Payment.reference
+                'reference': raw_payment.Payment.reference,
+                'amount_php': float(str(raw_payment.amount_php)),
+                'amount_usd': float(str(raw_payment.amount_usd))
             }
         )
         for raw_payment in raw_payments.items

@@ -1,5 +1,5 @@
 from creativecoin import db
-from creativecoin.models import Payment, User
+from creativecoin.models import Payment, Transaction, User
 
 from datetime import datetime
 
@@ -8,7 +8,8 @@ ROW_PER_PAGE = 3
 def retrieve_payments(page, filter_str):
     raw_payments = Payment.query\
         .join(User, Payment.user_id == User.id)\
-        .add_columns(User.email, User.firstname, User.lastname, User.phonenumber)\
+        .join(Transaction, Payment.txn_id == Transaction.txn_id)\
+        .add_columns(User.email, User.firstname, User.lastname, User.phonenumber, Transaction.amount_php, Transaction.amount_usd)\
         .filter(Payment.status==filter_str)\
         .order_by(Payment.created.desc())\
         .paginate(page, ROW_PER_PAGE, False)
