@@ -1,9 +1,12 @@
 from flask import Blueprint, redirect, url_for, render_template, request
-from flask_login import login_required
+from flask_login import current_user, login_required
+
+from sqlalchemy.exc import IntegrityError
 
 from creativecoin import app, db, models
+from creativecoin.payment.forms import Payment
 from creativecoin.helper.coinpayments import CryptoPayments
-from creativecoin.helper.utils import get_usd, sci_notation
+from creativecoin.helper.utils import generate_txn_id, get_usd, sci_notation, utcnow
 
 pay = Blueprint('pay', __name__)
 
@@ -28,9 +31,66 @@ def ipn():
 @pay.route('/payment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
 def payment():
-    data = request.form.to_dict()
-    data['amount_php'] = sci_notation(float(data['amount_php']),2)
-    return render_template('buy/payment.html', data=data)
+    try:
+        data = request.form.to_dict()
+        paymentform = Payment(request.form)
+        data['amount_php'] = sci_notation(float(data['amount_php']),2)
+        return render_template('buy/payment.html', data=data, paymentform=paymentform)
+    except KeyError:
+        return redirect(url_for("auth.login"))
+    
+
+
+@pay.route('/verifypayment', strict_slashes=False, methods=['POST', 'GET'])
+@login_required
+def verifypayment():
+    # CREATE Transaction
+    # CREATE Payment
+    paymentform = Payment(request.form)
+    if paymentform.validate():
+        txn_id =  generate_txn_id(current_user.id)
+
+        transaction = models.Transaction(
+            txn_id = txn_id,
+            user_id = current_user.id,
+            txn_from = "{} {}".format(current_user.firstname, current_user.lastname),
+            txn_to = "ADMIN",
+            txn_type = "PAYMENT",
+            item_name = paymentform.item_name.data,
+            quantity = paymentform.quantity.data,
+            amount_php = paymentform.amount_php.data,
+            amount_usd = paymentform.amount_usd.data,
+            status = "PENDING",
+            received_confirmations = -1,
+
+            is_verified = False,
+            is_transferred = False
+        )
+
+        payment = models.Payment(
+            txn_id = txn_id,
+            user_id = current_user.id,
+            reference = paymentform.reference.data,
+            category = str(paymentform.payment_category.data).upper(),
+            status = "PENDING",
+            updated = utcnow()
+        )
+
+        try:
+            db.session.add(transaction)
+            db.session.commit()
+            db.session.add(payment)
+            db.session.commit()
+        except IntegrityError as e:
+            app.logger.error(str(e.__cause__))
+            db.session.rollback()
+        except Exception as e:
+            app.logger.error(e)
+            db.session.rollback()
+
+        return "FOOBAR"
+
+    return str(request.form.to_dict())
 
 
 
@@ -68,10 +128,5 @@ def payment():
     
 #     return render_template('buy/payment.html', tx = tx, details = data)
 
-
-@pay.route('/verifypayment', strict_slashes=False, methods=['POST', 'GET'])
-@login_required
-def verifypayment():
-    return str(request.form.to_dict())
 
 

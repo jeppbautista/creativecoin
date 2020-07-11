@@ -359,9 +359,17 @@ hr.thin {
 
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+    .body {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
     .expand-on-sm {
         width: 100%;
         margin: auto;
+    }
+
+    .extend-on-sm{
+        width: auto !important;
     }
 
     .pad-50 {

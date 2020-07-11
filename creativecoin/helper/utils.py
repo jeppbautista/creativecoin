@@ -3,6 +3,11 @@ from forex_python.converter import CurrencyRates
 import requests
 
 import datetime
+import hashlib
+
+def generate_txn_id(salt):
+    return hashlib.sha512("{}-{}".format(serialize_datetime(utcnow()), salt)\
+            .encode("utf-8")).hexdigest()
 
 
 def get_usd():
@@ -31,3 +36,9 @@ def sci_notation(x, decimal=10):
 
 def serialize_datetime(dt):
     return dt.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def utcnow():
+    return datetime.datetime.utcnow()
+
+print(generate_txn_id("foo"))

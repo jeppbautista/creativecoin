@@ -4,20 +4,21 @@
 
 <div class="body p-3" style="height: 100vh">
     <div class="container container-token center-flex" style="height: inherit">
-        <div class="inner-div " style="width: 100%">
-            <form action="">
+        <div class="extend-on-sm inner-div " style="width: 100%">
+            <form action="{{ url_for('pay.verifypayment') }}" method="POST">
+                {{ paymentform.csrf_token }}
                 <div class="row m-2 p-3 shadow white">
                     <div class="col-md-4 p-3">
                         <h3>Choose Payment Method</h3>
                         <div class="row p-3" style="border: 1px solid #666;">
                             <div class="text-info" style="margin: auto;">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="radio-paymentOptions"
+                                    <input class="form-check-input" type="radio" name="payment_category"
                                         id="inlineRadio1" value="coinsph" checked>
                                     <label class="form-check-label" for="inlineRadio1"><strong>Coins.PH</strong></label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="radio-paymentOptions"
+                                    <input class="form-check-input" type="radio" name="payment_category"
                                         id="inlineRadio2" value="gcash">
                                     <label class="form-check-label" for="inlineRadio2"><strong>GCash</strong></label>
                                 </div>
@@ -50,24 +51,43 @@
                         </div>
                     </div>
                     <div class="col-md-8 mt-3">
-                        <table class="table table-bordered mb-3">
+                        <table class="table table-bordered mb-3" style="width:100%">
                             <thead class="grey lighten-2">
                                 <tr>
                                     <th scope="col"></th>
-                                    <th scope="col">Item name</th>
-                                    <th scope="col">Price in USD</th>
-                                    <th scope="col">Price in PHP</th>
+                                    <th scope="col" style="width: 40%;">Item name</th>
+                                    <th scope="col" style="width: 20%;">Quantity</th>
+                                    <th scope="col" style="width: 20%;">Price in USD</th>
+                                    <th scope="col" style="width: 20%;">Price in PHP</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <th scope="row">1</th>
-                                    <td> {{ data.item_name }} </td>
-                                    <td> {{ data.amount_usd }} </td>
-                                    <td> {{ data.amount_php }} </td>
+                                    <td id="item-name" data-item="{{ data.item_name }}"> 
+                                        {{ data.item_name }} 
+                                        {{ paymentform.item_name }}
+                                        <!-- <input hidden name="item_name" type="text" value="{{ data.item_name }}"> -->
+                                    </td>
+                                    <td> 
+                                        <input class="form-control" type="number" id="quantity" name="quantity" value="1" min="1" max="10"> 
+                                    </td>
+                                    <td> 
+                                        <span id="amount-usd" data-amount="{{ data.amount_usd }}">{{ data.amount_usd }}</span>
+                                        
+                                        <!-- <input hidden ype="text" name="amount_usd" value="{{ data.amount_usd }} "> -->
+                                        {{ paymentform.amount_usd }}
+                                    </td>
+                                    <td> 
+                                        <span id="amount-php" data-amount="{{ data.amount_php }}">{{ data.amount_php }}</span>
+                                        
+                                        <!-- <input hidden type="text" name="amount_php" value="{{ data.amount_php }} "> -->
+                                        {{ paymentform.amount_php }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
+                        
                         <hr>
                         <div class="text-center mt-3">
                             <strong>
@@ -102,7 +122,7 @@
                         </div>
                         <div class="text-center mb-3">
                             <div class="d-table-cell w-100" style="vertical-align: middle;">
-                                <input id="refid" class="form-control" placeholder="Reference ID here">
+                                {{ paymentform.reference }}
                             </div>
                             <div class="d-table-cell align-middle " style="vertical-align: middle;">
                                 <button class="btn btn-mdb-color pt-2 pb-2 pr-4 pl-4 m-0 ml-1"
@@ -135,6 +155,10 @@
         padding: .5rem;
     }
 
+    #quantity{
+        width: 80%;
+    }
+
     @media only screen and (max-device-width : 1000px) {
         .body {
             height: auto !important;
@@ -152,6 +176,29 @@
             $('#gcash').hide();
             $('#coinsph').show();
         }
+    });
+
+    $('input#quantity').on('change', function(){
+        let quantity = this.value;
+        let amount_php = 0;
+        let amount_usd = 0;
+
+        if (quantity == ''){
+            $('input#quantity').val(1);
+            quantity = 1;
+        }
+
+        quantity = parseFloat(quantity);
+        amount_php = parseFloat($('#amount-php').data()['amount']);
+        amount_usd = parseFloat($('#amount-usd').data()['amount']);
+
+        amount_php = (quantity * amount_php).toFixed(2);
+        amount_usd = (quantity * amount_usd).toFixed(2)
+
+        $('#amount-php').html(amount_php);
+        $('#amount-usd').html(amount_usd);
+        $('input[name = "amount_php"]').val(amount_php);
+        $('input[name = "amount_usd"]').val(amount_usd);
     });
 </script>
 

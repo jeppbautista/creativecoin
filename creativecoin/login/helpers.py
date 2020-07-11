@@ -4,6 +4,8 @@ from itsdangerous import URLSafeTimedSerializer
 from creativecoin import app
 from creativecoin.email import EmailSender
 
+
+
 def generate_email_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     token = serializer.dumps(email, salt=app.config['SECRET_SALT_KEY'])
