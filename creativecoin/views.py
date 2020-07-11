@@ -42,12 +42,6 @@ def test():
     return render_template('buy/unable-to-process-payment.html')
 
 
-@app.after_request
-def after_request(response):
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    return response
-
-
 @app.errorhandler(503)
 def internal_error(e):
     return render_template("error/503.html")

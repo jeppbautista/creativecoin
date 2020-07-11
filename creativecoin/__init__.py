@@ -14,7 +14,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = app.config['SECRET_KEY']
-# os.environ['SERVER_NAME'] = "localhost:5000"
+os.environ['SERVER_NAME'] = "localhost:5000"
 app.config['SESSION_TYPE'] = "filesystem"
 app.config['ENV'] = "production" if os.environ['SERVER_NAME'] == "creativecoin.net" else "dev"
 
@@ -28,6 +28,11 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "auth.login"
 
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return response
+
 
 @app.before_request
 def before_request():
@@ -36,6 +41,12 @@ def before_request():
         code = 301
         return redirect(url, code=code)
 
+
+@app.teardown_appcontext
+def shutdown_session(exception):
+    if exception:
+        db.session.rollback()
+    db.session.remove()
 
 
 db = SQLAlchemy(app)
