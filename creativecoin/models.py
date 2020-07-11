@@ -81,12 +81,11 @@ class Transaction(db.Model):
     amount_php = db.Column(db.DECIMAL(precision=20, scale=10), default=-1)
     amount_usd = db.Column(db.DECIMAL(precision=20, scale=10), default=-1)
     status = db.Column(db.String(128))
-    received_confirmations = db.Column(db.Integer)
+    received_confirmations = db.Column(db.Integer, default=0)
+    updated  = db.Column(db.TIMESTAMP(timezone=True), nullable=True)
 
     is_verified = db.Column(db.Boolean(), default=False)
     is_transferred = db.Column(db.Boolean(), default=False)
-    
-    
 
 
 class Payment(db.Model):

@@ -19,7 +19,7 @@ def get_usd():
         for conv in soup.find_all('div', class_='p_conv30'):
             try:
                 return float(conv.find('span').find('span').text)
-            except AttributeError:
+            except AttributeError as e:
                 print("-- Crawl Failed using Forex-Python")
                 pass
 
@@ -40,5 +40,3 @@ def serialize_datetime(dt):
 
 def utcnow():
     return datetime.datetime.utcnow()
-
-print(generate_txn_id("foo"))

@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
 
+import re
 from sqlalchemy.exc import IntegrityError
 
 from creativecoin import app, db, models
@@ -9,6 +10,12 @@ from creativecoin.helper.coinpayments import CryptoPayments
 from creativecoin.helper.utils import generate_txn_id, get_usd, sci_notation, utcnow
 
 pay = Blueprint('pay', __name__)
+
+MAP_CCN = {
+    "BRONZE": 100,
+    "SILVER": 200,
+    "GOLD": 300
+}
 
 @pay.route('/buy')
 @login_required
@@ -50,6 +57,9 @@ def verifypayment():
     if paymentform.validate():
         txn_id =  generate_txn_id(current_user.id)
 
+        _itemname = re.search('\((.*)\)', paymentform.item_name.data).group(1).upper()
+        quantity = MAP_CCN[_itemname]*int(paymentform.quantity.data)
+
         transaction = models.Transaction(
             txn_id = txn_id,
             user_id = current_user.id,
@@ -57,11 +67,11 @@ def verifypayment():
             txn_to = "ADMIN",
             txn_type = "PAYMENT",
             item_name = paymentform.item_name.data,
-            quantity = paymentform.quantity.data,
+            quantity = quantity,
             amount_php = paymentform.amount_php.data,
             amount_usd = paymentform.amount_usd.data,
             status = "PENDING",
-            received_confirmations = -1,
+            received_confirmations = 0,
 
             is_verified = False,
             is_transferred = False
