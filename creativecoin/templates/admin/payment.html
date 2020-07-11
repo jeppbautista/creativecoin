@@ -95,8 +95,6 @@
         var tbl_body = document.createElement("tbody");
         var odd_even = false;
 
-        console.log(data);
-
         $.each(data, function () {
             var tbl_row = tbl_body.insertRow();
             var id = this.id;
@@ -122,7 +120,14 @@
 
             {% if filter_str=="PENDING" %}
                 var temp = document.createElement('div');
-                temp.innerHTML = "<button value='ACCEPTED' onclick='actionDone(this.id, this.value)' id='acceptPayment-" + id + "' class='btn btn-info p-2 btn-adminAcceptPayment'>ACCEPT</button><button value='DECLINED' onclick='actionDone(this.id, this.value)'' id='declinePayment-" + id + "' class='btn btn-danger p-2 btn-adminDeclinePayment'>DECLINE</button>";
+                temp.innerHTML = "<button value='ACCEPTED' "+
+                        "onclick='actionDone(this.id, this.value, \""+this.email+"\")' "+
+                        "id='acceptPayment-" + id + "'"+
+                        " class='btn btn-info p-2 btn-adminAcceptPayment'>ACCEPT</button>"+
+                    "<button value='DECLINED' "+
+                        "onclick='actionDone(this.id, this.value, \""+this.email+"\")' "+
+                        "id='declinePayment-" + id + "' "+
+                        "class='btn btn-danger p-2 btn-adminDeclinePayment'>DECLINE</button>";
                 while (temp.firstChild)
                     tbl_row.appendChild(temp.firstChild);
             {% endif %}
@@ -131,14 +136,16 @@
         $("#tbl-adminPayment").append(tbl_body);
     }
 
-    var processPayment = function(paymentID, choice) {
-        $.post("admin-payment-process/"+choice, {
+    var processPayment = function(paymentID, choice, email) {
+        let postURL = "{{ url_for('adm.admin_payment_process', choice='') }}";
+        postURL += choice;
+        $.post(postURL, {
+            email: email,
             paymentID: paymentID,
             page: page,
             filterStr: "{{ filter_str }}"
         }).done(function(response){
             response = JSON.parse(response);
-            console.log(response);
             alert("SUCCESS");
             refreshTable(response["payments"], response["has_next"], response["has_prev"]);
         }).fail(function(){
@@ -162,7 +169,7 @@
             page--;
         }
 
-        $.post("/admin-retrieve-payments", {
+        $.post("{{ url_for('adm.admin_retrieve_payments') }}", {
             page: page
         }).done(function (response) {
             response = JSON.parse(response);
@@ -175,10 +182,10 @@
         $("#form-filter").submit()
     });
 
-    var actionDone = function(paymentID, choice){
+    var actionDone = function(paymentID, choice, email){
         if(confirm("Are you sure?")){
             paymentID = paymentID.split("-")[1];
-            processPayment(paymentID, choice);
+            processPayment(paymentID, choice, email);
         }
         else{
             return false;

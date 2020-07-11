@@ -6,6 +6,7 @@ import json
 
 from creativecoin.admin import queries
 from creativecoin.helper import utils
+from creativecoin.helper import queries as q
 from creativecoin.models import Payment, User
 
 adm = Blueprint('adm', __name__)
@@ -39,11 +40,27 @@ def admin_payment():
 @login_required
 def admin_payment_process(choice):
     payment_id = request.form.get('paymentID', None)
+    selected_user = request.form.get('email', None)
+
     page = int(request.form.get('page', 1))
     filter_str = str(request.form.get('filterStr', "PENDING"))
 
-    if current_user.is_admin and payment_id:
-        if queries.update_payment_status(payment_id, choice):
+    if current_user.is_admin and payment_id and selected_user:
+
+        if queries.update_payment_status(payment_id, choice) and \
+            queries.update_transaction_status(payment_id, choice):
+            if choice == "ACCEPTED":
+                if queries.update_wallet_free_mined(payment_id, selected_user, choice) and \
+                    queries.update_transaction_transferred(payment_id, True):
+                    
+                    queries.commit_db()
+
+                else:
+                    queries.rollback()
+            else:
+                queries.update_transaction_transferred(payment_id, False)
+                queries.commit_db()
+
 
             raw_payments = queries.retrieve_payments(page, filter_str)
             payments = _payments(raw_payments)
