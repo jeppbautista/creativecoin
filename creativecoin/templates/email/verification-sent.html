@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+    var rz = function () {
+        $('.container-verification')
+            .css('height', 'auto')
+            .css('height', $('.container-verification').height() + 'px');
+    };
+    $(window).resize(function () {
+        rz();
+    });
+
+    rz();
+</script>
+
+
+<div class="body" style="height: 100vh">
+    <div class="container container-verification center-flex" style="height: inherit">
+        <div class="inner-div " style="width: 100%">
+            <div class="shadow white p-5">
+                <div class="row mb-2">
+                    <div class="col-md-12 text-center">
+                        <img src="{{ url_for('static', filename='image/ccn-logo.png') }}" alt="" style="max-height: 50px">
+                        <h3>CreativeCoin</h3>
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-md-12 mt-3">
+                        <h4 class="font-weight-bold">Verify your Email address</h4>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-8 offset-md-2 col-sm-12">
+                        <p>
+                            We have sent a message to your email address with the link to verify your email address.
+                            Once it's done you will be able to start using CreativeCoin!
+                        </p>
+                        <p>
+                            Please check your <b>Spam</b> messages if it did not arrive after 5 minutes.
+                        </p>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-lg-4 col-md-4 offset-lg-4 offset-md-4 col-sm-12 mt-3">
+                        <a href="" class="btn btn-light">Resend email</a>
+                    </div>
+                </div>
+            </div>
+            {% include "footer-simple.html" %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

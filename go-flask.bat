@@ -1,0 +1,10 @@
+set FLASK_APP=creativecoin/__init__.py
+set FLASK_ENV=development
+set SERVER_NAME=localhost:5000
+set SECRET_KEY=D9D7799EFE4327C64A6FF30FBDE865DFA5C45D4BC8265AD7E79205F13CDBA8BF
+set PASSWORD='CCcsbn7270$$$'
+set GOOGLE_CLIENT_ID=844772594291-evimb3tfp5nqhdlu1cqub98p8m37vlqd.apps.googleusercontent.com
+set GOOGLE_CLIENT_SECRET=ZQTYP7VjHMV5fnxNP9k-fRFz 
+set OAUTHLIB_INSECURE_TRANSPORT=1
+
+flask run --host=localhost

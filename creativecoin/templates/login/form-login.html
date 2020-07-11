@@ -1,0 +1,41 @@
+<div class="div-login-form shadow row">
+    <div class="col-md-6 col-sm-12 center-flex">
+        <div class="center-flex left-panel" style="height: 50%">
+            <img src="{{ url_for('static', filename='image/ccn-logo.png') }}" alt="">
+            <h3>CreativeCoin</h3>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12 center-flex">
+        <form method="POST" action="{{ url_for('auth.callback_login') }}" class="text-center p-5 login-form" id="login-form" 
+        name="login-form">
+            {{ signupform.csrf_token }}
+            <p class="h4 mb-4">Sign in</p>
+            <div class="row alert-login-error" style="display: none;">
+                <div class="alert alert-danger" role="alert">
+                    <span id="span-login__alert">
+                        <p></p>
+                    </span>
+                </div>
+            </div>
+
+            <input type="text" id="redirect" name="redirect" hidden>
+
+            {{ loginform.email }}
+            {{ loginform.password }}
+
+
+            <div class="d-flex justify-content-around">
+                <div>
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            {{ loginform.login }}
+            <hr>
+            <a id="btn-login__create-account" class="c-blue btn btn-info btn-block mt-2 mb-2" type="button">Create an account</a>
+        </form>
+    </div>
+</div>
+
+<script>
+    
+</script>

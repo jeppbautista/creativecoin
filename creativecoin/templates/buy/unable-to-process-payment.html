@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="body" style="height: 100vh">
+    <div class="container container-verification center-flex" style="height: inherit">
+        <div class="inner-div " style="width: 100%">
+            <div class="shadow white p-5">
+                <div class="row mb-2">
+                    <div class="col-md-12 text-center">
+                        <img src="/static/image/ccn-logo.png" alt="" style="max-height: 50px">
+                        <h3>CreativeCoin</h3>
+                    </div>
+                </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-md-12 mt-3">
+                        <h4 class="font-weight-bold red">Unable to process payment</h4>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-8 offset-md-2 col-sm-12">
+                        <p>
+                            Hi! Unfortunately our payment gateway server is currently unable. 
+                        </p>
+                        <p>
+                            Please try again after a few minutes
+                        </p>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-lg-4 col-md-4 offset-lg-4 offset-md-4 col-sm-12 mt-3">
+                        <a href="{{ url_for('pay.buy') }}" class="btn btn-light">Return to menu</a>
+                    </div>
+                </div>
+            </div>
+            {% include "footer-simple.html" %}
+        </div>
+
+    </div>
+</div>
+
+<style>
+    @media only screen and (max-device-width : 1000px) {
+        .body {
+            height: auto !important;
+        }
+    }
+
+</style>
+
+{% endblock %}

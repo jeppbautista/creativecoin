@@ -1,0 +1,29 @@
+<div class="white shadow float-left h-100 d-none d-sm-none d-md-block">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center">
+                <img src="{{ url_for('static', filename='image/ccn-logo.png') }}" alt="" style="max-height: 50px">
+                <h3>CreativeCoin</h3>
+            </div>
+        </div>
+        <hr>
+        <a href=" {{ url_for('adm.admin_payment') }} " class="row p-2" style="color: #733F32">
+            <strong>Payments > </strong> 
+        </a>
+        <a class="row p-2" style="color: #733F32">
+            <strong>User management > </strong> 
+        </a>
+        <a href=" {{ url_for('auth.logout') }} " class="row p-2" style="color: #733F32">
+            <strong>Log-out > </strong> 
+        </a>
+    </div>
+</div>
+<div class="white shadow float-left h-100 d-sm-block d-md-none d-block">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center">
+                <img src="{{ url_for('static', filename='image/ccn-logo.png') }}" alt="" style="max-height: 20px">
+            </div>
+        </div>
+    </div>
+</div>

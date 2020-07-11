@@ -1,0 +1,23 @@
+{% set total_mined = wallet.free_mined + wallet.mined %}
+
+<div class="col-md-6 col-sm-12 col-xs-12">
+    <div class="animated flipInY col-lg-12 col-md-12 col-sm-6 col-xs-6">
+        <div class="tile-stats">
+            <div class="icon"></div>
+            <div class="count"> {{ total_mined }} <small class="text-muted">ccn</small> </div>
+            <h3> Total Balance</h3>
+        </div>
+    </div>
+    <div class="animated flipInY col-lg-12 col-md-12 col-sm-6 col-xs-6">
+        <div class="tile-stats">
+            <div class="count"> {{ wallet.free_mined }} <small class="text-muted">ccn</small> </div>
+            <h3>Free-mined</h3>
+        </div>
+    </div>
+    <div class="animated flipInY col-lg-12 col-md-12 col-sm-6 col-xs-6">
+        <div class="tile-stats">
+            <div class="count"> <span id="day_since_joined"> {{ ( now - wallet.created ).days }} </span> <small class="text-muted">days</small> </div>
+            <h3>Since joining</h3>
+        </div>
+    </div>
+</div>
