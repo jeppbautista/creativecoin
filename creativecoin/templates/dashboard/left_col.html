@@ -14,10 +14,15 @@
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                    <li><a><i class="fa fa-exchange"></i> Exchange</a></li>
-                    <li><a><i class="fa fa-send"></i> Send</a></li>
-                    <li><a><i class="fa fa-sign-out"></i> Receive </a></li>
-                    <li><a><i class="fa fa-dollar"></i> Buy </a></li>
+                    {% set isverified = current_user.emailverified %}
+                    {% set enable = "" if isverified else "disabled" %}
+                    <li><a class="{{ enable }}"><i class="fa fa-exchange"></i> Exchange</a></li>
+                    <li><a class="{{ enable }}"><i class="fa fa-send"></i> Send</a></li>
+                    <li><a class="{{ enable }}"><i class="fa fa-sign-out"></i> Receive </a></li>
+                    <li><a class="{{ enable }}" href="{{ url_for('pay.buy') }}"><i class="fa fa-dollar"></i> Buy </a></li>
+                    {% if not isverified %}
+                        <li class="text-danger" ><a  href=" {{ url_for('auth.verify_email_2') }} "><i class="fa fa-check-square-o"></i> Verify email </a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -26,6 +31,15 @@
 </div>
 
 <style>
+    .disabled{
+        pointer-events: none;
+    }
+
+    .nav-side-menu > li > a.disable:hover {
+        color: inherit !important;
+        background: inherit !important;
+    }
+
     .left-col{
         background: transparent;
     }

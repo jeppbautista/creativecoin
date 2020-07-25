@@ -9,15 +9,25 @@
         {% include "dashboard/left_col.html" %}
 
         {% include "dashboard/nav.html" %}
+        
+
+        {% set isverified = current_user.emailverified %}
+        {% set enable = "" if isverified else "disabled" %}
+        
 
         <div class="right_col" role="main">
+            {% if not isverified %}
+                <div class="alert alert-danger text-center" style="margin-bottom: 0;" role="alert">
+                    WARNING: Your email is not verified. <a href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
+                </div>
+            {% endif %}
             <div class="">
                 <div class="row ">
                     <div class="container wallet__btn-container">
                         <div class="col-12 m-5">
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-                                    <a class="btn btn-lg btn-success btn-main" id="wallet__btn-exchange" 
+                                    <a class="btn btn-lg btn-success btn-main {{ enable }}" id="wallet__btn-exchange" 
                                         data-toggle="popover" title="Coming soon" data-content="Exchange is not yet available" 
                                         tabindex="0" data-trigger="focus" href="#">
                                         <span>
@@ -27,7 +37,7 @@
                                     <p>Exchange</p>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-                                    <a class="btn btn-lg btn-success btn-main" id="wallet__btn-send" 
+                                    <a class="btn btn-lg btn-success btn-main {{ enable }}" id="wallet__btn-send" 
                                         data-toggle="modal" data-target="#wallet__modal-send" href="#">
                                         <span>
                                             <i class="large material-icons" style="font-size: 275%;">send</i>
@@ -36,7 +46,7 @@
                                     <p>Send</p>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-                                    <a class="btn btn-lg btn-success btn-main" id="wallet__btn-receive" 
+                                    <a class="btn btn-lg btn-success btn-main {{ enable }}" id="wallet__btn-receive" 
                                     data-toggle="modal" data-target="#wallet__modal-receive" href="#">
                                         <span>
                                             <i class="medium material-icons" style="font-size: 275%;">input</i>
@@ -45,7 +55,7 @@
                                     <p>Receive</p>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-                                    <a class="btn btn-lg btn-success btn-main" id="wallet__btn-buy" 
+                                    <a class="btn btn-lg btn-success btn-main {{ enable }}" id="wallet__btn-buy" 
                                         data-toggle="popover" title="Coming soon" data-content="Buy is not yet available" 
                                         tabindex="0" data-trigger="focus" href="{{ url_for('pay.buy') }}">
                                         <span>

@@ -21,8 +21,10 @@
             <div class="shadow white p-5">
                 <div class="row mb-2">
                     <div class="col-md-12 text-center">
-                        <img src="{{ url_for('static', filename='image/ccn-logo.png') }}" alt="" style="max-height: 50px">
-                        <h3>CreativeCoin</h3>
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='image/ccn-logo.png') }}" alt="" style="max-height: 50px">
+                            <h3>CreativeCoin</h3>
+                        </a>
                     </div>
                 </div>
                 <hr>
@@ -34,17 +36,13 @@
                 <div class="row text-center">
                     <div class="col-md-8 offset-md-2 col-sm-12">
                         <p>
-                            We have sent a message to your email address with the link to verify your email address.
+                            We have sent a message to your email address with the link to verify your email address. 
                             Once it's done you will be able to start using CreativeCoin!
                         </p>
                         <p>
-                            Please check your <b>Spam</b> messages if it did not arrive after 5 minutes.
+                            Please check your <b>Spam</b> messages if it did not arrive after 5 minutes. The verification link will expire after 1 hour.
+                            You can verify your email address again once you log in your account.
                         </p>
-                    </div>
-                </div>
-                <div class="row text-center">
-                    <div class="col-lg-4 col-md-4 offset-lg-4 offset-md-4 col-sm-12 mt-3">
-                        <a href="" class="btn btn-light">Resend email</a>
                     </div>
                 </div>
             </div>

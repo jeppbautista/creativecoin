@@ -13,22 +13,23 @@ from creativecoin import app, db, login_manager, models
 
 auth = Blueprint('auth', __name__)
 
+
 @auth.route('/confirm/<token>', strict_slashes=False)
 def confirm_email(token):
     try:
         email = helpers.confirm_token(token)
     except Exception as e:
         app.logger.error(e)
-        return render_template('email/token.html', 
-            message="This is an invalid confirmation link or it has expired already. You can request for another link.", 
+        return render_template('email/token.html',
+            message="This is an invalid confirmation link or it has expired already. You can request for another link.",
             button="Resend email",
             href="#")
 
     user = models.User.query.filter_by(email=email).first_or_404()
 
     if user.emailverified:
-        return render_template('email/token.html', 
-            message="Account is already verified. You can now use CreativeCoin and all its features.", 
+        return render_template('email/token.html',
+            message="Account is already verified. You can now use CreativeCoin and all its features.",
             button="Get Started",
             href=url_for("auth.login"))
 
@@ -37,8 +38,8 @@ def confirm_email(token):
         db.session.add(user)
         db.session.commit()
         app.logger.info("Account has been confirmed")
-        return render_template('email/token.html', 
-            message="Your email is now verified. You can now use CreativeCoin and all its features.", 
+        return render_template('email/token.html',
+            message="Your email is now verified. You can now use CreativeCoin and all its features.",
             button="Get Started",
             href=url_for("auth.login"))
 
@@ -49,15 +50,16 @@ def confirm_email(token):
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('dash.wallet'))
-        
+
     loginform = Login()
     signupform = Signup()
-    
+
     data = {}
     data['last_action'] = request.args.get('last_action', '')
     data['error'] = request.args.get('error', "").split(" ")
 
-    data['error'][:] = [ERROR_MESSAGE_LOOKUP.get(e, ERROR_MESSAGE_LOOKUP['na']) for e in data['error']]
+    data['error'][:] = [ERROR_MESSAGE_LOOKUP.get(
+        e, ERROR_MESSAGE_LOOKUP['na']) for e in data['error']]
     data['error'][:] = [err for err in data['error'] if err]
 
     return render_template('login/login.html', loginform=loginform, signupform=signupform, data=data)
@@ -91,7 +93,7 @@ def callback_login():
         if user is None or not user.validate_password(formdata["password"]):
             data['error'] = 'pass_email_error'
             return redirect(url_for('auth.login', **data))
-        
+
         login_user(user)
 
         if not redirect_url:
@@ -105,7 +107,7 @@ def callback_login():
     return redirect(url_for('auth.login', **data))
 
 
-@auth.route('/callback_signup', methods=['GET','POST'], strict_slashes=False)
+@auth.route('/callback_signup', methods=['GET', 'POST'], strict_slashes=False)
 def callback_signup():
 
     loginform = Login()
@@ -128,23 +130,18 @@ def callback_signup():
         try:
             db.session.commit()
 
-            wallet = models.Wallet(user_id = user.id)
+            wallet = models.Wallet(user_id=user.id)
             db.session.add(wallet)
             db.session.commit()
-            
-            token = helpers.generate_email_token(formdata['email'])
-            params = {
-                "verification_link": "http://{root_url}/confirm/{token}".format(root_url = app.config['SERVER_NAME'], token = token),
-                "firstname": formdata['firstname']
-            }
-            
-            mail = EmailSender()
-            body = mail.prepare_body(params, path="verify-email.html")
-            if not mail.send_mail(formdata['email'], "Confirm your email address", body):
-                return "Email sending failed"
-            
-            return redirect(url_for('auth.verify_email'))
-            
+
+            email = formdata["email"]
+            firstname = formdata["firstname"]
+
+            if _verify_email(email, firstname):
+                return redirect(url_for('auth.verify_email'))
+
+            return "Email sending failed please contact administrator"
+
         except IntegrityError as e:
             app.logger.error(str(e.__cause__))
             if 'Duplicate' in str(e.__cause__):
@@ -170,6 +167,17 @@ def verify_email():
     return render_template('email/verification-sent.html')
 
 
+@auth.route('/verify-email-2')
+def verify_email_2():
+    email = current_user.email
+    firstname = current_user.firstname
+
+    if _verify_email(email, firstname):
+        return redirect(url_for('auth.verify_email'))
+    else:
+        return "Email sending failed please contact administrator"
+
+
 @login_manager.user_loader
 def load_user(id):
     return models.User.query.get(int(id))
@@ -184,3 +192,16 @@ def test():
         return "Email sending failed"
 
     return "TAENG YAN"
+
+
+def _verify_email(email, firstname):
+    token = helpers.generate_email_token(email)
+    params = {
+        "verification_link": "http://{root_url}/confirm/{token}".format(root_url = app.config['SERVER_NAME'], token = token),
+        "firstname": firstname
+    }
+            
+    mail = EmailSender()
+    body = mail.prepare_body(params, path="verify-email.html")
+    return mail.send_mail(email, "Confirm your email address", body)
+        
