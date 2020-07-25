@@ -8,9 +8,9 @@ class Config:
 
     SMTP = "mail.creativecoin.net"
     SMTP_PORT = 465
-    SMTP_USER = "admin@creativecoin.net"
-    SMTP_PASS = "TBCcsbn7270$$$$$"
-    SMTP_FROM = "CreativeCoin<admin@creativecoin.net>"
+    SMTP_USER = "autoemail@creativecoin.net"
+    SMTP_PASS = "7270TBCcsbn7270###$$$"
+    SMTP_FROM = "CreativeCoin<autoemail@creativecoin.net>"
 
 class DevConfig(Config):
     DEBUG = True
@@ -18,7 +18,7 @@ class DevConfig(Config):
     
     SERVER_NAME = "localhost:5000"
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://cisateducation:{password}@206.72.201.67:3306/cisatedu_ccn_test".format(
-                                password="TBCcsbn7270$$$$$")
+                                password="7270TBCcsbn7270###$$$")
 
     COINPAYMENTS_MERCHANT_ID = "8c79258b6bc2cf3541da99725f6efe8d"
     COINPAYMENTS_PUBLIC_KEY = "71c298dabdaf11759bc427d318c52e87b0163633386ac7d1367990ebe038072e"
@@ -30,7 +30,7 @@ class ProdConfig(Config):
     # LOGIN_DISABLED = False
     SERVER_NAME = "creativecoin.net"
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://cisateducation:{password}@206.72.201.67:3306/cisatedu_ccn_test".format(
-                                password="TBCcsbn7270$$$$$")
+                                password="7270TBCcsbn7270###$$$")
     #TODO For Production 
     COINPAYMENTS_MERCHANT_ID = "8c79258b6bc2cf3541da99725f6efe8d"                     
     COINPAYMENTS_PUBLIC_KEY = "71c298dabdaf11759bc427d318c52e87b0163633386ac7d1367990ebe038072e"

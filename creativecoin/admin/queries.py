@@ -3,7 +3,7 @@ from creativecoin.models import Payment, Transaction, User, Wallet
 
 from datetime import datetime
 
-ROW_PER_PAGE = 3
+ROW_PER_PAGE = 10
 
 
 def commit_db():
