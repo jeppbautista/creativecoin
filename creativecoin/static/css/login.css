@@ -43,19 +43,6 @@ min-height: 100%;
     width: 80%;
 }
 
-#my-signin2{
-    width: 100%;
-}
-
-#my-signin2 > div{
-    margin: auto;
-}
-
-#no-pad{
-    height: inherit;
-    padding: 0;
-}
-
 img{
     max-width: 50%;
 }
@@ -69,8 +56,8 @@ img{
     margin-bottom: 0;
 }
 
-#span-signup__alert > p, #span-login__alert > p{
-    margin-bottom: 0;
+.alert-login-error {
+    display: none;
 }
 
 .alert-signup-error > .alert, .alert-login-error > .alert {
@@ -94,6 +81,10 @@ img{
     border-left: 20px solid transparent;
     border-right: 20px solid transparent; 
 } */
+
+.alert-signup-error{
+    display: none;
+}
 
 .alert-signup-failed{
     background: #D60000;
@@ -125,6 +116,10 @@ img{
     padding-top: 20px;
 }
 
+.div-login-form .left-panel {
+    height: 50%;
+}
+
 .signup-form {
     height: 100%;
     width: 80%;
@@ -137,7 +132,31 @@ img{
     background: rgba(255,255,255,.5);
     margin: auto;
     padding: 20px;
+    display: none;
 }
+
+
+#my-signin2{
+    width: 100%;
+}
+
+#my-signin2 > div{
+    margin: auto;
+}
+
+#no-pad{
+    height: inherit;
+    padding: 0;
+}
+
+#particle-js {
+    height: inherit;
+}
+
+#span-signup__alert > p, #span-login__alert > p{
+    margin-bottom: 0;
+}
+
 
 
 @media only screen and (min-device-width: 350px){

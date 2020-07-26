@@ -161,6 +161,10 @@ hr.thin {
     font-size: 12px;
 }
 
+.logo-20{
+    max-width: 20%;
+}
+
 
 .shape-fill {
     fill: #e88553;

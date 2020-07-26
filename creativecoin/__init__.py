@@ -1,7 +1,4 @@
 from flask import Flask, redirect, request
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-
 from flask_login import (
     LoginManager,
     current_user,
@@ -9,12 +6,31 @@ from flask_login import (
     login_user,
     logout_user
 )
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+from flask_talisman import Talisman
 
+csp = {
+    'default-src': [
+        '\'self\''
+        , 'cdnjs.cloudflare.com'
+        , '*.gstatic.com'
+        , '*.jquery.com'
+        , '*.googleapis.com'
+        , 'cdn.deliver'
+        , 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js'
+        , 'https://threejs.org/examples/js/libs/stats.min.js'
+        , 'https://unpkg.com/aos@2.3.1/dist/aos.css'
+        , 'https://unpkg.com/aos@2.3.1/dist/aos.js'
+        , '*.clocklink.com'
+    ]
+}
 import os
 
 app = Flask(__name__)
+Talisman(app, content_security_policy=csp)
 app.secret_key = app.config['SECRET_KEY']
-os.environ['SERVER_NAME'] = "localhost:5000"
+# os.environ['SERVER_NAME'] = "localhost:5000"
 app.config['SESSION_TYPE'] = "filesystem"
 app.config['ENV'] = "production" if os.environ['SERVER_NAME'] == "creativecoin.net" else "dev"
 

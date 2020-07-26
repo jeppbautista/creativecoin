@@ -1,4 +1,4 @@
-<div class="div-signup-form shadow row" style="display: none;">
+<div class="div-signup-form shadow row">
 	<div class="col-md-12">
 		<form method="POST" action="{{ url_for('auth.callback_signup') }}" class="text-center p-5 signup-form"
 			id="signup-form" name="signup-form">
@@ -7,7 +7,7 @@
 			Please fill in this form to create an account. It's free and easy!
 			<hr />
 
-			<div class="row alert-signup-error" style="display: none;">
+			<div class="row alert-signup-error" >
 				<div class="alert alert-danger" role="alert">
 					<span id="span-signup__alert">
 						<p></p>
@@ -58,13 +58,13 @@
 				</div>
 				<div class="col-12 col-md-4 col-sm-12">
 					{{ signupform.firstname }}
-					<span style="float: left;">
+					<span class="float-left">
 						{{ signupform.firstname.label }}
 					</span>
 				</div>
 				<div class="col-12 col-md-4 col-sm-12">
 					{{ signupform.lastname }}
-					<span style="float: left;">
+					<span class="float-left">
 						{{ signupform.lastname.label }}
 					</span>
 				</div>
@@ -99,19 +99,3 @@
 	</div>
 </div>
 
-<script>
-	$(".toggle-password").on("click", function () {
-		$(this).toggleClass("fa-eye fa-eye-slash");
-		var input = $($(this).attr("toggle"));
-
-		if (input.attr("type") == "password") {
-			input.attr("type", "text");
-		} else {
-			input.attr("type", "password");
-		}
-	});
-
-	$("#txt-signup__phone").bind("input", function (value) {
-		this.value = this.value.replace(/[a-zA-Z]+/g, "");
-	});
-</script>

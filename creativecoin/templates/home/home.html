@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% include "home/parallax-header.html" %}
 {% include "home/parallax-misVis.html" %}
 {% include "home/parallax-initiation.html" %}
@@ -10,9 +11,6 @@
 {% include "home/parallax-plans.html" %}
 {% include "home/parallax-roadmap.html" %}
 {% include "home/parallax-ccn.html" %}
-<script>
-    $(document).ready(function(){
-        alert("Page is under development! Expect features to not work yet")
-    })
-</script>
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+
 {% endblock %}
