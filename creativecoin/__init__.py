@@ -33,7 +33,6 @@ Talisman(app,
     content_security_policy_nonce_in=['script-src']
 )
 app.secret_key = app.config['SECRET_KEY']
-# os.environ['SERVER_NAME'] = "localhost:5000"
 app.config['SESSION_TYPE'] = "filesystem"
 app.config['ENV'] = "production" if os.environ['SERVER_NAME'] == "creativecoin.net" else "dev"
 

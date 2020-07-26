@@ -77,6 +77,8 @@ class Signup(FlaskForm):
         }
     )
 
+    referrer = wtf.StringField("Referral")
+
     register = wtf.SubmitField('register', 
         render_kw={
             'id': 'btn-signup__register',

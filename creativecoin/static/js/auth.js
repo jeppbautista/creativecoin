@@ -21,6 +21,15 @@ $(document).ready(function () {
 
     var currURL = window.location.href;
     var last_action = param('last_action');
+    var ref = param('ref');
+
+    if (ref) {
+        $("#btn-login__create-account").click();
+    } else {
+        ref = "MDAwMWNjbg=="
+    }
+
+    $("#referrer").val(ref);
 
     var ERROR_MESSAGE_LOOKUP = {
         "login_form_error": "Invalid  information provided",

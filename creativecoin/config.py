@@ -12,6 +12,8 @@ class Config:
     SMTP_PASS = "7270TBCcsbn7270###$$$"
     SMTP_FROM = "CreativeCoin<autoemail@creativecoin.net>"
 
+    REFERRAL_PCT = 0.05
+
 class DevConfig(Config):
     DEBUG = True
     # LOGIN_DISABLED = True

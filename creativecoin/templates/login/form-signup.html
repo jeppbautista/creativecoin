@@ -3,6 +3,7 @@
 		<form method="POST" action="{{ url_for('auth.callback_signup') }}" class="text-center p-5 signup-form"
 			id="signup-form" name="signup-form">
 			{{ signupform.csrf_token }}
+			<input hidden id="referrer" type="text" name="referrer">
 			<p class="h4 mb-4">Register</p>
 			Please fill in this form to create an account. It's free and easy!
 			<hr />

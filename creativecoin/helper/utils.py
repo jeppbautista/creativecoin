@@ -1,3 +1,4 @@
+import base64
 from bs4 import BeautifulSoup
 from forex_python.converter import CurrencyRates
 import requests
@@ -8,6 +9,18 @@ import hashlib
 def generate_txn_id(salt):
     return hashlib.sha512("{}-{}".format(serialize_datetime(utcnow()), salt)\
             .encode("utf-8")).hexdigest()
+
+def generate_referral_id(salt=1):
+    salt_padded = str(salt).zfill(4)
+    salt_bytes = salt_padded.encode("utf-8")
+    b64_salt = base64.b64encode(salt_bytes)
+    return b64_salt.decode('utf-8')
+
+def encode_referral_id(enc):
+    enc_bytes = enc.encode('utf-8')
+    decode_bytes = base64.b64decode(enc_bytes)
+    raw_ref = decode_bytes.decode('utf-8')
+    return int(raw_ref.replace('ccn', ''))
 
 
 def get_usd():
