@@ -11,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
 
 csp = {
-    'default-src': [
+    'script-src': [
         '\'self\''
         , 'cdnjs.cloudflare.com'
         , '*.gstatic.com'
@@ -28,7 +28,10 @@ csp = {
 import os
 
 app = Flask(__name__)
-Talisman(app, content_security_policy=csp)
+Talisman(app, 
+    content_security_policy=csp, 
+    content_security_policy_nonce_in=['script-src']
+)
 app.secret_key = app.config['SECRET_KEY']
 # os.environ['SERVER_NAME'] = "localhost:5000"
 app.config['SESSION_TYPE'] = "filesystem"

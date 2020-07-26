@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
 <div class="body" style="height: 100vh">
     {% include "admin/sidebar.html" %}
     <div class="container">
@@ -14,5 +16,6 @@
     </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 
 {% endblock %}
