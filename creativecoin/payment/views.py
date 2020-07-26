@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 
 import re
 from sqlalchemy.exc import IntegrityError
+import traceback
 
 from creativecoin import app, db, models
 from creativecoin.payment.forms import Payment
@@ -43,16 +44,14 @@ def payment():
         paymentform = Payment(request.form)
         data['amount_php'] = sci_notation(float(data['amount_php']),2)
         return render_template('buy/payment.html', data=data, paymentform=paymentform)
-    except KeyError:
+    except KeyError as e:
+        app.logger.error(traceback.format_exc())
         return redirect(url_for("auth.login"))
     
-
 
 @pay.route('/verifypayment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
 def verifypayment():
-    # CREATE Transaction
-    # CREATE Payment
     paymentform = Payment(request.form)
     if paymentform.validate():
         txn_id =  generate_txn_id(current_user.id)
@@ -77,6 +76,7 @@ def verifypayment():
             is_transferred = False
         )
 
+
         payment = models.Payment(
             txn_id = txn_id,
             user_id = current_user.id,
@@ -88,55 +88,22 @@ def verifypayment():
 
         try:
             db.session.add(transaction)
-            db.session.commit()
             db.session.add(payment)
             db.session.commit()
+            app.logger.info("Transaction is created: {}".format(txn_id))
+            #TODO payment sent to admin page
+            #TODO send email to admin
+
         except IntegrityError as e:
-            app.logger.error(str(e.__cause__))
+            app.logger.error(traceback.format_exc())
             db.session.rollback()
         except Exception as e:
-            app.logger.error(e)
+            app.logger.error(traceback.format_exc())
             db.session.rollback()
 
+        
         return "FOOBAR"
 
     return str(request.form.to_dict())
-
-
-
-# @pay.route('/payment', strict_slashes=False, methods=['POST','GET'])
-# @login_required
-# def payment():
-#     coinpayments = CryptoPayments(app.config['COINPAYMENTS_PUBLIC_KEY'], app.config['COINPAYMENTS_PRIVATE_KEY'], 'https://creativecoin.net/ipn')
-#     cols = ['item_name', 'buyer_email', 'currency1', 'currency2', 'amount', 'success_url']
-#     data = {}
-
-#     data = {
-#         key: value for key,value in  request.form.to_dict().items() if key in cols
-#     }
-#     data['amount'] = float(data['amount'])
-#     tx = coinpayments.createTransaction(data)
-
-#     if tx == "NA":
-#         return render_html('buy/unable-to-process-payment.html')
-
-#     transaction = models.Transaction(
-#         txn_id = tx.txn_id,
-#         email = data['buyer_email'],
-#         item_name = data['item_name'],
-#         quantity = 1,
-#         amount1 = -1,
-#         amount2 = -1,
-#         is_verified = False,
-#         is_transferred = False,
-#         status = "",
-#         received_amount = 0,
-#         received_confirmations = 0
-#     )
-#     db.session.add(transaction)
-#     db.session.commit()
-    
-#     return render_template('buy/payment.html', tx = tx, details = data)
-
 
 

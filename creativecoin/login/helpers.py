@@ -23,7 +23,7 @@ def confirm_token(token, expiration=3600):
             max_age=expiration
         )
     except Exception as e:
-        app.logger.error(e)
+        app.logger.error(traceback.format_exc())
         raise Exception()
 
     return email

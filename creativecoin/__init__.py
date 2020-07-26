@@ -10,6 +10,26 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
 
+from datetime import datetime
+import logging
+import os
+
+def setup_logging():
+    format_str = "[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s"
+    file_handler = logging.FileHandler("logs/{:%Y-%m-%d}.log".format(datetime.now()))
+    formatter = logging.Formatter(format_str)
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+    
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.DEBUG)
+    stream_handler.setFormatter(formatter)
+
+    app.logger.addHandler(file_handler)
+    app.logger.addHandler(stream_handler)
+    app.logger.info("Logging is set up")
+
+
 csp = {
     'script-src': [
         '\'self\''
@@ -25,7 +45,7 @@ csp = {
         , '*.clocklink.com'
     ]
 }
-import os
+
 
 app = Flask(__name__)
 Talisman(app, 
@@ -41,10 +61,28 @@ if app.config['ENV'] == "production":
 else:
     app.config.from_object('creativecoin.config.DevConfig')
 
+setup_logging()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "auth.login"
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+from creativecoin.views import main
+from creativecoin.admin.views import adm
+from creativecoin.login.views import auth
+from creativecoin.dashboard.views import dash
+from creativecoin.payment.views import pay
+
+app.register_blueprint(main)
+app.register_blueprint(auth)
+app.register_blueprint(dash)
+app.register_blueprint(pay)
+app.register_blueprint(adm)
+
+from creativecoin import models
 
 @app.after_request
 def after_request(response):
@@ -65,25 +103,5 @@ def shutdown_session(exception):
     if exception:
         db.session.rollback()
     db.session.remove()
-
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-from creativecoin.views import main
-from creativecoin.admin.views import adm
-from creativecoin.login.views import auth
-from creativecoin.dashboard.views import dash
-from creativecoin.payment.views import pay
-
-app.register_blueprint(main)
-app.register_blueprint(auth)
-app.register_blueprint(dash)
-app.register_blueprint(pay)
-
-app.register_blueprint(adm)
-
-from creativecoin import models
-
 
 

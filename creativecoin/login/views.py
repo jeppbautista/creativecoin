@@ -5,6 +5,7 @@ import decimal
 import requests
 import smtplib
 from sqlalchemy.exc import IntegrityError
+import traceback
 
 from creativecoin.dashboard.views import dash
 from creativecoin.email import EmailSender
@@ -22,7 +23,7 @@ def confirm_email(token):
     try:
         email = helpers.confirm_token(token)
     except Exception as e:
-        app.logger.error(e)
+        app.logger.error(traceback.format_exc())
         return render_template("email/token.html",
             message="This is an invalid confirmation link or it has expired already. You can request for another link.",
             button="Resend email",
@@ -148,12 +149,12 @@ def callback_signup():
             return "Email sending failed please contact administrator"
 
         except IntegrityError as e:
-            app.logger.error(str(e.__cause__))
+            app.logger.error(traceback.format_exc())
             if "Duplicate" in str(e.__cause__):
                 data["error"] = "signup_email_exists"
             db.session.rollback()
         except Exception as e:
-            app.logger.error(e)
+            app.logger.error(traceback.format_exc())
             data["error"] = "default_error"
             db.session.rollback()
 

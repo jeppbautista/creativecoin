@@ -1,10 +1,11 @@
 import base64
 from bs4 import BeautifulSoup
-from forex_python.converter import CurrencyRates
-import requests
-
 import datetime
 import hashlib
+from forex_python.converter import CurrencyRates
+import requests
+import traceback
+
 
 def generate_txn_id(salt):
     return hashlib.sha512("{}-{}".format(serialize_datetime(utcnow()), salt)\
@@ -29,16 +30,18 @@ def get_usd():
         body = requests.get(URL)
 
         soup = BeautifulSoup(body.text)
-        for conv in soup.find_all('div', class_='p_conv30'):
+        for conv in soup.find_all('div', {"id":"shd2a"):
             try:
-                return float(conv.find('span').find('span').text)
+                return float(conv.find('span').text)
             except AttributeError as e:
-                print("-- Crawl Failed using Forex-Python")
+                app.logger.error(traceback.format_exc())
+                print("-- Crawl Failed. Using Forex-Python")
                 pass
 
     try:
         return _crawl_usd()
     except Exception:
+        app.logger.error(traceback.format_exc())
         c = CurrencyRates()
         return c.get_rates('USD')['PHP']
 
