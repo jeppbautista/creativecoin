@@ -36,104 +36,16 @@
                     <br>
                     <br>
 
-
                     <a type="submit" id="wallet__modal-send-submit" class="btn btn-lg btn-success btn-main">
                         Send
                     </a>
-
-
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
             </div>
         </div>
-
     </div>
 </div>
 
-<style>
-    .wallet__modal>.modal-dialog>.modal-body {
-        padding: 25px;
-    }
-
-    #wallet__modal-send-tbl-balance {
-        width: 50%;
-        margin: auto;
-    }
-
-    #wallet__modal-send-tbl-balance>tbody>tr>td {
-        font-size: 16px;
-    }
-
-    #wallet__modal-send-form {
-        width: 90%;
-        margin: auto;
-        font-family: 'Encode Sans', sans-serif !important;
-    }
-
-    #wallet__modal-send-txt-amount {
-        background-image: url(/static/image/ccn-logo.jpg);
-        background-position: right;
-        background-size: 20px;
-        background-repeat: no-repeat;
-        background-origin: content-box;
-    }
-
-    #wallet__modal-send-txt-to {
-        background-image: url(/static/image/logo_account_balance_wallet.png);
-        background-position: right;
-        background-size: 20px;
-        background-repeat: no-repeat;
-        background-origin: content-box;
-    }
-
-    #wallet__model-send-txtarea-details {
-        resize: none;
-    }
-
-    #wallet__modal-send-form input[type="text"],
-    #wallet__modal-send-form input[type="email"],
-    #wallet__modal-send-form input[type="tel"],
-    #wallet__modal-send-form input[type="url"],
-    #wallet__modal-send-form textarea {
-        width: 100%;
-        border: 1px solid #ccc;
-        margin: 0 0 5px;
-        padding: 10px;
-    }
-
-    #wallet__modal-send-form input[type="text"]:hover,
-    #wallet__modal-send-form input[type="email"]:hover,
-    #wallet__modal-send-form input[type="tel"]:hover,
-    #wallet__modal-send-form input[type="url"]:hover,
-    #wallet__modal-send-form textarea:hover {
-        -webkit-transition: border-color 0.3s ease-in-out;
-        -moz-transition: border-color 0.3s ease-in-out;
-        transition: border-color 0.3s ease-in-out;
-        border: 1px solid #aaa;
-    }
-
-    #wallet__modal-send-submit {
-        cursor: pointer;
-        width: 100%;
-        border: none;
-        color: #FFF;
-        margin: 0 0 5px;
-        padding: 10px;
-        font-size: 15px;
-    }
-
-    #wallet__modal-send-submit:hover {
-        background: #250863;
-        -webkit-transition: background 0.3s ease-in-out;
-        -moz-transition: background 0.3s ease-in-out;
-        transition: background-color 0.3s ease-in-out;
-    }
-
-    #wallet__modal-send-submit:active {
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-    }
-</style>
 <script src="{{ url_for('static', filename='js/validation.js') }}"></script>

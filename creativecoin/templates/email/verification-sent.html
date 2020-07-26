@@ -1,22 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<script>
-    var rz = function () {
-        $('.container-verification')
-            .css('height', 'auto')
-            .css('height', $('.container-verification').height() + 'px');
-    };
-    $(window).resize(function () {
-        rz();
-    });
 
-    rz();
-</script>
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/email.css') }}">
+<script src="{{ url_for('static', filename='js/email.js') }}"></script>
 
 <div class="body" style="height: 100vh">
-    <div class="container container-verification center-flex" style="height: inherit">
+    <div class="container container-token center-flex" style="height: inherit">
         <div class="inner-div " style="width: 100%">
             <div class="shadow white p-5">
                 <div class="row mb-2">

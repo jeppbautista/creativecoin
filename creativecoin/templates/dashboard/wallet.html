@@ -1,19 +1,17 @@
 {% extends "base2.html" %}
 
 {% block content %}
-  
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/wallet.css') }}">
 
 <div class="container body">
-    <div class="main-containerr">
+    <div class="main-container">
 
         {% include "dashboard/left_col.html" %}
-
         {% include "dashboard/nav.html" %}
-        
 
         {% set isverified = current_user.emailverified %}
         {% set enable = "" if isverified else "disabled" %}
-        
 
         <div class="right_col" role="main">
             {% if not isverified %}
@@ -31,7 +29,7 @@
                                         data-toggle="popover" title="Coming soon" data-content="Exchange is not yet available" 
                                         tabindex="0" data-trigger="focus" href="#">
                                         <span>
-                                            <i class="large material-icons p-3" style="font-size: 275%;">swap_horiz</i>
+                                            <i class="large material-icons p-3 icon-btn" style="font-size: 275%;">swap_horiz</i>
                                         </span>
                                     </a>
                                     <p>Exchange</p>
@@ -40,7 +38,7 @@
                                     <a class="btn btn-lg btn-success btn-main {{ enable }}" id="wallet__btn-send" 
                                         data-toggle="modal" data-target="#wallet__modal-send" href="#">
                                         <span>
-                                            <i class="large material-icons" style="font-size: 275%;">send</i>
+                                            <i class="large material-icons icon-btn" style="font-size: 275%;">send</i>
                                         </span>
                                     </a>
                                     <p>Send</p>
@@ -49,7 +47,7 @@
                                     <a class="btn btn-lg btn-success btn-main {{ enable }}" id="wallet__btn-receive" 
                                     data-toggle="modal" data-target="#wallet__modal-receive" href="#">
                                         <span>
-                                            <i class="medium material-icons" style="font-size: 275%;">input</i>
+                                            <i class="medium material-icons icon-btn" style="font-size: 275%;">input</i>
                                         </span>
                                     </a>
                                     <p>Receive</p>
@@ -59,50 +57,24 @@
                                         data-toggle="popover" title="Coming soon" data-content="Buy is not yet available" 
                                         tabindex="0" data-trigger="focus" href="{{ url_for('pay.buy') }}">
                                         <span>
-                                            <i class="medium material-icons" style="font-size: 275%;">attach_money</i>
+                                            <i class="medium material-icons icon-btn" style="font-size: 275%;">attach_money</i>
                                         </span>
                                     </a>
                                     <p>Buy</p>
                                 </div> 
                             </div>
-                            
                         </div>
-
                     </div>
-
                 </div>
-
                 <div class="row">
-
                     {% include "dashboard/balance.html" %}
                     {% include "dashboard/transaction_history.html" %}
-
                 </div>
-                  
             </div>
         </div>
         {% include "footer-text-only.html" %}
     </div>
 </div>
-
-<style>
-    .btn-main{
-        margin-top: 2em;
-    }
-    .top_tiles{
-        width: 80%;
-        margin: auto;
-    }
-
-    .wallet__btn-container > div {
-        margin: 20px 0;
-    }
-
-    .wallet__btn-container > div > a{
-        border-radius: 10%;
-    }
-
-</style>
 
 {% include "dashboard/modal/send.html" %}
 {% include "dashboard/modal/receive.html" %}
