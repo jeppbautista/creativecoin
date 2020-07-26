@@ -20,7 +20,8 @@ class Payment(FlaskForm):
             validators.InputRequired()
         ],
         render_kw={
-           'style': 'display:none'
+           'style': 'display:none',
+           'class': 'display-none'
        }
     )
     amount_php = wtf.StringField('Amount in PHP',
@@ -28,7 +29,8 @@ class Payment(FlaskForm):
             validators.InputRequired()
         ],
         render_kw={
-            'style': 'display:none'
+            'style': 'display:none',
+            'class': 'display-none'
         }
     )
     amount_usd = wtf.StringField('Amount in USD',
@@ -36,7 +38,8 @@ class Payment(FlaskForm):
             validators.InputRequired()
         ],
         render_kw={
-            'style': 'display:none'
+            'style': 'display:none',
+            'class': 'display-none'
         }
     )
     payment_category = wtf.StringField("Payment category")

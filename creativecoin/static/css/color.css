@@ -23,9 +23,39 @@
 }
 
 .c-text-yellow {
-    color:#BD984F;
+    color:#BD984F !important;
 }
 
 .c-text-fafa{
-    color: #fafafa
+    color: #fafafa !important; 
+}
+
+.c-bronze{
+    background-color: #4D2222 !important; ; 
+    color: #E97B28 !important;
+}
+
+.c-basic {
+    background-color: #B27140 !important; 
+    color: white !important;
+}
+
+.c-silver {
+    background-color: #79818A !important; 
+    color: #E9CCA3 !important;
+}
+
+.c-best {
+    background-color: #C8E6C9 !important; 
+    color: #666 !important;
+}
+
+.c-gold {
+    background-color: #3D1B87 !important; 
+    color: #AA8C19 !important;
+}
+
+.c-pro {
+    background-color: #AA8C19 !important;
+    color: white !important;
 }

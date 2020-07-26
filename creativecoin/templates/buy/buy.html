@@ -2,17 +2,19 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/buy.css') }}">
+
 <div class="body p-3" style="height: 100vh">
     <div class="container container-token center-flex" style="height: inherit">
         <div class="inner-div " style="width: 100%">
             <div class="row mb-2">
                 <div class="col-md-4 col-sm-12 text-center mb-3">
-                    <div class="p-4" style="background-color: #4D2222; color: #E97B28">
+                    <div class="c-bronze p-4"">
                         <h2>
                             BRONZE PLAN
                         </h2>
                     </div>
-                    <div class="p-1 center-flex" style="background-color: #B27140; color: white">
+                    <div class="c-basic p-1 center-flex">
                         <h6 class="p-1 mb-0"> <strong>BASIC</strong> </h6>
                     </div>
                     <div class="shadow white p-4">
@@ -34,18 +36,18 @@
                             <input type="hidden" name="amount_usd" value="25">
                             <input type="hidden" name="amount_php" value="{{ 25*usd }}">
                             <input type="hidden" name="success_url" value="https://creativecoin.net/login">
-                            <button class="btn text-white" style="background: #4D2222;" type="submit">BUY NOW</button>
+                            <button class="btn text-white c-basic"  type="submit">BUY NOW</button>
                         </form>
                         
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12 text-center mb-3">
-                    <div class="p-4" style="background-color: #79818A; color: #E9CCA3">
+                    <div class="c-silver p-4" >
                         <h2>
                             SILVER PLAN
                         </h2>
                     </div>
-                    <div class="p-1 center-flex" style="background-color: #C8E6C9; color: #666">
+                    <div class="c-best p-1 center-flex">
                         <h6 class="p-1 mb-0"> <strong>BEST CHOICE</strong> </h6>
                     </div>
                     <div class="shadow white p-4">
@@ -67,18 +69,18 @@
                             <input type="hidden" name="amount_usd" value="50">
                             <input type="hidden" name="amount_php" value="{{ 50*usd }}">
                             <input type="hidden" name="success_url" value="https://creativecoin.net/login">
-                            <button class="btn text-white"style="background: #79818A;" type="submit">BUY NOW</button>
+                            <button class="c-best btn text-white" type="submit">BUY NOW</button>
                         </form>
                     </div>
   
                 </div>
                 <div class="col-md-4 col-sm-12 text-center mb-3">
-                    <div class="p-4" style="background-color: #3D1B87; color: #AA8C19">
+                    <div class="c-gold p-4">
                         <h2>
                             GOLD PLAN
                         </h2>
                     </div>
-                    <div class="p-1 center-flex" style="background-color: #AA8C19; color: white">
+                    <div class="c-pro p-1 center-flex">
                         <h6 class="p-1 mb-0"> <strong>PROFESSIONAL MINDSET</strong> </h6>
                     </div>
                     <div class="shadow white p-4">
@@ -100,7 +102,7 @@
                             <input type="hidden" name="amount_usd" value="100">
                             <input type="hidden" name="amount_php" value="{{ 100*usd }}">
                             <input type="hidden" name="success_url" value="https://creativecoin.net/login">
-                            <button href="" class="btn text-white" style="background: #3D1B87;" type="submit">BUY NOW</button>
+                            <button href="" class="c-pro btn text-white" type="submit">BUY NOW</button>
                         </form>
                     </div>
                 </div>
@@ -109,32 +111,5 @@
         </div>
     </div>
 </div>
-
-<style>
-    .checklist {
-        padding-left: 20px;
-        list-style: none;
-    }
-
-    .checklist>li {
-        margin-bottom: 10px;
-    }
-
-    .checklist>li:before {
-        font-family: 'FontAwesome';
-        content: '\f00c';
-        margin: 0 5px 0 -15px;
-        color: #00C853;
-
-    }
-
-    @media only screen and (max-device-width : 1000px) {
-        .body {
-            height: auto !important;
-        }
-    }
-
-
-</style>
 
 {% endblock %}
