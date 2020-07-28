@@ -19,7 +19,6 @@ def subdomain(rule='/', subdomain=''):
 
 @app.route('/', subdomain='', strict_slashes=False)
 def index():
-    app.logger.info("HELLO")
     return render_template('home/home.html')
 
 

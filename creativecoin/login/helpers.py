@@ -1,5 +1,6 @@
 import base64
 from itsdangerous import URLSafeTimedSerializer
+import traceback
 
 from creativecoin import app
 from creativecoin.email import EmailSender

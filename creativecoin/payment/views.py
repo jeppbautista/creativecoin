@@ -91,7 +91,23 @@ def verifypayment():
             db.session.add(payment)
             db.session.commit()
             app.logger.info("Transaction is created: {}".format(txn_id))
-            #TODO payment sent to admin page
+
+            mail = EmailSender()
+            params = {"firstname": current_user.firstname}
+            body = mail.prepare_body(params, path="verify-email.html") #TODO payment received 
+
+            if not mail.send_mail(current_user.email, "We have received your payment", body):
+                return render_template("email/token.html",
+                message="Email sending FAILED! Please contact us.",
+                button="Contact Us",
+                href=url_for("")) #TODO contact-us
+
+            mail.send_mail(app.config["ADMIN_MAIL"], "Payment was sent", "Payment was sent. <br>Transaction number: {txn_id} <br>Email: {email}".format(txn_id=txn_id, email=current_user.email))
+ 
+            return render_template("email/token.html",
+                message="Your payment is now received by the system. Please wait a few hours for the admin to approve your payment.",
+                button="Login",
+                href=url_for("auth.login"))
             #TODO send email to admin
 
         except IntegrityError as e:

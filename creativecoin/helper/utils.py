@@ -6,6 +6,8 @@ from forex_python.converter import CurrencyRates
 import requests
 import traceback
 
+from creativecoin import app
+
 
 def generate_txn_id(salt):
     return hashlib.sha512("{}-{}".format(serialize_datetime(utcnow()), salt)\
@@ -30,7 +32,7 @@ def get_usd():
         body = requests.get(URL)
 
         soup = BeautifulSoup(body.text)
-        for conv in soup.find_all('div', {"id":"shd2a"):
+        for conv in soup.find_all('div', {"id":"shd2a"}):
             try:
                 return float(conv.find('span').text)
             except AttributeError as e:
@@ -39,7 +41,8 @@ def get_usd():
                 pass
 
     try:
-        return _crawl_usd()
+        if not _crawl_usd():
+            raise Exception("unable to crawl")
     except Exception:
         app.logger.error(traceback.format_exc())
         c = CurrencyRates()
