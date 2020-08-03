@@ -22,16 +22,19 @@ auth = Blueprint("auth", __name__)
 def confirm_email(token):
     try:
         email = helpers.confirm_token(token)
+        app.logger.info("TOKEN confirmation for: {}".format(email))
     except Exception as e:
         app.logger.error(traceback.format_exc())
+        app.logger.error("INVALID TOKEN")
         return render_template("email/token.html",
             message="This is an invalid confirmation link or it has expired already. You can request for another link.",
             button="Resend email",
-            href="#")
+            href="#") #TODO resend email
 
     user = queries.get_user(email=email)
 
     if user.emailverified:
+        app.logger.info("TOKEN ALREADY CONFIRMED for: {}".format(email))
         return render_template("email/token.html",
             message="Account is already verified. You can now use CreativeCoin and all its features.",
             button="Get Started",
@@ -41,7 +44,7 @@ def confirm_email(token):
         user.emailverified = True
         queries.add(user)
         queries.commit_db()
-        app.logger.info("Account has been confirmed")
+        app.logger.info("TOKEN CONFIRMED for: {}".format(email))
         return render_template("email/token.html",
             message="Your email is now verified. You can now use CreativeCoin and all its features.",
             button="Get Started",

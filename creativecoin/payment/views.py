@@ -27,17 +27,6 @@ def buy():
     return render_template('buy/buy.html', usd=usd_val)
 
 
-@pay.route('/ipn', strict_slashes=False, methods=['POST'])
-def ipn():
-    data = {
-        key: value for key,value in  request.form.to_dict().items() if key in cols
-    }
-    
-    with open('/home/cisateducation/public_html/creativecoin.net/creativecoin/test.txt', 'w+') as f:
-        f.write(str(data))
-         
-    return ""
-
 @pay.route('/payment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
 def payment():
@@ -91,7 +80,6 @@ def verifypayment():
         try:
             db.session.add(transaction)
             db.session.add(payment)
-            db.session.commit()
             app.logger.info("Transaction was created: {}".format(txn_id))
 
             mail = EmailSender()
@@ -107,6 +95,7 @@ def verifypayment():
 
             mail.send_mail(app.config["ADMIN_MAIL"], "Payment was sent", "Payment was sent. <br>Transaction number: {txn_id} <br>Email: {email}".format(txn_id=txn_id, email=current_user.email))
             app.logger.info("PAYMENT RECEIVED")
+            db.session.commit()
             return redirect(url_for("pay.payment_received"))
 
         except IntegrityError as e:
@@ -129,7 +118,8 @@ def payment_received():
         button="Login",
         href=url_for("auth.login"))
 
-@pay.route('/payment-failed')
+
+@pay.route('/payment-failed', strict_slashes=False,)
 def payment_failed():
     return render_template("email/token.html",
         message="Email sending FAILED! Please contact us.",
