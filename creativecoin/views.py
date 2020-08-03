@@ -39,7 +39,7 @@ def news():
 
 @app.route(rule="/get-in-touch", strict_slashes=False)
 def contact_us():
-    return "Contact Us"
+    return render_template("contact-us.html")
 
 
 @app.route(rule='/test', strict_slashes=False)

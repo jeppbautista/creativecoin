@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+
+
+<div class="body p-3" style="height: 100vh">
+    <div class="container container-token center-flex">
+        <div class="inner-div " style="width: 100%">
+            <div class="shadow white p-5">
+                <div class="row mb-2">
+                    <div class="col-md-12 text-center">
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='image/ccn-logo.png') }}" alt="" style="max-height: 50px">
+                            <h3>CreativeCoin</h3>
+                        </a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h4>HAVE QUESTIONS?</h4>
+                    </div>
+                    <br>
+                    <div class="col-12 contact-div">
+                        <input class="form-control mb-1 field" type="email" name="" id="" placeholder="Your email">
+                    </div>
+                    <div class="col-12 contact-div">
+                        <input class="form-control mb-1 field" type="text" name="" id="" placeholder="Your Name">
+                    </div>
+                    <div class="col-12 contact-div p-3">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea2">Your message:</label>
+                            <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-lg-4 col-md-4 offset-lg-4 offset-md-4 col-sm-12 mt-3">
+                        <a href="{{ href }}" class="c-yellow btn btn-light">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+            {% include "footer-simple.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -49,6 +49,18 @@ hr.thin {
 .carousel-fade > .carousel-control{
     z-index: 2;
 } */
+.body {
+    height: 100vh;
+}
+
+.container-token {
+    height: inherit;
+}
+
+.inner-div {
+    width: 100%;
+}
+
 
 .center-vertical {
     margin: 0;
