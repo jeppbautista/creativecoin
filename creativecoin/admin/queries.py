@@ -1,7 +1,8 @@
-from creativecoin import db
+from creativecoin import app, db
 from creativecoin.models import Payment, Transaction, User, Wallet
 
 from datetime import datetime
+import traceback
 
 ROW_PER_PAGE = 10
 
@@ -12,6 +13,15 @@ def commit_db():
 
 def rollback():
     db.session.rollback()
+
+
+def get_user(**kv):
+    user = User.query.filter_by(**kv).first_or_404()
+    return user
+
+def get_payment(**kv):
+    payment = Payment.query.filter_by(**kv).first_or_404()
+    return payment
 
 
 def retrieve_payments(page, filter_str):
@@ -35,7 +45,7 @@ def update_payment_status(payment_id, status):
         payment.status = status
         payment.updated = datetime.now()
     except Exception as e:
-        print(e)
+        app.logger.error(traceback.format_exc())
         return False
 
     return True
@@ -56,7 +66,7 @@ def update_transaction_status(payment_id, status):
         transaction.updated = datetime.now()
         transaction.is_verified = True if status=="ACCEPTED" else False
     except Exception as e:
-        print(e)
+        app.logger.error(traceback.format_exc())
         return False
     
     return True
@@ -74,7 +84,7 @@ def update_transaction_transferred(payment_id, is_trans):
 
         transaction.is_transferred = is_trans
     except Exception as e:
-        print(e)
+        app.logger.error(traceback.format_exc())
         return False
 
     return True
@@ -101,7 +111,7 @@ def update_wallet_free_mined(payment_id, selected_user, choice):
         wallet.free_mined = wallet.free_mined + transaction.quantity
 
     except Exception as e:
-        print(e)
+        app.logger.error(traceback.format_exc())
         return False
 
     return True

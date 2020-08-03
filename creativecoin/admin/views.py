@@ -3,14 +3,16 @@ from flask_login import login_required, current_user
 
 from collections import OrderedDict
 import json
+import traceback
 
+from creativecoin import app
 from creativecoin.admin import queries
+from creativecoin.email import EmailSender
 from creativecoin.helper import utils
 from creativecoin.helper import queries as q
 from creativecoin.models import Payment, User
 
 adm = Blueprint('adm', __name__)
-
 
 @adm.route('/admin-panel')
 @login_required
@@ -47,13 +49,31 @@ def admin_payment_process(choice):
 
     if current_user.is_admin and payment_id and selected_user:
 
+        firstname = queries.get_user(email = selected_user).firstname
+        txn_id = queries.get_payment(id = payment_id).txn_id
+
+        app.logger.info("ADMIN ACTION: Payment {choice}: {txn_id}".format(choice=choice, txn_id=txn_id))
+
         if queries.update_payment_status(payment_id, choice) and \
             queries.update_transaction_status(payment_id, choice):
+
             if choice == "ACCEPTED":
                 if queries.update_wallet_free_mined(payment_id, selected_user, choice) and \
                     queries.update_transaction_transferred(payment_id, True):
-                    
                     queries.commit_db()
+
+                    mail = EmailSender()
+                    params = {
+                        "login_link": "http://{root_url}/login".format(root_url = app.config["SERVER_NAME"]),
+                        "firstname": firstname,
+                        "txn_id": txn_id
+                    }
+                    body = mail.prepare_body(params, path="accepted-email.html")
+                    if not mail.send_mail(app.config["TEST_TO"], "Your payment was accepted", body):
+                        app.logger.info("ADMIN ACTION: Email sending FAILED")
+                        return "EMAIL SENDING FAILED"
+
+                    app.logger.info("ADMIN ACTION: DONE")
 
                 else:
                     queries.rollback()
@@ -61,6 +81,17 @@ def admin_payment_process(choice):
                 queries.update_transaction_transferred(payment_id, False)
                 queries.commit_db()
 
+                params = {
+                    "contact_link": "http://{root_url}/get-in-touch".format(root_url = app.config["SERVER_NAME"]),
+                    "firstname": firstname,
+                    "txn_id": txn_id
+                }
+                body = mail.prepare_body(params, path="denied-email.html")
+                if not mail.send_mail(app.config["TEST_TO"], "Your payment was denied", body):
+                    app.logger.info("ADMIN ACTION: Email sending FAILED")
+                    return "EMAIL SENDING FAILED"
+                
+                app.logger.info("ADMIN ACTION: DONE")
 
             raw_payments = queries.retrieve_payments(page, filter_str)
             payments = _payments(raw_payments)

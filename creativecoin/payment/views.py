@@ -6,9 +6,11 @@ from sqlalchemy.exc import IntegrityError
 import traceback
 
 from creativecoin import app, db, models
-from creativecoin.payment.forms import Payment
+from creativecoin.email import EmailSender
 from creativecoin.helper.coinpayments import CryptoPayments
 from creativecoin.helper.utils import generate_txn_id, get_usd, sci_notation, utcnow
+from creativecoin.payment.forms import Payment
+
 
 pay = Blueprint('pay', __name__)
 
@@ -90,25 +92,22 @@ def verifypayment():
             db.session.add(transaction)
             db.session.add(payment)
             db.session.commit()
-            app.logger.info("Transaction is created: {}".format(txn_id))
+            app.logger.info("Transaction was created: {}".format(txn_id))
 
             mail = EmailSender()
-            params = {"firstname": current_user.firstname}
-            body = mail.prepare_body(params, path="verify-email.html") #TODO payment received 
+            params = {
+                "login_link": "http://{root_url}/login".format(root_url = app.config["SERVER_NAME"]),
+                "firstname": current_user.firstname
+            }
+            body = mail.prepare_body(params, path="received-email.html")
 
             if not mail.send_mail(current_user.email, "We have received your payment", body):
-                return render_template("email/token.html",
-                message="Email sending FAILED! Please contact us.",
-                button="Contact Us",
-                href=url_for("")) #TODO contact-us
+                app.logger.info("PAYMENT FAILED")
+                return redirect(url_for("pay.payment_failed"))
 
             mail.send_mail(app.config["ADMIN_MAIL"], "Payment was sent", "Payment was sent. <br>Transaction number: {txn_id} <br>Email: {email}".format(txn_id=txn_id, email=current_user.email))
- 
-            return render_template("email/token.html",
-                message="Your payment is now received by the system. Please wait a few hours for the admin to approve your payment.",
-                button="Login",
-                href=url_for("auth.login"))
-            #TODO send email to admin
+            app.logger.info("PAYMENT RECEIVED")
+            return redirect(url_for("pay.payment_received"))
 
         except IntegrityError as e:
             app.logger.error(traceback.format_exc())
@@ -117,9 +116,22 @@ def verifypayment():
             app.logger.error(traceback.format_exc())
             db.session.rollback()
 
-        
-        return "FOOBAR"
+        app.logger.info("PAYMENT FAILED")
+        return redirect(url_for("pay.payment_failed"))
 
-    return str(request.form.to_dict())
+    return redirect(url_for("auth.login"))
 
 
+@pay.route('/payment-received', strict_slashes=False, methods=['POST', 'GET'])
+def payment_received():
+    return render_template("email/token.html",
+        message="Your payment was received by the system. Please wait a few hours for the admin to approve your payment.",
+        button="Login",
+        href=url_for("auth.login"))
+
+@pay.route('/payment-failed')
+def payment_failed():
+    return render_template("email/token.html",
+        message="Email sending FAILED! Please contact us.",
+        button="Contact Us",
+        href=url_for("contact_us")) #TODO contact-us

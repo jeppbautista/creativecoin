@@ -62,15 +62,6 @@
     $("#filter").on("change", function(){
         $("#form-filter").submit()
     });
-    $(".btn-adminAcceptPayment").on("click", function () {
-        var paymentID = this.id.split("-")[1];
-        processPayment(paymentID, "ACCEPTED");
-    });
-    $(".btn-adminDeclinePayment").on("click", function () {
-        var paymentID = this.id.split("-")[1];
-        processPayment(paymentID, "DECLINED");
-    });
-
 
     var refreshTable = function(payments, has_next, has_prev){
         
@@ -119,15 +110,18 @@
  
 
             {% if filter_str=="PENDING" %}
+                var email = this.email;
                 var temp = document.createElement('div');
                 temp.innerHTML = "<button value='ACCEPTED' "+
-                        "onclick='actionDone(this.id, this.value, \""+this.email+"\")' "+
                         "id='acceptPayment-" + id + "'"+
-                        " class='btn btn-info p-2 btn-adminAcceptPayment'>ACCEPT</button>"+
+                        "data-email='"+ email + "'"+
+                        "data-id='"+ id + "'"+
+                        " class='btn btn-info p-2 btn-adminAcceptPayment btn-adminActionPayment'>ACCEPT</button>"+
                     "<button value='DECLINED' "+
-                        "onclick='actionDone(this.id, this.value, \""+this.email+"\")' "+
                         "id='declinePayment-" + id + "' "+
-                        "class='btn btn-danger p-2 btn-adminDeclinePayment'>DECLINE</button>";
+                        "data-email='"+ email + "'"+
+                        "data-id='"+ id + "'"+
+                        "class='btn btn-danger p-2 btn-adminDeclinePayment btn-adminActionPayment'>DECLINE</button>";
                 while (temp.firstChild)
                     tbl_row.appendChild(temp.firstChild);
             {% endif %}
@@ -184,15 +178,21 @@
 
     var actionDone = function(paymentID, choice, email){
         if(confirm("Are you sure?")){
-            paymentID = paymentID.split("-")[1];
             processPayment(paymentID, choice, email);
         }
         else{
             return false;
         }
     }
-    
+ 
+
+    $(".btn-adminActionPayment").on("click", function(){
+        actionDone( $(this).data("id"), this.value, $(this).data("email"));
+    });
+
 
 </script>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 
 {% endblock %}

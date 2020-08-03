@@ -27,7 +27,6 @@ def setup_logging():
 
     app.logger.addHandler(file_handler)
     app.logger.addHandler(stream_handler)
-    app.logger.info("Logging is set up")
 
 
 csp = {

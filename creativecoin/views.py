@@ -37,6 +37,11 @@ def news():
     return "News"
 
 
+@app.route(rule="/get-in-touch", strict_slashes=False)
+def contact_us():
+    return "Contact Us"
+
+
 @app.route(rule='/test', strict_slashes=False)
 def test():
     return render_template('buy/unable-to-process-payment.html')

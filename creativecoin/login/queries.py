@@ -13,7 +13,6 @@ def commit_db():
 def rollback():
     db.session.rollback()
 
-
 def get_user(**kv):
     user = User.query.filter_by(**kv).first_or_404()
     return user
