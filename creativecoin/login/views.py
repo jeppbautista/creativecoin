@@ -20,31 +20,31 @@ auth = Blueprint("auth", __name__)
 
 @auth.route("/confirm/<token>", strict_slashes=False)
 def confirm_email(token):
+    app.logger.error("INFO - /confirm/{}".format(token))
     try:
         email = helpers.confirm_token(token)
-        app.logger.info("TOKEN confirmation for: {}".format(email))
+        app.logger.error("INFO - TOKEN confirmation for: {}".format(email))
     except Exception as e:
         app.logger.error(traceback.format_exc())
-        app.logger.error("INVALID TOKEN")
+        app.logger.error("ERROR - INVALID TOKEN")
         return render_template("email/token.html",
-            message="This is an invalid confirmation link or it has expired already. You can request for another link.",
-            button="Resend email",
-            href="#") #TODO resend email
+            message="This is an invalid confirmation link or it has expired already. You can request for another link once you log-in.",
+            button="Login",
+            href="auth.login")
 
     user = queries.get_user(email=email)
 
     if user.emailverified:
-        app.logger.info("TOKEN ALREADY CONFIRMED for: {}".format(email))
+        app.logger.error("INFO - TOKEN ALREADY CONFIRMED for: {}".format(email))
         return render_template("email/token.html",
             message="Account is already verified. You can now use CreativeCoin and all its features.",
             button="Get Started",
             href=url_for("auth.login"))
-
     else:
         user.emailverified = True
         queries.add(user)
         queries.commit_db()
-        app.logger.info("TOKEN CONFIRMED for: {}".format(email))
+        app.logger.error("INFO - TOKEN CONFIRMED for: {}".format(email))
         return render_template("email/token.html",
             message="Your email is now verified. You can now use CreativeCoin and all its features.",
             button="Get Started",
@@ -84,12 +84,16 @@ def callback_login():
     loginform = Login(request.form)
     signupform = Signup()
 
+    app.logger.error("INFO - /callback_login")
+    app.logger.error("INFO - {}".format(str(request.form)))
+
     data = {
         "last_action": "login",
         "error": ""
     }
 
     if loginform.validate():
+        app.logger.error("INFO - FORM is valid")
         formdata = dict(loginform.data)
 
         del formdata["login"]
@@ -98,10 +102,12 @@ def callback_login():
         user = queries.get_user(email = formdata["email"])
 
         if user is None or not user.validate_password(formdata["password"]):
+            app.logger.error("ERROR - PASSWORD is invalid")
             data["error"] = "pass_email_error"
             return redirect(url_for("auth.login", **data))
 
         login_user(user)
+        app.logger.error("INFO - user logged in")
 
         if not redirect_url:
             return redirect(url_for("dash.wallet"))
@@ -109,6 +115,7 @@ def callback_login():
             return redirect(redirect_url)
 
     else:
+        app.logger.error("ERROR - FORM is invalid")
         data["error"] = "login_form_error"
 
     return redirect(url_for("auth.login", **data))
@@ -120,12 +127,16 @@ def callback_signup():
     loginform = Login()
     signupform = Signup(request.form)
 
+    app.logger.error("INFO - /callback_signup")
+    app.logger.error("INFO - {}".format(str(request.form)))
+
     data = {
         "last_action": "signup",
         "error": ""
     }
 
     if signupform.validate():
+        app.logger.error("INFO - FORM is valid")
         formdata = dict(signupform.data)
 
         del formdata["register"]
@@ -136,6 +147,8 @@ def callback_signup():
         queries.add(user)
         queries.commit_db()
 
+        app.logger.error("INFO - User is created")
+
         try:
             wallet = models.Wallet(user_id=user.id)
             queries.add(wallet)
@@ -144,13 +157,20 @@ def callback_signup():
             referrer_wallet.free_mined = referrer_wallet.free_mined + (referrer_wallet.free_mined*decimal.Decimal(app.config["REFERRAL_PCT"]))
             queries.commit_db()
 
+            app.logger.error("INFO - Wallet is created")
+            app.logger.error(str(wallet.__dict__))
+
             email = formdata["email"]
             firstname = formdata["firstname"]
 
-            if _verify_email(email, firstname):
-                return redirect(url_for("auth.verify_email"))
+            if not _verify_email(email, firstname):            
+                app.logger.error("ERROR - Email sending failed")
+                return render_template("email/token.html",
+                    message="Email sending failed. Please contact administrator",
+                    button="Contact us",
+                    href=url_for("contact_us"))
 
-            return "Email sending failed please contact administrator"
+            return redirect(url_for("auth.verify_email"))
 
         except IntegrityError as e:
             app.logger.error(traceback.format_exc())
@@ -163,10 +183,12 @@ def callback_signup():
             db.session.rollback()
 
     elif signupform.errors:
+        app.logger.error("ERROR - There are ERRORS in the form")
         app.logger.error(signupform.errors)
         data["error"] = "signup_form_error"
 
     else:
+        app.logger.error("ERROR - FORM is invalid")
         return redirect(url_for("auth.login"))
 
     return redirect(url_for("auth.login", **data))
@@ -174,18 +196,26 @@ def callback_signup():
 
 @auth.route("/verify-email")
 def verify_email():
+    app.logger.error("INFO - /verify-email")
     return render_template("email/verification-sent.html")
 
 
 @auth.route("/verify-email-2")
 def verify_email_2():
+    app.logger.error("INFO - /verify-email-2")
     email = current_user.email
     firstname = current_user.firstname
+
+    app.logger.error("INFO - {}".format(email))
 
     if _verify_email(email, firstname):
         return redirect(url_for("auth.verify_email"))
     else:
-        return "Email sending failed please contact administrator"
+        app.logger.error("ERROR - Email sending failed")
+        return render_template("email/token.html",
+            message="Email sending failed. Please contact administrator",
+            button="Contact us",
+            href=url_for("contact_us"))
 
 
 @login_manager.user_loader

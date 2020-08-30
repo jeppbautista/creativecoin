@@ -1,26 +1,29 @@
-
 <div class="top_nav">
-  <div class="nav_menu">
-    <nav>
-      <div class="nav toggle">
-        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-      </div>
-      <div class=""></div>
-      <ul class="nav navbar-nav navbar-right">
-        <li class="">
-          <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <img src="" alt=""> {{ current_user.firstname }} {{ current_user.lastname }}
-            <span class=" fa fa-angle-down"></span>
-          </a>
-          <ul class="dropdown-menu dropdown-usermenu pull-right">
-            <li><a href=" {{ url_for('auth.logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-          </ul>
-        </li>
-        <li role="presentation" class="dropdown">
-          <a href="#" style="line-height: 125% !important;"><span><strong>1CCN = $<span id="grain-value"> grain_value </span></grainvalue></strong>  <br> <small>Value of CCN is in sync with the real-time value of Gold</small> </span></a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+    <div class="nav_menu">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+            <div class=""></div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="" alt=""> {{ current_user.firstname }} {{ current_user.lastname }}
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li><a href=" {{ url_for('auth.logout') }}"><i class="fa fa-sign-out pull-right"></i> Log
+                                Out</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown">
+                    <a href="#" style="line-height: 125% !important;"><span><strong>1CCN = $<span id="grain-value">
+                                    {{ grainprice }} </span></grainvalue></strong> <br> <small>Value of CCN is in sync
+                                with the real-time
+                                value of Gold</small> </span></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
-

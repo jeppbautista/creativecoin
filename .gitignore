@@ -138,3 +138,5 @@ dmypy.json
 cython_debug/
 
 migrations/
+creativecoin/blockchain/chaindata/
+creativecoin/blockchain/chaindata-test/

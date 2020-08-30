@@ -22,6 +22,7 @@ def index():
     return render_template('home/home.html')
     # return render_template('index/index.html')
 
+
 @app.route(rule='/cdn', strict_slashes=False)
 def cdn():
     return "CDN"

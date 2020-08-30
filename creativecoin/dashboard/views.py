@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from datetime import datetime
 
 from creativecoin import app
+from creativecoin.dashboard import helpers
 from creativecoin.helper import utils
 from creativecoin.models import *
 
@@ -17,8 +18,11 @@ def wallet():
     walletmodel.free_mined = utils.sci_notation(walletmodel.free_mined)
     walletmodel.mined = utils.sci_notation(walletmodel.mined)
 
+    grainprice = helpers.get_grain_value()
+    grainprice = round(grainprice, 4)
     # txs = Transaction.query.filter_by()
 
     now = datetime.now()
 
-    return render_template('dashboard/wallet.html', wallet=walletmodel, now=now)
+
+    return render_template('dashboard/wallet.html', wallet=walletmodel, now=now, grainprice=grainprice)

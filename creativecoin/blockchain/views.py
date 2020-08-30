@@ -34,18 +34,9 @@ def create_block():
 
 @node.route("/mine", methods=["GET", "POST"])
 def mine():
+    app.logger.error("INFO - /mine")
     test = request.args.get("mode", "live")
     tx = request.get_json()
-
-    sha = hashlib.sha256()
-
-    try:
-        user = str(current_user.email).encode('utf-8')
-    except AttributeError as identifier:
-        user = "jeppbautista@gmail.com".encode('utf-8')
-
-    sha.update(user)
-    wallet_address = sha.hexdigest()
 
     node_blocks = sync(test)
     last_block = node_blocks[-1]
@@ -66,12 +57,13 @@ def create_tx():
     """
     ```
     curl -XPOST localhost:5000/create_tx?mode=test -H 'Content-type:application/json' -d '{
-        "from":"ccn-admin",
+        "from":"ccn-system",
         "to":"030113470ac5b92c80f93e244786d134a894fb1b08d79b3b7cf77be7b620c0a3",
         "value":150
     }'
     ```
     """
+    app.logger.error("INFO - /create_tx")
     test = request.args.get('mode', 'live')
 
     confirmation = 5
@@ -81,12 +73,12 @@ def create_tx():
         new_tx.confirm = confirmation
 
     if confirmation==5:
-        x = requests.post('https://{}/mine?mode={}'.format(app.config['SERVER_NAME'],test), 
+        x = requests.post('http://{}/mine?mode={}'.format(app.config['SERVER_NAME'],test), 
             headers={"Content-type":"application/json"}, 
             json=new_tx.__dict__)
 
         if x.status_code != 200:
-            app.logger.error("mine API failed")
+            app.logger.error("ERROR - mine API failed")
             app.logger.error(x.text)
 
     return str(new_tx.__dict__)

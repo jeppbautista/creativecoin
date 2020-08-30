@@ -30,9 +30,12 @@ def buy():
 @pay.route('/payment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
 def payment():
+    app.logger.error("INFO - /payment")
     try:
         data = request.form.to_dict()
         paymentform = Payment(request.form)
+        app.logger.error("{}".format(str(request.form)))
+
         data['amount_php'] = sci_notation(float(data['amount_php']),2)
         return render_template('buy/payment.html', data=data, paymentform=paymentform)
     except KeyError as e:
@@ -43,8 +46,12 @@ def payment():
 @pay.route('/verifypayment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
 def verifypayment():
+    app.logger.error("INFO - /verifypayment")
     paymentform = Payment(request.form)
+    app.logger.error("{}".format(str(request.form)))
+
     if paymentform.validate():
+        app.logger.error("INFO - FORM is valid")
         txn_id =  generate_txn_id(current_user.id)
 
         _itemname = re.search('\((.*)\)', paymentform.item_name.data).group(1).upper()
@@ -66,7 +73,7 @@ def verifypayment():
             is_verified = False,
             is_transferred = False
         )
-
+        app.logger.error("Transaction: {}".format(str(transaction.__dict__)))
 
         payment = models.Payment(
             txn_id = txn_id,
@@ -77,10 +84,12 @@ def verifypayment():
             updated = utcnow()
         )
 
+        app.logger.error("Payment: {}".format(str(payment.__dict__)))
+
         try:
             db.session.add(transaction)
             db.session.add(payment)
-            app.logger.info("Transaction was created: {}".format(txn_id))
+            app.logger.error("INFO - Transaction was created: {}".format(txn_id))
 
             mail = EmailSender()
             params = {
@@ -90,11 +99,11 @@ def verifypayment():
             body = mail.prepare_body(params, path="received-email.html")
 
             if not mail.send_mail(current_user.email, "We have received your payment", body):
-                app.logger.info("PAYMENT FAILED")
+                app.logger.error("ERROR - PAYMENT FAILED!")
                 return redirect(url_for("pay.payment_failed"))
 
             mail.send_mail(app.config["ADMIN_MAIL"], "Payment was sent", "Payment was sent. <br>Transaction number: {txn_id} <br>Email: {email}".format(txn_id=txn_id, email=current_user.email))
-            app.logger.info("PAYMENT RECEIVED")
+            app.logger.error("INFO - PAYMENT RECEIVED")
             db.session.commit()
             return redirect(url_for("pay.payment_received"))
 
@@ -105,7 +114,7 @@ def verifypayment():
             app.logger.error(traceback.format_exc())
             db.session.rollback()
 
-        app.logger.info("PAYMENT FAILED")
+        app.logger.error("ERROR - PAYMENT FAILED!")
         return redirect(url_for("pay.payment_failed"))
 
     return redirect(url_for("auth.login"))
@@ -113,6 +122,7 @@ def verifypayment():
 
 @pay.route('/payment-received', strict_slashes=False, methods=['POST', 'GET'])
 def payment_received():
+    app.logger.error("INFO - /payment-received")
     return render_template("email/token.html",
         message="Your payment was received by the system. Please wait a few hours for the admin to approve your payment.",
         button="Login",
@@ -121,6 +131,7 @@ def payment_received():
 
 @pay.route('/payment-failed', strict_slashes=False,)
 def payment_failed():
+    app.logger.error("INFO - /payment-failed")
     return render_template("email/token.html",
         message="Email sending FAILED! Please contact us.",
         button="Contact Us",

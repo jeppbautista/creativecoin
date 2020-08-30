@@ -15,7 +15,7 @@ import logging
 import os
 
 def setup_logging():
-    format_str = "[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s"
+    format_str = "[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(message)s"
     file_handler = logging.FileHandler("logs/{:%Y-%m-%d}.log".format(datetime.now()))
     formatter = logging.Formatter(format_str)
     file_handler.setLevel(logging.DEBUG)
