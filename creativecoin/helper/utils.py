@@ -13,6 +13,9 @@ def generate_txn_id(salt):
     return hashlib.sha512("{}-{}".format(serialize_datetime(utcnow()), salt)\
             .encode("utf-8")).hexdigest()
 
+def generate_wallet_id(salt):
+    return hashlib.sha256(salt.encode("utf-8")).hexdigest()
+
 def generate_referral_id(salt=1):
     salt_padded = str(salt).zfill(4)
     salt_bytes = salt_padded.encode("utf-8")

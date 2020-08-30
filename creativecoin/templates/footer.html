@@ -1,0 +1,26 @@
+<div class="view jarallax parallax p-3 c-darker-blue">
+    <div class="container">
+        <h3 class="text-center c-text-fafa">Brought to you by:</h3>
+        <div class="row">
+            <div class="col-6">
+                <img class="float-right" src="{{ url_for('static', filename='image/cisat.png') }}" alt="">
+                <br>
+            </div>
+            <div class="col-6">
+                <img class="float-left" src="{{ url_for('static', filename='image/cisattech.png') }}" alt="">
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="view jarallax parallax p-3">
+    <div class="container">
+        <div class="row">
+            <img class="margin-auto" src="{{ url_for('static', filename='image/ccn-logo80x80.png') }}" alt="">
+        </div>
+        <div class="row">
+            <h2 class="margin-auto c-text-yellow font-weight-bold">CreativeCoin</h2>
+        </div>
+    </div>
+</div>
+{% include "footer-simple.html" %}

@@ -27,6 +27,17 @@ hr.thin {
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+hr.style-eight {
+    height: 10px;
+    border: 1;
+    box-shadow: inset 0 9px 9px -3px rgb(25, 67, 120);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+}
+
 
 /* 
 .carousel-fade > .carousel-inner > .item {
@@ -217,8 +228,16 @@ hr.thin {
     padding: 100px;
 }
 
+.margin-auto{
+    margin: auto;
+}
+
 .margin-10 {
     margin: 10px;
+}
+
+.w-60 {
+    width: 60%;
 }
 
 .w-40 {
@@ -394,6 +413,10 @@ hr.thin {
 
     .extend-on-sm{
         width: auto !important;
+    }
+
+    .h1-smaller {
+        font-size: 38px;
     }
 
     .pad-50 {

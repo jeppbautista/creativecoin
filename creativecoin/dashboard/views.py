@@ -1,7 +1,7 @@
-from datetime import datetime
-
 from flask import Blueprint, redirect, request, url_for, render_template
 from flask_login import login_required, current_user
+
+from datetime import datetime
 
 from creativecoin import app
 from creativecoin.helper import utils
@@ -13,12 +13,12 @@ dash = Blueprint('dash', __name__)
 @dash.route("/wallet")
 @login_required
 def wallet():
-    wallet = Wallet.query.filter_by(user_id=current_user.id).first()
-    wallet.free_mined = utils.sci_notation(wallet.free_mined)
-    wallet.mined = utils.sci_notation(wallet.mined)
+    walletmodel = Wallet.query.filter_by(user_id=current_user.id).first()
+    walletmodel.free_mined = utils.sci_notation(walletmodel.free_mined)
+    walletmodel.mined = utils.sci_notation(walletmodel.mined)
 
     # txs = Transaction.query.filter_by()
 
     now = datetime.now()
 
-    return render_template('dashboard/wallet.html', wallet=wallet, now=now)
+    return render_template('dashboard/wallet.html', wallet=walletmodel, now=now)

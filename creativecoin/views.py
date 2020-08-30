@@ -20,7 +20,7 @@ def subdomain(rule='/', subdomain=''):
 @app.route('/', subdomain='', strict_slashes=False)
 def index():
     return render_template('home/home.html')
-
+    # return render_template('index/index.html')
 
 @app.route(rule='/cdn', strict_slashes=False)
 def cdn():
@@ -42,9 +42,9 @@ def contact_us():
     return render_template("contact-us.html")
 
 
-@app.route(rule='/test', strict_slashes=False)
+@app.route(rule='/test', strict_slashes=False, methods=["GET", "POST"])
 def test():
-    return render_template('buy/unable-to-process-payment.html')
+    return  "ssss"
 
 
 @app.errorhandler(503)

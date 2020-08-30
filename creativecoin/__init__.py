@@ -71,8 +71,9 @@ migrate = Migrate(app, db)
 
 from creativecoin.views import main
 from creativecoin.admin.views import adm
-from creativecoin.login.views import auth
+from creativecoin.blockchain.views import node
 from creativecoin.dashboard.views import dash
+from creativecoin.login.views import auth
 from creativecoin.payment.views import pay
 
 app.register_blueprint(main)
@@ -80,6 +81,7 @@ app.register_blueprint(auth)
 app.register_blueprint(dash)
 app.register_blueprint(pay)
 app.register_blueprint(adm)
+app.register_blueprint(node)
 
 from creativecoin import models
 

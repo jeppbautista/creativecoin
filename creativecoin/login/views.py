@@ -134,6 +134,7 @@ def callback_signup():
 
         user = models.User(**formdata)
         queries.add(user)
+        queries.commit_db()
 
         try:
             wallet = models.Wallet(user_id=user.id)

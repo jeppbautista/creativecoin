@@ -1,13 +1,13 @@
-.c-blue{
-    background-color: #466EA2 !important; 
-}
-
 .c-light-blue {
     background-color: #6A8DBE !important;
 }
 
 .c-dark-blue {
     background-color: #194378 !important;
+}
+
+.c-darker-blue {
+    background-color: #1F203F !important;
 }
 
 .c-red {
@@ -22,8 +22,24 @@
     background-color: #B62119 !important;
 }
 
+.c-fafa {
+    background-color: #fafafa !important;
+}
+
+.c-white {
+    background-color: white !important;
+}
+
 .c-yellow {
     background-color: #BD984F !important;
+}
+
+.c-text-blue {
+    color: #6A8DBE !important;
+}
+
+.c-text-dark-blue {
+    color:  #194378 !important;
 }
 
 .c-text-yellow {

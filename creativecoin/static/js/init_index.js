@@ -11,3 +11,5 @@ $('.jarallax').jarallax({
 document.addEventListener('DOMContentLoaded', function() {
   AOS.init();
 });
+
+
