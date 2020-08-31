@@ -5,6 +5,7 @@ import json
 main = Blueprint('main', __name__)
 
 from creativecoin import app
+from creativecoin.helper.utils import crawl_usd, crawl_grain
 import os
 
 env = app.config['ENV']
@@ -21,7 +22,21 @@ def subdomain(rule='/', subdomain=''):
 def index():
     return render_template('home/home.html')
     # return render_template('index/index.html')
-    
+
+@app.route("/Z2V0LXVzZA")
+def usd():
+    usd = crawl_usd()
+    return str(usd)
+
+@app.route("/Z2V0LWdyYWlu")
+def grain():
+    grain = crawl_grain()
+    return str(grain)
+
+@app.route("/c3RhcnRtaW5pbmc")
+def start_mining():
+    return ""
+
 
 @app.route(rule='/cdn', strict_slashes=False)
 def cdn():
@@ -45,7 +60,8 @@ def contact_us():
 
 @app.route(rule='/test', strict_slashes=False, methods=["GET", "POST"])
 def test():
-    return  "ssss"
+    import datetime
+    return  str(datetime.datetime.now(datetime.timezone(datetime.timedelta(0))).astimezone().tzinfo)
 
 
 @app.errorhandler(503)

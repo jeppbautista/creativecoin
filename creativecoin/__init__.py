@@ -6,7 +6,6 @@ from flask_login import (
     login_user,
     logout_user
 )
-from flask_apscheduler import APScheduler
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
@@ -88,8 +87,6 @@ app.register_blueprint(adm)
 app.register_blueprint(node)
 
 from creativecoin import models
-from creativecoin.helper.utils import get_usd
-
 
 @app.after_request
 def after_request(response):

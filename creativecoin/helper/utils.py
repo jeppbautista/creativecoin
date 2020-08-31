@@ -123,15 +123,23 @@ def crawl_grain():
 
 def get_usd():
     app.logger.error("INFO - Getting USD...")
-    usd = crawl_usd()
+    file_usd = app.config["FILE_USD"]
+
+    with open(os.path.join(os.getcwd(), file_usd), "r") as f:
+        usd = f.read()
     app.logger.error("INFO - Extracted USD: {}".format(usd))
-    return usd
+
+    return float(usd)
 
 def get_grain():
     app.logger.error("INFO - Getting grain value...")
-    grain = crawl_grain()
+    file_grain = app.config["FILE_GRAIN"]
+
+    with open(os.path.join(os.getcwd(), file_grain), "r") as f:
+        grain = f.read()
     app.logger.error("INFO - Extracted grain value: {}".format(grain))
-    return grain
+
+    return float(grain)
 
 
 def sci_notation(x, decimal=10):

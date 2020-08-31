@@ -43,20 +43,17 @@ from creativecoin.helper.utils import get_usd
     
 
 def run_scheduled_jobs():
-    if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == "true":
-        try:
-            app.logger.error("INFO - running jobs")
-            sched = BackgroundScheduler()
-            sched.add_job(get_usd, trigger='interval', seconds=20)
-            sched.start()
-        except Exception:
-            app.logger.error(traceback.format_exc())
-        
-    else:
-        app.logger.error("INFO - running jobs")
-        sched = BackgroundScheduler()
-        sched.add_job(get_usd, trigger='interval', seconds=20)
-        sched.start()
+    def foobar():
+        app.logger.error("ERROR - FOO FOO FOO")
+
+    from flask_apscheduler import APScheduler
+    try:
+        scheduler = APScheduler()
+        scheduler.init_app(app)
+        scheduler.add_job(func=foobar, trigger='interval', seconds=20, id="foobar")
+        scheduler.start()
+    except Exception:
+        app.logger.error(traceback.format_exc())
 
 
 
