@@ -17,6 +17,10 @@ class Config:
     TEST_TO = "jeppbautista@gmail.com"
     REFERRAL_PCT = 0.05
 
+    FILE_USD = "creativecoin/repo-usd.txt"
+    FILE_GRAIN = "creativecoin/repo-grain.txt"
+
+
 class DevConfig(Config):
     DEBUG = True
     # LOGIN_DISABLED = True
@@ -29,7 +33,6 @@ class DevConfig(Config):
     COINPAYMENTS_PUBLIC_KEY = "71c298dabdaf11759bc427d318c52e87b0163633386ac7d1367990ebe038072e"
     COINPAYMENTS_PRIVATE_KEY = "a3b179B5f4CFeC1f25f69C1B391E0446e78b6D6943e38Ab32644F2112203228f"
 
-    
 
 class ProdConfig(Config):
     # LOGIN_DISABLED = False

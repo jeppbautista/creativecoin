@@ -8,7 +8,7 @@ import traceback
 from creativecoin import app, db, models
 from creativecoin.email import EmailSender
 from creativecoin.helper.coinpayments import CryptoPayments
-from creativecoin.helper.utils import generate_txn_id, get_usd, sci_notation, utcnow
+from creativecoin.helper.utils import generate_txn_id, get_usd, sci_notation, utcnow, get_grain
 from creativecoin.payment.forms import Payment
 
 
@@ -136,3 +136,12 @@ def payment_failed():
         message="Email sending FAILED! Please contact us.",
         button="Contact Us",
         href=url_for("contact_us")) #TODO contact-us
+
+
+@pay.route("/usd")
+def usd():
+    return str(get_usd())
+
+@pay.route("/grain")
+def grain():
+    return str(get_grain())

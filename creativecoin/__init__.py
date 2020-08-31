@@ -6,6 +6,7 @@ from flask_login import (
     login_user,
     logout_user
 )
+from flask_apscheduler import APScheduler
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
@@ -13,6 +14,7 @@ from flask_talisman import Talisman
 from datetime import datetime
 import logging
 import os
+import traceback
 
 def setup_logging():
     format_str = "[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(message)s"
@@ -55,6 +57,8 @@ app.secret_key = app.config['SECRET_KEY']
 app.config['SESSION_TYPE'] = "filesystem"
 app.config['ENV'] = "production" if os.environ['SERVER_NAME'] == "creativecoin.net" else "dev"
 
+os.environ["TZ"]="Asia/Manila"
+
 if app.config['ENV'] == "production":
     app.config.from_object('creativecoin.config.ProdConfig')
 else:
@@ -84,6 +88,8 @@ app.register_blueprint(adm)
 app.register_blueprint(node)
 
 from creativecoin import models
+from creativecoin.helper.utils import get_usd
+
 
 @app.after_request
 def after_request(response):

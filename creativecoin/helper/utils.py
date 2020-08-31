@@ -6,7 +6,10 @@ from forex_python.converter import CurrencyRates
 import requests
 import traceback
 
+import os
+
 from creativecoin import app
+from creativecoin.email import EmailSender
 
 
 def generate_txn_id(salt):
@@ -29,19 +32,25 @@ def encode_referral_id(enc):
     return int(raw_ref.replace('ccn', ''))
 
 
-def get_usd():
+def crawl_usd():
     def _crawl_usd():
         URL = "https://www.exchangerates.org.uk/Dollars-to-Philippine-Pesos-currency-conversion-page.html"
         body = requests.get(URL)
 
-        soup = BeautifulSoup(body.text)
+        soup = BeautifulSoup(body.text, "html.parser")
         for conv in soup.find_all('div', {"id":"shd2a"}):
             try:
+                file_usd = app.config["FILE_USD"]
+
+                with open(os.path.join(os.getcwd(), file_usd), "w+") as f:
+                    f.write(str(float(conv.find('span').text)))
+
                 return float(conv.find('span').text)
             except AttributeError as e:
                 app.logger.error(traceback.format_exc())
-                print("-- Crawl Failed. Using Forex-Python")
-                pass
+                app.logger.error("ERROR - Crawl Failed. Using Forex-Python")
+
+    mail = EmailSender()
 
     try:
         if not _crawl_usd():
@@ -49,7 +58,80 @@ def get_usd():
     except Exception:
         app.logger.error(traceback.format_exc())
         c = CurrencyRates()
-        return c.get_rates('USD')['PHP']
+        try:
+            file_usd = app.config["FILE_USD"]
+
+            with open(os.path.join(os.getcwd(), file_usd), "w+") as f:
+                f.write(str(float(c.get_rates('USD')['PHP'])))
+
+            return float(c.get_rates('USD')['PHP'])
+        except Exception:
+            app.logger.error(traceback.format_exc())
+            message = traceback.format_exc()
+            with open(os.path.join(os.getcwd(), file_usd), "w+") as f:
+                mail.send_mail(app.config["ADMIN_MAIL"], "USD value crawling failed!", message)
+                f.write(str(50.0))
+  
+    return 50.0
+
+
+def crawl_grain():
+    mail = EmailSender()
+    TROY_OUNCE = 0.002083333
+
+    file_grain = app.config["FILE_GRAIN"]
+    file_grain = os.path.join(os.getcwd(), file_grain)
+
+    try:
+        url = "http://www.goldgrambars.com/calculator/"
+        body = requests.get(url)
+        soup = BeautifulSoup(body.text)
+        raw_price = soup.select_one("input[name='goldprice']").get("value")
+        price = float(raw_price)
+        
+    except Exception:
+        app.logger.error(traceback.format_exc())
+        message = traceback.format_exc()
+        mail.send_mail(app.config["ADMIN_MAIL"], "Grain value crawling failed!", message)
+
+        headers = {
+            'x-access-token': 'goldapi-1c3xvykegrbtei-io',
+        }
+
+        try:
+            response = requests.get("https://www.goldapi.io/api/XAU/USD")
+            if response.status_code != 200:
+                mail.send_mail(app.config["ADMIN_MAIL"], "Grain value API failed!", message)
+                with open(file_grain, "w+") as f:
+                    f.write(str(0.20))
+                return 0.20
+
+            raw_price = response.json()["price"]
+            price = float(raw_price)
+        except Exception:
+            app.logger.error(traceback.format_exc())
+            message = traceback.format_exc()
+            mail.send_mail(app.config["ADMIN_MAIL"], "Grain value API failed!", message)
+            with open(file_grain, "w+") as f:
+                f.write(str(0.20))
+            return 0.20
+
+    with open(file_grain, "w+") as f:
+        f.write(str((price*TROY_OUNCE)*0.05))
+
+    return (price*TROY_OUNCE)*0.05
+
+def get_usd():
+    app.logger.error("INFO - Getting USD...")
+    usd = crawl_usd()
+    app.logger.error("INFO - Extracted USD: {}".format(usd))
+    return usd
+
+def get_grain():
+    app.logger.error("INFO - Getting grain value...")
+    grain = crawl_grain()
+    app.logger.error("INFO - Extracted grain value: {}".format(grain))
+    return grain
 
 
 def sci_notation(x, decimal=10):
@@ -58,7 +140,6 @@ def sci_notation(x, decimal=10):
 
 def serialize_datetime(dt):
     return dt.strftime("%Y-%m-%d %H:%M:%S")
-
 
 def utcnow():
     return datetime.datetime.utcnow()
