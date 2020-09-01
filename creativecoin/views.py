@@ -33,11 +33,6 @@ def grain():
     grain = crawl_grain()
     return str(grain)
 
-@app.route("/c3RhcnRtaW5pbmc")
-def start_mining():
-    return ""
-
-
 @app.route(rule='/cdn', strict_slashes=False)
 def cdn():
     return "CDN"

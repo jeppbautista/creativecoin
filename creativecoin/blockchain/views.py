@@ -5,13 +5,18 @@ from flask_login import login_required, current_user
 
 from creativecoin.blockchain.block import Block
 from creativecoin.blockchain.mine import start_mine
+from creativecoin.blockchain import queries
 from creativecoin.blockchain.sync import sync, sync_block
 from creativecoin.blockchain.tx import Tx
 from creativecoin.blockchain import validate
+from creativecoin.helper import utils
 
 from creativecoin import app
 
 import datetime
+import decimal
+import traceback
+import subprocess
 
 node = Blueprint("node", __name__)
 
@@ -34,22 +39,28 @@ def create_block():
 
 @node.route("/mine", methods=["GET", "POST"])
 def mine():
-    app.logger.error("INFO - /mine")
-    test = request.args.get("mode", "live")
-    tx = request.get_json()
+    try:
+        app.logger.error("INFO - /mine")
+        test = request.args.get("mode", "live")
+        tx = request.get_json()
 
-    node_blocks = sync(test)
-    last_block = node_blocks[-1]
-    new_block = start_mine(last_block, tx)
+        node_blocks = sync(test)
+        last_block = node_blocks[-1]
+        new_block = start_mine(last_block, tx)
 
-    confirmation = 0
+        confirmation = 0
 
-    for i in range(5):
-        if validate.confirm(new_block, test):
-            confirmation += 1
+        for i in range(5):
+            if validate.confirm(new_block, test):
+                confirmation += 1
 
-    new_block.confirm = confirmation
-    return str(new_block.self_save(test))
+        new_block.confirm = confirmation
+        return str(new_block.self_save(test))
+    except Exception:
+        app.logger.error(traceback.format_exc())
+
+    return "ERROR"
+    
 
 
 @node.route('/create_tx', methods=["GET", "POST"])
@@ -68,18 +79,24 @@ def create_tx():
 
     confirmation = 5
     new_tx = Tx(request.get_json())
+    new_tx.hash = "12345"
 
     if validate.valid_tx(new_tx):
         new_tx.confirm = confirmation
 
     if confirmation==5:
-        x = requests.post('http://{}/mine?mode={}'.format(app.config['SERVER_NAME'],test), 
-            headers={"Content-type":"application/json"}, 
-            json=new_tx.__dict__)
+        # x = requests.post('http://{}/mine?mode={}'.format(app.config['SERVER_NAME'],test), 
+        #     headers={"Content-type":"application/json"}, 
+        #     json=new_tx.__dict__)
 
-        if x.status_code != 200:
-            app.logger.error("ERROR - mine API failed")
-            app.logger.error(x.text)
+        curl_req = "curl -XPOST https://{}/mine -H 'Content-type:application/json' -d '{}'".format(
+                app.config["SERVER_NAME"], str(new_tx.__dict__).replace("'", '"'))
+        x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
+        app.logger.error(x)
+
+        # if x.status_code != 200:
+        #     app.logger.error("ERROR - mine API failed")
+        #     app.logger.error(x.text)
 
     return str(new_tx.__dict__)
 
@@ -93,3 +110,32 @@ def create_first_block():
     block_data['nonce'] = 0 
     block = Block(block_data)
     return block
+
+
+@node.route("/c3RhcnRtaW5pbmc")
+def start_mining():
+    #TODO transactions
+    data = {
+        "from":"ccn-system",
+        "to":"",
+        "value":0.5
+    }
+    for wallet in queries.get_all_wallets():
+        try:
+            to = utils.generate_wallet_id(str(wallet.id))
+            wallet.mined = wallet.mined+decimal.Decimal(0.5)
+
+            data["to"] = to
+            # x = requests.post("http://{}/create_tx".format(app.config["SERVER_NAME"]), json=data)
+            curl_req = "curl -XPOST https://{}/create_tx -H 'Content-type:application/json' -d '{}'".format(
+                app.config["SERVER_NAME"], str(data).replace("'", '"'))
+            x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
+            app.logger.error(x)
+            #     app.logger.error("ERROR - mine API failed")
+            #     app.logger.error(x.text)
+            #     continue
+            queries.commit_db()
+        except Exception:
+            app.logger.error(traceback.format_exc())
+        
+    return ""

@@ -125,8 +125,8 @@ def payment_received():
     app.logger.error("INFO - /payment-received")
     return render_template("email/token.html",
         message="Your payment was received by the system. Please wait a few hours for the admin to approve your payment.",
-        button="Login",
-        href=url_for("auth.login"))
+        button="Go to wallet",
+        href=url_for("dash.wallet"))
 
 
 @pay.route('/payment-failed', strict_slashes=False,)
