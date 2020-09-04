@@ -7,4 +7,4 @@ set GOOGLE_CLIENT_ID=844772594291-evimb3tfp5nqhdlu1cqub98p8m37vlqd.apps.googleus
 set GOOGLE_CLIENT_SECRET=ZQTYP7VjHMV5fnxNP9k-fRFz 
 set OAUTHLIB_INSECURE_TRANSPORT=1
 
-flask run --host=localhost
+flask run --host=0.0.0.0

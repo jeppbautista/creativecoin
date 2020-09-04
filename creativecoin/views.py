@@ -20,8 +20,21 @@ def subdomain(rule='/', subdomain=''):
 
 @app.route('/', subdomain='', strict_slashes=False)
 def index():
-    return render_template('home/home.html')
+    return render_template('landing/index.html')
     # return render_template('index/index.html')
+
+
+@app.route('/prices')
+def prices():
+    return render_template('landing/privacy.html')
+
+@app.route('/privacy-policy')
+def privacy():
+    return render_template('landing/privacy.html')
+
+@app.route('/system')
+def system():
+    return render_template('landing/privacy.html')
 
 @app.route("/Z2V0LXVzZA")
 def usd():

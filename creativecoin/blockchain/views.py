@@ -85,20 +85,20 @@ def create_tx():
         new_tx.confirm = confirmation
 
     if confirmation==5:
-        # x = requests.post('http://{}/mine?mode={}'.format(app.config['SERVER_NAME'],test), 
-        #     headers={"Content-type":"application/json"}, 
-        #     json=new_tx.__dict__)
+        app.logger.error("INFO - sending request to /mine")
+        if app.config['ENV'] == "production":
+            curl_req = "curl -XPOST https://{}/mine -H 'Content-type:application/json' -d '{}'".format(
+                    app.config["SERVER_NAME"], str(new_tx.__dict__).replace("'", '"'))
+            x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
 
-        curl_req = "curl -XPOST https://{}/mine -H 'Content-type:application/json' -d '{}'".format(
-                app.config["SERVER_NAME"], str(new_tx.__dict__).replace("'", '"'))
-        x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
-        app.logger.error(x)
+            app.logger.error("INFO - {}".format(x))
+        else:
+            x = requests.post('http://{}/mine?mode={}'.format(app.config['SERVER_NAME'],test), 
+                headers={"Content-type":"application/json"}, 
+                json=new_tx.__dict__)
+            app.logger.error("INFO - {}".format(x.text))
 
-        # if x.status_code != 200:
-        #     app.logger.error("ERROR - mine API failed")
-        #     app.logger.error(x.text)
-
-    return str(new_tx.__dict__)
+    return "Transaction created"
 
 
 def create_first_block():
@@ -118,22 +118,29 @@ def start_mining():
     data = {
         "from":"ccn-system",
         "to":"",
-        "value":0.5
+        "value": 12.0
     }
     for wallet in queries.get_all_wallets():
         try:
             to = utils.generate_wallet_id(str(wallet.id))
-            wallet.mined = wallet.mined+decimal.Decimal(0.5)
+            wallet.mined = wallet.mined+decimal.Decimal(12.0)
 
             data["to"] = to
-            # x = requests.post("http://{}/create_tx".format(app.config["SERVER_NAME"]), json=data)
-            curl_req = "curl -XPOST https://{}/create_tx -H 'Content-type:application/json' -d '{}'".format(
-                app.config["SERVER_NAME"], str(data).replace("'", '"'))
-            x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
-            app.logger.error(x)
-            #     app.logger.error("ERROR - mine API failed")
-            #     app.logger.error(x.text)
-            #     continue
+
+            if app.config['ENV'] == "production":
+                curl_req = "curl -XPOST https://{}/create_tx -H 'Content-type:application/json' -d '{}'".format(
+                    app.config["SERVER_NAME"], str(data).replace("'", '"'))
+                x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
+                
+                app.logger.error(x)
+
+            else:
+                x = requests.post("http://{}/create_tx".format(app.config["SERVER_NAME"]), 
+                    headers={"Content-type":"application/json"}, 
+                    json=data)
+
+                app.logger.error("INFO - {}".format(x.text))
+                
             queries.commit_db()
         except Exception:
             app.logger.error(traceback.format_exc())

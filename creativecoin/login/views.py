@@ -85,7 +85,7 @@ def callback_login():
     signupform = Signup()
 
     app.logger.error("INFO - /callback_login")
-    app.logger.error("INFO - {}".format(str(request.form)))
+    # app.logger.error("INFO - {}".format(str(request.form)))
 
     data = {
         "last_action": "login",
@@ -128,7 +128,7 @@ def callback_signup():
     signupform = Signup(request.form)
 
     app.logger.error("INFO - /callback_signup")
-    app.logger.error("INFO - {}".format(str(request.form)))
+    # app.logger.error("INFO - {}".format(str(request.form)))
 
     data = {
         "last_action": "signup",

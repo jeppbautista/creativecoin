@@ -11,7 +11,11 @@
       <b>CreativeCoin</b>
       
     </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav"
+    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse" id="main-nav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active p-2">
           <a class="nav-link" href="#">
@@ -20,19 +24,19 @@
           </a>
         </li>
         <li class="nav-item p-2">
-          <a class="nav-link" href="#">SYSTEM</a>
+          <a class="nav-link" href="{{ url_for('system') }}">SYSTEM</a>
         </li>
         <li class="nav-item p-2">
-          <a class="nav-link" href="#">PRICES</a>
+          <a class="nav-link" href="{{ url_for('prices') }}">PRICES</a>
         </li>
         <li class="nav-item p-2">
-          <a class="nav-link" href="#">PRIVACY POLICY</a>
+          <a class="nav-link" href="{{ url_for('privacy') }}">PRIVACY POLICY</a>
         </li>
         <li class="nav-item ml-3  pb-2 pt-2">
-            <a class="nav-link" href="#">Login</a>
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
         </li>
         <li class="nav-item pb-2 pt-2 pl-0">
-          <a class="nav-link" href="#">Signup</a>
+          <a class="nav-link" href="{{ url_for('system') }}">Signup</a>
       </li>
       </ul>
     </div>

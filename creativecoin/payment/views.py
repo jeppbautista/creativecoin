@@ -8,7 +8,7 @@ import traceback
 from creativecoin import app, db, models
 from creativecoin.email import EmailSender
 from creativecoin.helper.coinpayments import CryptoPayments
-from creativecoin.helper.utils import generate_txn_id, get_usd, sci_notation, utcnow, get_grain
+from creativecoin.helper.utils import generate_txn_id, get_usd, sci_notation, utcnow, get_grain, generate_wallet_id
 from creativecoin.payment.forms import Payment
 
 
@@ -23,6 +23,8 @@ MAP_CCN = {
 @pay.route('/buy')
 @login_required
 def buy():
+    if current_user.emailverified != 1:
+        return redirect(url_for("auth.login"))
     usd_val = get_usd()
     return render_template('buy/buy.html', usd=usd_val)
 
@@ -34,7 +36,7 @@ def payment():
     try:
         data = request.form.to_dict()
         paymentform = Payment(request.form)
-        app.logger.error("{}".format(str(request.form)))
+        # app.logger.error("{}".format(str(request.form)))
 
         data['amount_php'] = sci_notation(float(data['amount_php']),2)
         return render_template('buy/payment.html', data=data, paymentform=paymentform)
@@ -59,9 +61,8 @@ def verifypayment():
 
         transaction = models.Transaction(
             txn_id = txn_id,
-            user_id = current_user.id,
-            txn_from = "{} {}".format(current_user.firstname, current_user.lastname),
-            txn_to = "ADMIN",
+            txn_from = generate_wallet_id(str(current_user.wallet)),
+            txn_to = "CCN-ADMIN",
             txn_type = "PAYMENT",
             item_name = paymentform.item_name.data,
             quantity = quantity,

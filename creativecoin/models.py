@@ -21,7 +21,6 @@ class User(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean(), default=False)
 
     payments = db.relationship('Payment', backref='user', lazy=True, uselist=True)
-    transactions = db.relationship('Transaction', backref='user', lazy=True, uselist=True)
     wallet = db.relationship('Wallet', backref='user', lazy=True, uselist=False)
 
     def __repr__(self):
@@ -66,7 +65,7 @@ class Wallet(db.Model):
     mined = db.Column(db.DECIMAL(precision=20, scale=10), default=0)
 
     def __repr__(self):
-        return "<Wallet {} of User {}>".format(self.email, self.user_id)
+        return "<Wallet {} of User {}>".format(self.id, self.user_id)
 
 
 class Transaction(db.Model):
@@ -74,16 +73,15 @@ class Transaction(db.Model):
     __tablename__ = "transaction"
 
     txn_id = db.Column(db.String(256), primary_key=True, nullable=False)
-    user_id = db.Column(db.String(128), db.ForeignKey('user.id', ondelete='CASCADE'))
-    
     amount_php = db.Column(db.DECIMAL(precision=20, scale=10), default=-1)
     amount_usd = db.Column(db.DECIMAL(precision=20, scale=10), default=-1)
+    created = db.Column(db.TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     item_name = db.Column(db.String(128))
     quantity = db.Column(db.Integer, default=-1)
     received_confirmations = db.Column(db.Integer, default=0)
     status = db.Column(db.String(128))
-    txn_from = db.Column(db.String(128))
-    txn_to = db.Column(db.String(128))
+    txn_from = db.Column(db.String(256))
+    txn_to = db.Column(db.String(256))
     txn_type = db.Column(db.String(128)) # [PAYMENT, MINE, SEND, RECEIVE]
     updated  = db.Column(db.TIMESTAMP(timezone=True), nullable=True)
 
