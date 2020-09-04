@@ -1,0 +1,36 @@
+<nav id="sidebar">
+    <div class="custom-menu">
+        <button type="button" id="sidebarCollapse" class="btn c-yellow pl-4 pr-4">
+            <i class="fa fa-bars"></i>
+            <span class="sr-only">Toggle Menu</span>
+        </button>
+    </div>
+    <!-- <h1><a href="{{ url_for('index') }}" class="logo c-dark-blue"> <img src="{{ url_for('static', filename='image/ccn-logo50x50.png') }} " alt=""> CreativeCoin</a></h1> -->
+    <ul class="list-unstyled components mb-5">
+        <li class="active ">
+            <a href="{{ url_for('pay.buy') }}" class="c-text-yellow {{ enable }}"><span class="fa fa-cart-plus mr-3"></span>Buy</a>
+        </li>
+        <li>
+            <a href="#" class="c-text-yellow {{ enable }}"><span class="fa fa-exchange mr-3"></span>Exchange</a>
+        </li>
+        <li>
+            <a href="#" class="c-text-yellow {{ enable }}"><span class="fa fa-qrcode mr-3"></span>Receive</a>
+        </li>
+        <li>
+            <a href="#" class="c-text-yellow {{ enable }}"><span class="fa  fa-paper-plane  mr-3"></span>Send</a>
+        </li>
+        <li>
+            <a href="#" class="c-text-yellow "><span class="fa fa-sliders mr-3"></span>Settings</a>
+        </li>
+        <li>
+            <a href="{{ url_for('auth.logout') }}" class="c-text-yellow "><span class="fa fa-sign-out mr-3"></span>Logout</a>
+        </li>
+        {% if not isverified %}
+        <li class="text-danger">
+            <a href=" {{ url_for('auth.verify_email_2') }} "><i class="fa fa-check-square-o"></i> Verify email
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+
+</nav>

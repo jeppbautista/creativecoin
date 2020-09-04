@@ -2,6 +2,10 @@
     background-color: #d1d1d1 !important;
 }
 
+.c-black {
+    background-color: #222 !important;
+}
+
 .c-light-blue {
     background-color: #6A8DBE !important;
 }
@@ -44,6 +48,10 @@
 
 .c-text-dark-blue {
     color:  #194378 !important;
+}
+
+.c-text-darker-blue {
+    color: #1F203F !important;
 }
 
 .c-text-yellow {

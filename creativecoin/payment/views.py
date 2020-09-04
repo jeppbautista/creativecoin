@@ -21,10 +21,7 @@ MAP_CCN = {
 }
 
 @pay.route('/buy')
-@login_required
 def buy():
-    if current_user.emailverified != 1:
-        return redirect(url_for("auth.login"))
     usd_val = get_usd()
     return render_template('buy/buy.html', usd=usd_val)
 
@@ -32,6 +29,8 @@ def buy():
 @pay.route('/payment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
 def payment():
+    if current_user.emailverified != 1:
+        return redirect(url_for("auth.login"))
     app.logger.error("INFO - /payment")
     try:
         data = request.form.to_dict()

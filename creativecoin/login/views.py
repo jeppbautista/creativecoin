@@ -154,7 +154,7 @@ def callback_signup():
             queries.add(wallet)
 
             referrer_wallet = queries.get_wallet(user_id=user.referrer)
-            referrer_wallet.free_mined = referrer_wallet.free_mined + (referrer_wallet.free_mined*decimal.Decimal(app.config["REFERRAL_PCT"]))
+            referrer_wallet.referral = referrer_wallet.referral + (referrer_wallet.free_mined*decimal.Decimal(app.config["REFERRAL_PCT"]))
             queries.commit_db()
 
             app.logger.error("INFO - Wallet is created")

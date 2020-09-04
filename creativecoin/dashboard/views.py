@@ -23,4 +23,4 @@ def wallet():
     # txs = Transaction.query.filter_by()
     now = datetime.now()
 
-    return render_template('dashboard/wallet.html', wallet=walletmodel, now=now, grainprice=grainprice)
+    return render_template('wallet/wallet.html', wallet=walletmodel, now=now, grainprice=grainprice)

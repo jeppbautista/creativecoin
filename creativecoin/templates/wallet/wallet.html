@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "wallet/nav.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+
+<div id="wallet">
+    <div class="wrapper d-flex align-items-stretch">
+
+        {% set isverified = current_user.emailverified %}
+        {% set enable = "" if isverified else "disabled" %}
+        {% set total_mined = wallet.free_mined + wallet.mined %}
+        {% include "wallet/side.html" %}
+        <div id="content" class="p-4 p-md-5 pt-5 container-fluid">
+            
+        {% if not isverified %}
+            <div class="alert alert-danger text-center mb-3" style="margin-bottom: 0;" role="alert">
+                WARNING: Your email is not verified. <a class="c-text-dark-blue font-weight-bold" href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
+            </div>
+        {% endif %}
+
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Total Balance</h5>
+                        <h2 class="font-montserrat c-text-fafa ">{{ total_mined | round(4) }} ccn</h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Earned from referral</h5>
+                        <h2 class="font-montserrat c-text-fafa">{{ wallet.referral | round(4) }}</h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">System mined</h5>
+                        <h2 class="font-montserrat c-text-fafa">{{ wallet.mined | round(4) }} ccn</h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Free mined</h5>
+                        <h2 class="font-montserrat c-text-fafa">{{wallet.free_mined | round(4)}} ccn</h2>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Since joined</h5>
+                        <h2 class="font-montserrat c-text-fafa">{{ ( now - wallet.created ).days }}  days</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Transaction history</h2>
+
+            <div class="row table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Transaction Type</th>
+                            <th>Amount</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Not yet available
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/wallet.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+{% endblock %}
