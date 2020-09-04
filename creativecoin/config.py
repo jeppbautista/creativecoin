@@ -19,6 +19,7 @@ class Config:
 
     FILE_USD = "creativecoin/repo-usd.txt"
     FILE_GRAIN = "creativecoin/repo-grain.txt"
+    BLOCKCHAIN_FEE = 0.05
 
 
 class DevConfig(Config):

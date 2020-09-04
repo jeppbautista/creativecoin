@@ -23,11 +23,11 @@ class Tx(object):
             if not hasattr(self, 'confirm'):
                 self.confirm = 0
 
-            self.total_input = self.value
-            self.total_output = self.value - (app.config['BLOCKCHAIN_FEE']*float(self.value))
-            self.blockchain_fee = app.config['BLOCKCHAIN_FEE']
+            self.raw_value = self.value
+            self.blockchain_fee = app.config['BLOCKCHAIN_FEE']*float(self.raw_value)
+            self.value = self.raw_value - self.blockchain_fee
             self.size = len(str(self.__dict__))
-        except AttributeError:
+        except AttributeError as e:
             self.hash = None
 
 

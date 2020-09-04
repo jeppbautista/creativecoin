@@ -38,7 +38,6 @@ from creativecoin.helper.utils import get_usd
             
 #         app.logger.info("Grain value set to: {}".format(grain_value))
 #     except Exception as e:
-#         # TODO send notification about error
 #         app.logger.error("Failed setting grain_value")
     
 

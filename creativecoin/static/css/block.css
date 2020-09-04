@@ -1,0 +1,20 @@
+
+.blockchain__divtbl-tx table.table thead th {
+    font-weight: bold;
+}
+
+
+table.table td{
+    padding: 0.5em;
+}
+
+.navbar {
+    background: #222;
+}
+
+
+@media only screen and (max-device-width : 600px) {
+    #blockchain {
+        width: 100%;
+    }
+}

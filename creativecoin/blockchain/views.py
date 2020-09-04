@@ -25,8 +25,7 @@ node = Blueprint("node", __name__)
 def block(block_id):
     test = request.args.get("mode", "live")
     node_block = sync_block(block_id, test)
-    transaction = eval(node_block.data)[0]
-    print(transaction)
+    transaction = eval(node_block.data)[1:]
     return render_template("blockchain/block.html", block=node_block, tx=transaction)
 
 
@@ -60,7 +59,6 @@ def mine():
         app.logger.error(traceback.format_exc())
 
     return "ERROR"
-    
 
 
 @node.route('/create_tx', methods=["GET", "POST"])
@@ -68,8 +66,8 @@ def create_tx():
     """
     ```
     curl -XPOST localhost:5000/create_tx?mode=test -H 'Content-type:application/json' -d '{
-        "from":"ccn-system",
-        "to":"030113470ac5b92c80f93e244786d134a894fb1b08d79b3b7cf77be7b620c0a3",
+        "from_wallet":"ccn-system",
+        "to_wallet":"8BC96FAB127BE5FE51A6E7E8F2F1EA41",
         "value":150
     }'
     ```
@@ -79,24 +77,18 @@ def create_tx():
 
     confirmation = 5
     new_tx = Tx(request.get_json())
-    new_tx.hash = "12345"
+    new_tx.hash = utils.generate_txn_id(new_tx.to_wallet)
 
     if validate.valid_tx(new_tx):
         new_tx.confirm = confirmation
 
-    if confirmation==5:
-        app.logger.error("INFO - sending request to /mine")
-        if app.config['ENV'] == "production":
-            curl_req = "curl -XPOST https://{}/mine -H 'Content-type:application/json' -d '{}'".format(
-                    app.config["SERVER_NAME"], str(new_tx.__dict__).replace("'", '"'))
-            x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
-
-            app.logger.error("INFO - {}".format(x))
-        else:
-            x = requests.post('http://{}/mine?mode={}'.format(app.config['SERVER_NAME'],test), 
-                headers={"Content-type":"application/json"}, 
-                json=new_tx.__dict__)
-            app.logger.error("INFO - {}".format(x.text))
+    if confirmation == 5:
+        node_blocks = sync(test)
+        last_block = node_blocks[-1]
+        data = eval(last_block.data)
+        data.append(new_tx.__dict__)
+        last_block.data = str(data)
+        last_block.self_save(test)
 
     return "Transaction created"
 
@@ -107,27 +99,42 @@ def create_first_block():
     block_data['timestamp'] = datetime.datetime.now()
     block_data['data'] = []
     block_data['prev_hash'] = ''
-    block_data['nonce'] = 0 
+    block_data['nonce'] = 0
     block = Block(block_data)
     return block
 
 
 @node.route("/c3RhcnRtaW5pbmc")
 def start_mining():
-    #TODO transactions
+    # TODO transactions
     data = {
-        "from":"ccn-system",
-        "to":"",
+        "from_wallet": "8BC96FAB127BE5FE51A6E7E8F2F1EA41",
+        "to_wallet": "",
         "value": 12.0
     }
+
+    test = request.args.get('mode', 'live')
+
+    if app.config['ENV'] == "production":
+        curl_req = "curl -XPOST https://{}/mine -H 'Content-type:application/json' -d '{}'".format(
+        app.config["SERVER_NAME"], str(data).replace("'", '"'))
+        x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
+    else:
+        x = requests.post('http://{}/mine?mode={}'.format(app.config['SERVER_NAME'], test),
+                    headers={"Content-type": "application/json"},
+                    json=data)
+        app.logger.error("INFO - {}".format(x.text))
+
+    
     for wallet in queries.get_all_wallets():
         try:
             to = utils.generate_wallet_id(str(wallet.id))
             wallet.mined = wallet.mined+decimal.Decimal(12.0)
 
-            data["to"] = to
+            data["to_wallet"] = to
 
             if app.config['ENV'] == "production":
+
                 curl_req = "curl -XPOST https://{}/create_tx -H 'Content-type:application/json' -d '{}'".format(
                     app.config["SERVER_NAME"], str(data).replace("'", '"'))
                 x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
@@ -135,7 +142,7 @@ def start_mining():
                 app.logger.error(x)
 
             else:
-                x = requests.post("http://{}/create_tx".format(app.config["SERVER_NAME"]), 
+                x = requests.post("http://{}/create_tx?mode={}".format(app.config["SERVER_NAME"], test), 
                     headers={"Content-type":"application/json"}, 
                     json=data)
 
