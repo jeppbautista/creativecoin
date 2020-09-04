@@ -49,7 +49,7 @@ img.banner {
 #para-banner {
     color: white;
     height: 100vh;
-    background-image: url("/static/image/forex.jpg");
+    background-image: url("/static/image/Gold-backed-cryptocurrency.jpg");
 }
 
 #para-privacy h1, #para-banner h1 {
@@ -71,7 +71,6 @@ img.banner {
     background-image: url("/static/image/misVis.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    height: 170vh;
 }
 
 #para-misVis h1 {
@@ -91,7 +90,7 @@ img.banner {
 }
 
 #para-problemSolution {
-    background-image: url("/static/image/bgproblem.jpg");
+    background-image: url("/static/image/bgproblem.png");
     background-repeat: no-repeat;
     background-size: cover;
     height: 60vh;
@@ -102,13 +101,12 @@ img.banner {
 }
 
 #para-problemSolution p {
-    font-size: 1.2em;
-    font-weight: bold;
+    font-size: 1.3em;
 }
 
-#para-problemSolution .overlay {
+.overlay {
     background-color: #1F203F;
-    opacity: 0.75;
+    opacity: 0.65;
     height: 100%;
 }
 
@@ -145,6 +143,14 @@ img.banner {
     color: #BD984F;
 }
 
+#para-roadmap {
+    background: #222;
+}
+
+#para-roadmap p {
+    font-size: 1.2rem;
+}
+
 #quote {
     color: #fafafa;
     font-size: 2rem;
@@ -160,13 +166,17 @@ img.banner {
 }
 
 @media only screen and (min-device-width : 601px) and (max-device-width : 1000px) {
+    #para-banner {
+        height: 120vh;
+    }
+
     #para-misVis > .mask > .container {
         width: 100% !important;
         padding: 0 !important;
     }
 
     #para-misVis {
-        height: 180vh;
+        /* height: 280vh; */
     }
 
     .wrapper-image > img {
@@ -177,8 +187,6 @@ img.banner {
         width: 100%;
         border-radius: 1%;
     }
-
-    
 
 }
 
@@ -194,13 +202,14 @@ img.banner {
         width: 100%;
     }
     #para-misVis {
-        height: 260vh !important;
+        /* height: 260vh !important; */
+    }
+
+    #para-roadmap p {
+        font-size: 1rem;
     }
 
     #para-problemSolution {
-        background-image: url("/static/image/bgproblem.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
         height: 130vh;
     }
     .wrapper-image > img {
@@ -216,3 +225,119 @@ img.banner {
         width: 90%;
     }
 }
+.accordion {
+    width: 100%;
+    margin: auto;
+    background-color: #172563;
+}
+
+/* The Magic */
+.accordion:hover .accordion-item:hover .accordion-item-content,
+.accordion .accordion-item--default .accordion-item-content {
+    height: 10em;
+}
+
+.accordion-item-content,
+.accordion:hover .accordion-item-content {
+    height: 0;
+    overflow: hidden;
+    transition: height .25s;
+}
+
+.accordion {
+    padding: 0;
+    font-family: "PT Sans" sans-serif;
+}
+
+.accordion .accordion-item {
+  background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  border-bottom: 1px solid #666;
+  padding: 1em;
+  color: #eee;
+}
+
+.accordion h1 {
+  margin: 0;
+}
+
+.accordion .accordion-item:nth-child(1) {
+  /* background-color: hsl(200, 80%, 60%);
+  background-image: linear-gradient(-90deg, hsl(200, 80%, 60%), hsl(200, 80%, 45%) 2em, hsl(200, 80%, 60%)); */
+    background-image: url("/static/image/bg-roadmap1.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.accordion .accordion-item:nth-child(2) {
+    background-image: url("/static/image/bg-roadmap2.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.accordion .accordion-item:nth-child(3) {
+    background-image: url("/static/image/bg-roadmap3.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.accordion .accordion-item:nth-child(4) {
+    background-image: url("/static/image/bg-roadmap4.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.accordion .accordion-item:nth-child(5) {
+    background-image: url("/static/image/bg-roadmap5.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.accordion .accordion-item:nth-child(6) {
+    background-image: url("/static/image/bg-roadmap6.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.accordion .accordion-item:nth-child(7) {
+    background-image: url("/static/image/bg-roadmap7.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.accordion-item:nth-child(1):hover{
+    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+    padding-bottom: 0;
+    /* background-color: green; */
+}
+
+.accordion-item:nth-child(2):hover{
+    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+    /* background-color: green; */
+}
+
+.accordion-item:nth-child(3):hover{
+    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+    /* background-color: green; */
+}
+
+.accordion-item:nth-child(4):hover{
+    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+    /* background-color: green; */
+}
+
+.accordion-item:nth-child(5):hover{
+    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+    /* background-color: green; */
+}
+
+.accordion-item:nth-child(6):hover{
+    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+    /* background-color: green; */
+}
+
+.accordion-item:nth-child(7):hover{
+    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+    /* background-color: green; */
+}
+
+
