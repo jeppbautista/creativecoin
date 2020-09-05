@@ -225,11 +225,6 @@ img.banner {
         width: 90%;
     }
 }
-.accordion {
-    width: 100%;
-    margin: auto;
-    background-color: #172563;
-}
 
 /* The Magic */
 .accordion:hover .accordion-item:hover .accordion-item-content,
@@ -244,100 +239,84 @@ img.banner {
     transition: height .25s;
 }
 
-.accordion {
-    padding: 0;
-    font-family: "PT Sans" sans-serif;
-}
-
-.accordion .accordion-item {
-  background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee);
-  border-bottom: 1px solid #666;
-  padding: 1em;
-  color: #eee;
-}
-
-.accordion h1 {
-  margin: 0;
-}
 
 .accordion .accordion-item:nth-child(1) {
-  /* background-color: hsl(200, 80%, 60%);
-  background-image: linear-gradient(-90deg, hsl(200, 80%, 60%), hsl(200, 80%, 45%) 2em, hsl(200, 80%, 60%)); */
-    background-image: url("/static/image/bg-roadmap1.png");
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.accordion .accordion-item:nth-child(2) {
-    background-image: url("/static/image/bg-roadmap2.png");
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.accordion .accordion-item:nth-child(3) {
-    background-image: url("/static/image/bg-roadmap3.png");
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.accordion .accordion-item:nth-child(4) {
-    background-image: url("/static/image/bg-roadmap4.png");
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.accordion .accordion-item:nth-child(5) {
-    background-image: url("/static/image/bg-roadmap5.png");
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.accordion .accordion-item:nth-child(6) {
-    background-image: url("/static/image/bg-roadmap6.png");
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.accordion .accordion-item:nth-child(7) {
-    background-image: url("/static/image/bg-roadmap7.png");
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.accordion-item:nth-child(1):hover{
-    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
-    padding-bottom: 0;
-    /* background-color: green; */
-}
-
-.accordion-item:nth-child(2):hover{
-    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
-    /* background-color: green; */
-}
-
-.accordion-item:nth-child(3):hover{
-    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
-    /* background-color: green; */
-}
-
-.accordion-item:nth-child(4):hover{
-    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
-    /* background-color: green; */
-}
-
-.accordion-item:nth-child(5):hover{
-    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
-    /* background-color: green; */
-}
-
-.accordion-item:nth-child(6):hover{
-    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
-    /* background-color: green; */
-}
-
-.accordion-item:nth-child(7):hover{
-    background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
-    /* background-color: green; */
-}
-
-
+    /* background-color: hsl(200, 80%, 60%);
+    background-image: linear-gradient(-90deg, hsl(200, 80%, 60%), hsl(200, 80%, 45%) 2em, hsl(200, 80%, 60%)); */
+      background-image: url("/static/image/bg-roadmap1.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(2) {
+      background-image: url("/static/image/bg-roadmap2.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(3) {
+      background-image: url("/static/image/bg-roadmap3.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(4) {
+      background-image: url("/static/image/bg-roadmap4.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(5) {
+      background-image: url("/static/image/bg-roadmap5.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(6) {
+      background-image: url("/static/image/bg-roadmap6.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(7) {
+      background-image: url("/static/image/bg-roadmap7.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion-item:nth-child(1):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      padding-bottom: 0;
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(2):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(3):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(4):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(5):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(6):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(7):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  

@@ -13,3 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+$('.na').on('click', function(){
+  alert("Not Yet available");
+});
+

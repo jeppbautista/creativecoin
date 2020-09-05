@@ -26,7 +26,8 @@ def block(block_id):
     test = request.args.get("mode", "live")
     node_block = sync_block(block_id, test)
     transaction = eval(node_block.data)[1:]
-    return render_template("blockchain/block.html", block=node_block, tx=transaction)
+    return render_template("blockchain/block.html", block=node_block, tx=transaction,
+            title="Blockchain - CreativeCoin")
 
 
 @node.route("/create-block")

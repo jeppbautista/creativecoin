@@ -252,8 +252,20 @@ hr.style-eight {
     font-family: 'Roboto', sans-serif;
 }
 
+.font-merriweather {
+    font-family: 'Merriweather', serif;
+}
+
 .font-montserrat {
     font-family: 'Montserrat', sans-serif;
+}
+
+.font-patua {
+    font-family: 'Patua One', cursive;
+}
+
+.font-pt {
+    font-family: "PT Sans" sans-serif;
 }
 
 #bar1 {

@@ -2,7 +2,8 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}" />
-{% include "landing/1navbar.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/accordion.css') }}" />
+{% include "nav.html" %}
 {% include "landing/2banner.html" %}
 {% include "landing/3intro.html" %}
 {% include "landing/4misVis.html" %}

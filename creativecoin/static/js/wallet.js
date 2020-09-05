@@ -1,7 +1,5 @@
-$(document).ready(function () {
-    // SideNav Button Initialization
-    $(".button-collapse").sideNav2();
-    // SideNav Scrollbar Initialization
-    var sideNavScrollbar = document.querySelector('.custom-scrollbar');
-    var ps = new PerfectScrollbar(sideNavScrollbar);
+$(".copy").on("click", function(e){
+    e.preventDefault();
+    var text = $("#ref-code").select();
+    document.execCommand("copy");
 });

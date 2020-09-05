@@ -5,7 +5,7 @@ from datetime import datetime
 
 from creativecoin import app
 from creativecoin.dashboard import helpers
-from creativecoin.helper.utils import get_grain, sci_notation
+from creativecoin.helper.utils import get_grain, sci_notation, generate_referral_id
 from creativecoin.models import *
 
 
@@ -17,10 +17,16 @@ def wallet():
     walletmodel = Wallet.query.filter_by(user_id=current_user.id).first()
     walletmodel.free_mined = sci_notation(walletmodel.free_mined)
     walletmodel.mined = sci_notation(walletmodel.mined)
+    walletmodel.referral = sci_notation(walletmodel.referral)
 
     grainprice = get_grain()
     grainprice = round(grainprice, 4)
     # txs = Transaction.query.filter_by()
     now = datetime.now()
 
-    return render_template('wallet/wallet.html', wallet=walletmodel, now=now, grainprice=grainprice)
+    return render_template('wallet/wallet.html', 
+            wallet=walletmodel, 
+            now=now, 
+            grainprice=grainprice, 
+            generate_ref=generate_referral_id, 
+            title="Wallet - CreativeCoin")

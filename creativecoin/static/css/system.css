@@ -1,0 +1,193 @@
+
+#para-banner {
+    /* background: rgb(182,33,25);
+    background: linear-gradient(90deg, rgba(182,33,25,1) 0%, rgba(202,53,45,1) 23%, rgba(247,101,93,1) 100%); */
+    background-image: url("/static/image/system-bg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 120vh;
+    margin-top: -200px;
+}
+
+#para-banner img{
+    max-width: 100%;
+}
+
+#para-banner h1 {
+    margin-top: 25%;
+}
+
+
+#para-powpos {
+    background-image: url("/static/image/giphy-2.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 80vh;
+}
+
+#para-powpos h2{
+    font-size: 4rem;
+}
+
+#para-powpos p{
+    font-size: 1.2rem;
+}
+
+#para-algo .mobile{
+    overflow: hidden;
+    border-radius: 50%;
+    border: 5px solid #BD984F;
+}
+
+#para-algo .mobile > img, #para-algo .algo > img{
+    max-width: 100%;
+}
+#para-algo .algo{
+    overflow: hidden;
+    border-radius: 20%;
+    border: 5px solid #BD984F;
+}
+
+#para-algo .mobile-text{
+    border-radius: 5% 20% 5% 5%;
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+}
+
+#para-algo .mobile-text p{
+    line-height: 14pt;
+}
+
+
+#para-algo .mobile-algo{
+    border-radius: 5% 5% 5% 20%;
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+}
+
+#para-algo .mobile-algo p{
+    line-height: 14pt;
+}
+
+#para-formula img {
+    max-width: 100%;
+}
+
+#para-formula .dproc {
+    border-radius: 8% 25% 8% 25%;
+    overflow: hidden;
+}
+
+#para-blockchainworks img {
+    border-radius: 10%;
+    max-width: 100%;
+}
+
+#para-blockchainworks p{
+    font-size: 1.2rem;
+}
+
+#para-whyccn {
+    background-image: url("/static/image/why-CCN2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+#para-whyccn p{
+    font-size: 1.2rem;
+}
+
+#para-ideology{
+    background-image: url("/static/image/time-bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+#para-ideology p{
+    font-size: 1.2rem;
+}
+
+.col-12 > img:nth-child(1){
+    max-width: 100%;
+}
+
+
+
+.overlay {
+    background-color: #1F203F;
+    opacity: 0.95;
+    height: 100%;
+}
+
+.overlay-min {
+    background-color: #1F203F;
+    opacity: 0.35;
+    height: 100%;
+}
+
+.overlay-purple {
+    background-color: #4D4184;
+    opacity: 0.95;
+    height: 100%;
+}
+
+@media only screen and (min-device-width : 601px) and (max-device-width : 1000px) {
+    #para-banner {
+        margin-top: 0;
+    }
+
+    #para-powpos {
+        height: 105vh;
+    }
+
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+    #para-banner {
+        height: 150vh;
+    }
+
+    #para-powpos {
+        height: 120vh;
+    }
+
+    #para-powpos h2{
+        font-size: 3rem;
+    }
+    
+    #para-powpos p{
+        font-size: 1rem;
+    }
+}
+
+/* The Magic */
+.accordion:hover .accordion-item:hover .accordion-item-content,
+.accordion .accordion-item--default .accordion-item-content {
+    height: 180vh;
+}
+
+.accordion-item-content,
+.accordion:hover .accordion-item-content {
+    height: 0;
+    overflow: hidden;
+    transition: height .25s;
+    z-index: 99;
+}
+
+
+.accordion .accordion-item{
+    background-color: #BD984F;
+}
+
+.accordion .accordion-item:nth-child(1) {
+    background-color: hsl(200, 80%, 60%);
+    background-image: linear-gradient(-90deg, #BD984F, #BD984F 2em,#BD984F);
+
+  }
+  
+
+
+
+  

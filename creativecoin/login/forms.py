@@ -6,7 +6,12 @@ import wtforms as wtf
 from wtforms import validators
 
 class Login(FlaskForm):
-    email = wtf.StringField('Email', [validators.InputRequired()], 
+    email = wtf.StringField('Email', 
+        validators=[
+            validators.InputRequired(), 
+            validators.Email(),
+            validators.Length(max=128)
+        ], 
         render_kw={
             'placeholder': 'Email',
             'class': 'form-control mb-4'

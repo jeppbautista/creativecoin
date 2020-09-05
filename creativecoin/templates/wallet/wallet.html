@@ -9,7 +9,7 @@
 
         {% set isverified = current_user.emailverified %}
         {% set enable = "" if isverified else "disabled" %}
-        {% set total_mined = wallet.free_mined + wallet.mined %}
+        {% set total_mined = wallet.free_mined + wallet.mined + wallet.referral%}
         {% include "wallet/side.html" %}
         <div id="content" class="p-4 p-md-5 pt-5 container-fluid">
             
@@ -18,7 +18,23 @@
                 WARNING: Your email is not verified. <a class="c-text-dark-blue font-weight-bold" href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
             </div>
         {% endif %}
-
+            <div class="row">
+                <div class="col-12 col-md-4 offset-md-8">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text transparent" id="basic-addon1">Referral code:</span>
+                        </div>
+                        <input id="ref-code" type="text" class="form-control c-666" readonly value="https://creativecoin.net/login?ref={{ generate_ref(current_user.id) }}" aria-label="" aria-describedby="basic-addon1">
+                        <div class="input-group-append" id="button-addon4">
+                            <button class=" copy btn c-666 m-0 px-3 py-2 z-depth-0 waves-effect" type="button">
+                                <i class="fa fa-clipboard" aria-hidden="true">
+                                </i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">

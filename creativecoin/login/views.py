@@ -30,7 +30,8 @@ def confirm_email(token):
         return render_template("email/token.html",
             message="This is an invalid confirmation link or it has expired already. You can request for another link once you log-in.",
             button="Login",
-            href="auth.login")
+            href="auth.login",
+            title="Invalid token - CreativeCoin")
 
     user = queries.get_user(email=email)
 
@@ -39,7 +40,8 @@ def confirm_email(token):
         return render_template("email/token.html",
             message="Account is already verified. You can now use CreativeCoin and all its features.",
             button="Get Started",
-            href=url_for("auth.login"))
+            href=url_for("auth.login"),
+            title="Token verified - CreativeCoin")
     else:
         user.emailverified = True
         queries.add(user)
@@ -48,7 +50,8 @@ def confirm_email(token):
         return render_template("email/token.html",
             message="Your email is now verified. You can now use CreativeCoin and all its features.",
             button="Get Started",
-            href=url_for("auth.login"))
+            href=url_for("auth.login"),
+            title="Token verified - CreativeCoin")
 
     return redirect(url_for("dash.wallet"))
 
@@ -69,7 +72,7 @@ def login():
         e, ERROR_MESSAGE_LOOKUP["na"]) for e in data["error"]]
     data["error"][:] = [err for err in data["error"] if err]
 
-    return render_template("login/login.html", loginform=loginform, signupform=signupform, data=data)
+    return render_template("login/login.html", loginform=loginform, signupform=signupform, data=data, title="Login - CreativeCoin")
 
 
 @auth.route("/logout")
@@ -143,13 +146,12 @@ def callback_signup():
         del formdata["csrf_token"]
         formdata["referrer"] = utils.encode_referral_id(formdata["referrer"])
 
-        user = models.User(**formdata)
-        queries.add(user)
-        queries.commit_db()
-
-        app.logger.error("INFO - User is created")
-
         try:
+            user = models.User(**formdata)
+            queries.add(user)
+            queries.commit_db()
+
+            app.logger.error("INFO - User is created")
             wallet = models.Wallet(user_id=user.id)
             queries.add(wallet)
 
@@ -197,7 +199,7 @@ def callback_signup():
 @auth.route("/verify-email")
 def verify_email():
     app.logger.error("INFO - /verify-email")
-    return render_template("email/verification-sent.html")
+    return render_template("email/verification-sent.html", title="Email verified - CreativeCoin")
 
 
 @auth.route("/verify-email-2")
@@ -215,7 +217,8 @@ def verify_email_2():
         return render_template("email/token.html",
             message="Email sending failed. Please contact administrator",
             button="Contact us",
-            href=url_for("contact_us"))
+            href=url_for("contact_us"),
+            title="Email verified - CreativeCoin")
 
 
 @login_manager.user_loader

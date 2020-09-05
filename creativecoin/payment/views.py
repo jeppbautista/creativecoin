@@ -23,7 +23,7 @@ MAP_CCN = {
 @pay.route('/buy')
 def buy():
     usd_val = get_usd()
-    return render_template('buy/buy.html', usd=usd_val)
+    return render_template('buy/buy.html', usd=usd_val, title="Buy - CreativeCoin")
 
 
 @pay.route('/payment', strict_slashes=False, methods=['POST', 'GET'])
@@ -38,7 +38,7 @@ def payment():
         # app.logger.error("{}".format(str(request.form)))
 
         data['amount_php'] = sci_notation(float(data['amount_php']),2)
-        return render_template('buy/payment.html', data=data, paymentform=paymentform)
+        return render_template('buy/payment.html', data=data, paymentform=paymentform, title="Payment - CreativeCoin")
     except KeyError as e:
         app.logger.error(traceback.format_exc())
         return redirect(url_for("auth.login"))
@@ -126,7 +126,8 @@ def payment_received():
     return render_template("email/token.html",
         message="Your payment was received by the system. Please wait a few hours for the admin to approve your payment.",
         button="Go to wallet",
-        href=url_for("dash.wallet"))
+        href=url_for("dash.wallet"),
+        title="Payment received - CreativeCoin")
 
 
 @pay.route('/payment-failed', strict_slashes=False,)
@@ -135,7 +136,8 @@ def payment_failed():
     return render_template("email/token.html",
         message="Email sending FAILED! Please contact us.",
         button="Contact Us",
-        href=url_for("contact_us")) #TODO contact-us
+        href=url_for("contact_us"),
+        title="Payment failed - CreativeCoin") #TODO contact-us
 
 
 @pay.route("/usd")

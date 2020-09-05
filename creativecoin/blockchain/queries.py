@@ -10,6 +10,7 @@ def rollback():
 def get_all_wallets():
     raw_wallets = Wallet.query\
         .join(User, Wallet.user_id == User.id)\
-            .filter(User.emailverified == 1)
+            .filter(User.emailverified == 1)\
+                .filter(Wallet.free_mined > 0)
     
     return raw_wallets

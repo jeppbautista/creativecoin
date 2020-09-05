@@ -34,7 +34,7 @@ def privacy():
 
 @app.route('/system')
 def system():
-    return render_template('landing/privacy.html')
+    return render_template('system/index.html')
 
 @app.route("/Z2V0LXVzZA")
 def usd():

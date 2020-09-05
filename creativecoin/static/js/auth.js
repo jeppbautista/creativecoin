@@ -46,11 +46,15 @@ $(document).ready(function () {
     if (last_action == "signup") {
         $('#btn-login__create-account').trigger('click');
         $('#span-signup__alert > p').html(error_message);
-        $(".alert-signup-error").show();
+        if (error_message){
+            $(".alert-signup-error").show();
+        }
     }
     else if (last_action == "login") {
         $("#span-login__alert > p").html(error_message);
-        $(".alert-login-error").show();
+        if (error_message){
+            $(".alert-login-error").show();
+        }
     }
 
     var next = param('next');

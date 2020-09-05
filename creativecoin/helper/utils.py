@@ -20,7 +20,7 @@ def generate_wallet_id(salt):
     return hashlib.md5(salt.encode("utf-8")).hexdigest()
 
 def generate_referral_id(salt=1):
-    salt_padded = str(salt).zfill(4)
+    salt_padded = str(salt).zfill(5)
     salt_bytes = salt_padded.encode("utf-8")
     b64_salt = base64.b64encode(salt_bytes)
     return b64_salt.decode('utf-8')
