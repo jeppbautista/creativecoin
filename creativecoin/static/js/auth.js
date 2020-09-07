@@ -26,7 +26,7 @@ $(document).ready(function () {
     if (ref) {
         $("#btn-login__create-account").click();
     } else {
-        ref = "MDAwMWNjbg=="
+        ref = "MDAwMDE="
     }
 
     $("#referrer").val(ref);

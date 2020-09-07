@@ -24,8 +24,8 @@ class Tx(object):
                 self.confirm = 0
 
             self.raw_value = self.value
-            self.blockchain_fee = app.config['BLOCKCHAIN_FEE']*float(self.raw_value)
-            self.value = self.raw_value - self.blockchain_fee
+            # self.blockchain_fee = app.config['BLOCKCHAIN_FEE']*float(self.raw_value)
+            self.value = self.raw_value 
             self.size = len(str(self.__dict__))
         except AttributeError as e:
             self.hash = None

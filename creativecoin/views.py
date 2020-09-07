@@ -32,6 +32,16 @@ def prices():
 def privacy():
     return render_template('landing/privacy.html')
 
+@app.route('/terms-and-conditions')
+def terms():
+    return render_template('landing/terms.html')
+
+@app.route('/disclaimer')
+def disclaimer():
+    return render_template('landing/disclaimer.html')
+
+    
+
 @app.route('/system')
 def system():
     return render_template('system/index.html')

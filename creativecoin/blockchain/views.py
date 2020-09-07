@@ -111,7 +111,7 @@ def start_mining():
     data = {
         "from_wallet": "8BC96FAB127BE5FE51A6E7E8F2F1EA41",
         "to_wallet": "",
-        "value": 12.0
+        "value": 1.0
     }
 
     test = request.args.get('mode', 'live')
@@ -130,7 +130,7 @@ def start_mining():
     for wallet in queries.get_all_wallets():
         try:
             to = utils.generate_wallet_id(str(wallet.id))
-            wallet.mined = wallet.mined+decimal.Decimal(12.0)
+            wallet.mined = wallet.mined+decimal.Decimal(1.0)
 
             data["to_wallet"] = to
 

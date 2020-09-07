@@ -131,6 +131,7 @@
     }
 
     var processPayment = function(paymentID, choice, email) {
+        
         let postURL = "{{ url_for('adm.admin_payment_process', choice='') }}";
         postURL += choice;
         $.post(postURL, {
@@ -139,10 +140,12 @@
             page: page,
             filterStr: "{{ filter_str }}"
         }).done(function(response){
+            $(".loading-wrap").hide();
             response = JSON.parse(response);
             alert("SUCCESS");
             refreshTable(response["payments"], response["has_next"], response["has_prev"]);
         }).fail(function(){
+            $(".loading-wrap").hide();
             alert("FAILED");
         });
     }
@@ -166,6 +169,7 @@
         $.post("{{ url_for('adm.admin_retrieve_payments') }}", {
             page: page
         }).done(function (response) {
+            console.log(response);
             response = JSON.parse(response);
             refreshTable(response["payments"], response["has_next"], response["has_prev"]);
         }).fail(function (e) {
@@ -178,6 +182,7 @@
 
     var actionDone = function(paymentID, choice, email){
         if(confirm("Are you sure?")){
+            $(".loading-wrap").show();
             processPayment(paymentID, choice, email);
         }
         else{

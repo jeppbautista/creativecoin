@@ -52,7 +52,7 @@ img.banner {
     background-image: url("/static/image/Gold-backed-cryptocurrency.jpg");
 }
 
-#para-privacy h1, #para-banner h1 {
+#para-banner h1 {
     font-family: 'Fira Sans', sans-serif;
     font-weight: bolder;
     font-size: 3.0rem;
@@ -129,10 +129,6 @@ img.banner {
 
 #para-privacy-policy h1,h2,h3,h4,h5{
     font-family: 'Fira Sans', sans-serif;
-}
-
-#para-privacy-policy p{
-    font-size: 1.2rem;
 }
 
 #para-privacy-2 p {

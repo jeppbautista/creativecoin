@@ -142,9 +142,20 @@
         height: 105vh;
     }
 
+    
+    #para-whyccn {
+        height: 110vh;
+    }
+
+    #para-ideology {
+        height: 110vh;
+    }
 }
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+    p {
+        font-size: 1rem !important;
+    }
     #para-banner {
         height: 150vh;
     }
@@ -160,6 +171,24 @@
     #para-powpos p{
         font-size: 1rem;
     }
+
+    #para-whyccn {
+        height: 130vh;
+    }
+
+    #para-ideology {
+        height: 130vh;
+    }
+
+    #para-ideology h2{
+        font-size: 1.4rem;
+    }
+
+    h1{
+        font-size: 2.2rem !important;
+    }
+
+
 }
 
 /* The Magic */

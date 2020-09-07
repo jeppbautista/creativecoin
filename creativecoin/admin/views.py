@@ -44,6 +44,8 @@ def admin_payment_process(choice):
     payment_id = request.form.get('paymentID', None)
     selected_user = request.form.get('email', None)
 
+    mail = EmailSender()
+
     page = int(request.form.get('page', 1))
     filter_str = str(request.form.get('filterStr', "PENDING"))
 
@@ -62,14 +64,13 @@ def admin_payment_process(choice):
                     queries.update_transaction_transferred(payment_id, True):
                     queries.commit_db()
 
-                    mail = EmailSender()
                     params = {
                         "login_link": "http://{root_url}/login".format(root_url = app.config["SERVER_NAME"]),
                         "firstname": firstname,
                         "txn_id": txn_id
                     }
                     body = mail.prepare_body(params, path="accepted-email.html")
-                    if not mail.send_mail(app.config["TEST_TO"], "Your payment was accepted", body):
+                    if not mail.send_mail(selected_user, "Your payment was accepted", body):
                         app.logger.info("ADMIN ACTION: Email sending FAILED")
                         return "EMAIL SENDING FAILED"
 
@@ -87,7 +88,7 @@ def admin_payment_process(choice):
                     "txn_id": txn_id
                 }
                 body = mail.prepare_body(params, path="denied-email.html")
-                if not mail.send_mail(app.config["TEST_TO"], "Your payment was denied", body):
+                if not mail.send_mail(selected_user, "Your payment was denied", body):
                     app.logger.info("ADMIN ACTION: Email sending FAILED")
                     return "EMAIL SENDING FAILED"
                 

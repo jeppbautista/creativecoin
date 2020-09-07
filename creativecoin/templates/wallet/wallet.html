@@ -39,7 +39,7 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Total Balance</h5>
-                        <h2 class="font-montserrat c-text-fafa ">{{ total_mined | round(4) }} ccn</h2>
+                        <h2 class="font-montserrat c-text-fafa ">{{ total_mined | round(4) }} CCN</h2>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -51,20 +51,20 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">System mined</h5>
-                        <h2 class="font-montserrat c-text-fafa">{{ wallet.mined | round(4) }} ccn</h2>
+                        <h2 class="font-montserrat c-text-fafa">{{ wallet.mined | round(4) }} CCN</h2>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Free mined</h5>
-                        <h2 class="font-montserrat c-text-fafa">{{wallet.free_mined | round(4)}} ccn</h2>
+                        <h2 class="font-montserrat c-text-fafa">{{wallet.free_mined | round(4)}} CCN</h2>
                     </div>
                 </div>
 
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Since joined</h5>
-                        <h2 class="font-montserrat c-text-fafa">{{ ( now - wallet.created ).days }}  days</h2>
+                        <h2 class="font-montserrat c-text-fafa">{{ ( now - wallet.created ).days }} days</h2>
                     </div>
                 </div>
             </div>
