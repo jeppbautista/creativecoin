@@ -78,7 +78,7 @@ def login():
 @auth.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("index"))
 
 
 @auth.route("/callback_login", methods=["GET", "POST"], strict_slashes=False)

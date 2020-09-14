@@ -17,3 +17,7 @@ $('.na').on('click', function(){
   alert("Not Yet available");
 });
 
+// $(document).bind("contextmenu",function(e){
+//   return false;
+// });
+

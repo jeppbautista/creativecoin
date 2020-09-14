@@ -14,7 +14,7 @@ def rollback():
     db.session.rollback()
 
 def get_user(**kv):
-    user = User.query.filter_by(**kv).first_or_404()
+    user = User.query.filter_by(**kv).first()
     return user
 
 def get_wallet(**kv):

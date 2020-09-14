@@ -15,9 +15,9 @@ from creativecoin.payment.forms import Payment
 pay = Blueprint('pay', __name__)
 
 MAP_CCN = {
-    "BRONZE": 100,
-    "SILVER": 200,
-    "GOLD": 300
+    "BRONZE": 25,
+    "SILVER": 50,
+    "GOLD": 100
 }
 
 @pay.route('/buy')
