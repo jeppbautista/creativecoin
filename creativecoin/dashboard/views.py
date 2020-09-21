@@ -2,10 +2,11 @@ from flask import Blueprint, redirect, request, url_for, render_template
 from flask_login import login_required, current_user
 
 from datetime import datetime
+from sqlalchemy import or_
 
 from creativecoin import app
 from creativecoin.dashboard import helpers
-from creativecoin.helper.utils import get_grain, sci_notation, generate_referral_id
+from creativecoin.helper.utils import get_grain, sci_notation, generate_referral_id, generate_wallet_id
 from creativecoin.models import *
 
 
@@ -19,14 +20,23 @@ def wallet():
     walletmodel.mined = sci_notation(walletmodel.mined)
     walletmodel.referral = sci_notation(walletmodel.referral)
 
+    wallet_id = generate_wallet_id(walletmodel.id)
+
+    transactions = Transaction.query\
+        .filter(or_(wallet_id==Transaction.txn_from, wallet_id==Transaction.txn_to))\
+            .order_by(Transaction.created.desc()).limit(10).all()
+
     grainprice = get_grain()
     grainprice = round(grainprice, 4)
     # txs = Transaction.query.filter_by()
     now = datetime.now()
+
+    print(wallet_id)
 
     return render_template('wallet/wallet.html', 
             wallet=walletmodel, 
             now=now, 
             grainprice=grainprice, 
             generate_ref=generate_referral_id, 
+            txn=transactions,
             title="Wallet - CreativeCoin")

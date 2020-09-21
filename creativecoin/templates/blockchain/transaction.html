@@ -2,13 +2,53 @@
 
 {% block content %}
 {% include "nav.html" %}
-<div class="c-fafa">
+<div class="c-fafa p-5">
     <div class="transaction__body container">
         <h4 class="left">
             Creative Coin / Transactions
         </h4>
         <div class="clearfix"></div>    
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m9">
+                    <div class="blockchain__divtbl-main table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Hash</p></td>
+                                    <td width="60%">{{txn.txn_id}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Timestamp</p></td>
+                                    <td width="60%">{{txn.created}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Quantity</p></td>
+                                    <td width="60%">{{txn.quantity}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Confirmations</p></td>
+                                    <td width="60%">{{txn.received_confirmations}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">From</p></td>
+                                    <td width="60%">{{txn.txn_from}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">To</p></td>
+                                    <td width="60%">{{txn.txn_to}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Transaction type</p></td>
+                                    <td width="60%">{{txn.txn_type}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
     
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

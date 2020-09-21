@@ -13,11 +13,11 @@ from creativecoin.email import EmailSender
 
 
 def generate_txn_id(salt):
-    return hashlib.sha1("{}-{}".format(serialize_datetime(utcnow()), salt)\
+    return hashlib.sha1("{}-{}".format(serialize_datetime(utcnow()), str(salt))\
             .encode("utf-8")).hexdigest()
 
 def generate_wallet_id(salt):
-    return hashlib.md5(salt.encode("utf-8")).hexdigest()
+    return hashlib.md5(str(salt).encode("utf-8")).hexdigest()
 
 def generate_referral_id(salt=1):
     salt_padded = str(salt).zfill(5)

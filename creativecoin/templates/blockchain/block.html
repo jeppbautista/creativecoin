@@ -58,7 +58,7 @@
                         <tbody>
                             {% for t in tx %}
                             <tr>
-                                <td scope="row"> {{t.hash}} </td>
+                                <td scope="row"> <a class="c-text-blue" href="{{ url_for('node.transaction', txn_id=t.hash) }}">{{t.hash}}</a> </td>
                                 <td>{{t.from_wallet}}</td>
                                 <td>{{t.to_wallet}}</td>
                                 <td>{{t.value}}</td>
