@@ -4,7 +4,7 @@ import json
 
 import datetime
 
-from creativecoin import app
+from creativecoin import app, es
 
 class Block(object):
     def __init__(self, kwargs):
@@ -12,8 +12,8 @@ class Block(object):
             'index': int, 
             'nonce': int, 
             'hash': str, 
-            'prev_hash': str, 
-            'timestamp': str
+            'prev_hash': str,
+            'data': list
         }
         
         for k,v in kwargs.items():
@@ -29,10 +29,10 @@ class Block(object):
     def __dict__(self):
         info = {}
         info['index'] = str(self.index)
-        info['timestamp'] = str(self.timestamp)
+        info['timestamp'] = self.timestamp
         info['prev_hash'] = str(self.prev_hash)
         info['hash'] = str(self.hash)
-        info['data'] = str(self.data)
+        info['data'] = list(self.data)
         info['nonce'] = str(self.nonce)
         info['confirm'] = str(self.confirm)
         return info
@@ -51,7 +51,7 @@ class Block(object):
 
     
     def __repr__(self):
-        return "Block<index: {},hash: {}>".format(self.prev_hash, self.hash)
+        return "Block<index: {} , hash: {}>".format(self.index, self.hash)
 
 
     def is_valid(self):
@@ -65,8 +65,10 @@ class Block(object):
             return True
         else:
             return False
+
+
     def header_string(self):
-        return str(self.index) + self.prev_hash + self.data + str(self.timestamp) + str(self.nonce)
+        return str(self.index) + str(self.prev_hash) + str(self.data) + str(self.timestamp) + str(self.nonce)
 
 
     def create_self_hash(self):
@@ -83,21 +85,23 @@ class Block(object):
         return new_hash
 
     def self_save(self, test='live'):
-        chaindata_dir = 'creativecoin/blockchain/chaindata' if test=='live' else 'creativecoin/blockchain/chaindata-test'
-        print("Self save: " + chaindata_dir)
+        # chaindata_dir = 'creativecoin/blockchain/chaindata' if test=='live' else 'creativecoin/blockchain/chaindata-test'
+        # print("Self save: " + chaindata_dir)
 
-        chaindata_dir = os.path.join(os.getcwd(), chaindata_dir)
+        # chaindata_dir = os.path.join(os.getcwd(), chaindata_dir)
+
+        index = "block" if test == "live" else "block_test"
 
         try:
             index_string = str(self.index).zfill(9) #front of zeros so they stay in numerical order
-            filename = '{}/{}.json'.format(chaindata_dir,   index_string)
+            # filename = '{}/{}.json'.format(chaindata_dir,   index_string)
 
-            with open(filename, 'w+') as block_file:
-                json.dump(self.__dict__(), block_file)
+            # with open(filename, 'w+') as block_file:
+            #     json.dump(self.__dict__(), block_file)
+            es.index(index=index, id=self.hash, body=self.__dict__())
             
         except Exception as ex:
-            print(ex)
-            return ex
+            raise Exception(ex)
         
-        return "Block created"
+        return "Success"
 

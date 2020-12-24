@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, render_template
 from flask_login import (
     LoginManager,
     current_user,
@@ -9,6 +9,8 @@ from flask_login import (
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
+
+from elasticsearch import Elasticsearch
 
 from datetime import datetime
 import logging
@@ -71,6 +73,7 @@ login_manager.login_view = "auth.login"
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+es = Elasticsearch([app.config["ES_HOST"]])
 
 from creativecoin.views import main
 from creativecoin.admin.views import adm
@@ -96,11 +99,15 @@ def after_request(response):
 
 @app.before_request
 def before_request():
+    es = Elasticsearch([app.config["ES_HOST"]])
+    if not es.ping():
+        return render_template("error/500.html", code=500)
+
     if request.url.startswith('http://') and app.config['ENV'] == "production":
         url = request.url.replace('http://', 'https://', 1)
         code = 301
         return redirect(url, code=code)
-
+    
 
 @app.teardown_appcontext
 def shutdown_session(exception):

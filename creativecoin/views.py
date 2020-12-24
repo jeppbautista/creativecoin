@@ -1,6 +1,8 @@
 from flask import Blueprint, redirect, request, url_for, render_template, jsonify
 from flask_login import login_required
 
+import requests
+
 import json
 main = Blueprint('main', __name__)
 
@@ -79,7 +81,8 @@ def contact_us():
 @app.route(rule='/test', strict_slashes=False, methods=["GET", "POST"])
 def test():
     import datetime
-    return  str(datetime.datetime.now(datetime.timezone(datetime.timedelta(0))).astimezone().tzinfo)
+    response = requests.get("http://127.0.0.1:9200")
+    return  str(response.__dict__)
 
 
 @app.errorhandler(503)

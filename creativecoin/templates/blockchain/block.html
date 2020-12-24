@@ -3,13 +3,13 @@
 {% block content %}
 {% include "nav.html" %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/block.css') }}">
-<div class="c-fafa pt-5" id="blockchain">
+<div class="c-fafa pt-5 pb-5" id="blockchain">
     <div class="blockchain__body container-fluid">
-        <h4 class="left">
-            Creative Coin / Block
-        </h4>
-        <div class="clearfix"></div>
         <div class="container">
+            <h4 class="left pt-3 pb-3">
+                CreativeCoin / <a href="{{ url_for('node.blocks') }}">Blocks</a> / {{ block.index }}
+            </h4>
+            <div class="clearfix"></div>
             <div class="row">
                 <div class="col s12 m9">
                     <div class="blockchain__divtbl-main table-responsive">
@@ -34,39 +34,37 @@
                             </tbody>
                         </table>
                     </div>
-    
                 </div>
             </div>
-        </div>
-        
-        <br>
-        <h5 class="left">Transactions</h5>
-        <div class="clearfix"></div>
-        <div class="row">
-            <div class="col s12 m12">
-                <div class="blockchain__divtbl-tx table-responsive">
-                    <table class="table">
-                        <thead class="grey lighten-2">
-                            <tr>
-                                <th scope="col">Transaction ID</th>
-                                <th scope="col">Sender</th>
-                                <th scope="col">Recepient</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Timestamp</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for t in tx %}
-                            <tr>
-                                <td scope="row"> <a class="c-text-blue" href="{{ url_for('node.transaction', txn_id=t.hash) }}">{{t.hash}}</a> </td>
-                                <td>{{t.from_wallet}}</td>
-                                <td>{{t.to_wallet}}</td>
-                                <td>{{t.value}}</td>
-                                <td>{{t.timestamp}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+            <br>
+            <h5 class="left">Transactions</h5>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col s12 m12">
+                    <div class="blockchain__divtbl-tx table-responsive">
+                        <table class="table">
+                            <thead class="grey lighten-2">
+                                <tr>
+                                    <th scope="col">Transaction ID</th>
+                                    <th scope="col">Sender</th>
+                                    <th scope="col">Recepient</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for t in tx %}
+                                <tr>
+                                    <td scope="row"> <a class="bold-link" href="{{ url_for('node.transaction', txn_id=t.hash) }}">{{ truncate(t.hash) }}</a> </td>
+                                    <td>{{t.from_wallet}}</td>
+                                    <td>{{t.to_wallet}}</td>
+                                    <td>{{t.value}}</td>
+                                    <td>{{t.timestamp}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

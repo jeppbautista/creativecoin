@@ -6,13 +6,13 @@ from flask_login import login_required, current_user
 from creativecoin.blockchain.block import Block
 from creativecoin.blockchain.mine import start_mine
 from creativecoin.blockchain import queries
-from creativecoin.blockchain.sync import sync, sync_block
+from creativecoin.blockchain.sync import sync, sync_block, sync_tx, sync_txs
 from creativecoin.blockchain.tx import Tx
 from creativecoin.blockchain import validate
 from creativecoin.helper import utils
 from creativecoin.models import Transaction
 
-from creativecoin import app, db
+from creativecoin import app, db, es
 
 import datetime
 import decimal
@@ -22,20 +22,40 @@ import subprocess
 node = Blueprint("node", __name__)
 
 
+@node.route("/ccn/blocks")
+def blocks():
+    test = request.args.get("mode", "live")
+    node_blocks = sync(test)
+    return render_template("blockchain/blocks.html", blocks=node_blocks)
+
+
 @node.route("/ccn/block/<block_id>")
 def block(block_id):
     test = request.args.get("mode", "live")
     node_block = sync_block(block_id, test)
-    transaction = eval(node_block.data)[1:]
-    return render_template("blockchain/block.html", block=node_block, tx=transaction,
-            title="Blockchain - CreativeCoin")
+    transaction = sync_tx(block_id, test)
+    return render_template("blockchain/block.html", 
+        block=node_block, 
+        tx=transaction, 
+        truncate=utils.truncate_string,
+        title="Blockchain - CreativeCoin")
+
+
+@node.route("/ccn/transactions")
+def transactions():
+    test = request.args.get("mode", "live")
+    txs = sync_txs(test)
+    return render_template("blockchain/transactions.html", txs=txs)
 
 
 @node.route("/ccn/transaction/<txn_id>")
 def transaction(txn_id):
     test = request.args.get("mode", "live")
     txn = Transaction.query.filter(Transaction.txn_id == txn_id).first()
-    return render_template("blockchain/transaction.html", title="Transaction - CreativeCoin", txn=txn)
+    return render_template("blockchain/transaction.html", 
+        txn=txn,
+        truncate=utils.truncate_string,
+        title="Transaction - CreativeCoin")
 
 
 @node.route("/create-block")
@@ -50,11 +70,12 @@ def mine():
     try:
         app.logger.error("INFO - /mine")
         test = request.args.get("mode", "live")
-        tx = request.get_json()
+        tx = Tx(request.get_json())
 
         node_blocks = sync(test)
-        last_block = node_blocks[-1]
+        last_block = node_blocks[0]
         new_block = start_mine(last_block, tx)
+        tx.block = new_block.hash
 
         confirmation = 0
 
@@ -63,9 +84,13 @@ def mine():
                 confirmation += 1
 
         new_block.confirm = confirmation
-        return str(new_block.self_save(test))
+        block_created = new_block.self_save(test)
+        tx_created = tx.self_save(test)
+
+        return str(block_created and tx_created)
     except Exception:
         app.logger.error(traceback.format_exc())
+        return "FAILED"
 
     return "ERROR"
 
@@ -77,7 +102,13 @@ def create_tx():
     curl -XPOST localhost:5000/create_tx?mode=test -H 'Content-type:application/json' -d '{
         "from_wallet":"ccn-system",
         "to_wallet":"21232f297a57a5a743894a0e4a801fc3",
-        "value":150
+        "value":150,
+        "item_name": "",
+        "quantity": 1,
+        "txn_type" : "",
+        "amount_php": 0,
+        "amount_usd": 0,
+        "amount_ccn": 0
     }'
     ```
     """
@@ -85,6 +116,7 @@ def create_tx():
     test = request.args.get('mode', 'live')
 
     confirmation = 5
+    # TODO conformations
     new_tx = Tx(request.get_json())
 
     if validate.valid_tx(new_tx):
@@ -92,19 +124,24 @@ def create_tx():
 
     if confirmation == 5:
         node_blocks = sync(test)
-        last_block = node_blocks[-1]
-        data = eval(last_block.data)
-        data.append(new_tx.__dict__)
-        last_block.data = str(data)
+        last_block = node_blocks[0]
+        data = last_block.data
+        data.append(new_tx.hash)
+        new_tx.block = last_block.hash
+        new_tx.self_save(test)
+        last_block.data = data
         last_block.self_save(test)
 
-    return "Transaction created"
+        return "Transaction created"
+    else:
+        return "Transaction Failed"
 
 
 def create_first_block():
     block_data = {}
     block_data['index'] = 0
-    block_data['timestamp'] = datetime.datetime.now()
+    block_data['timestamp'] = datetime.datetime.utcnow().strftime(
+        "%Y-%m-%dT%H:%M:%SZ")
     block_data['data'] = []
     block_data['prev_hash'] = ''
     block_data['nonce'] = 0
@@ -124,15 +161,15 @@ def start_mining():
 
     if app.config['ENV'] == "production":
         curl_req = "curl -XPOST https://{}/mine -H 'Content-type:application/json' -d '{}'".format(
-        app.config["SERVER_NAME"], str(data).replace("'", '"'))
-        x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
+            app.config["SERVER_NAME"], str(data).replace("'", '"'))
+        x = subprocess.Popen(curl_req, shell=True,
+                             stdout=subprocess.PIPE).stdout.read()
     else:
         x = requests.post('http://{}/mine?mode={}'.format(app.config['SERVER_NAME'], test),
-                    headers={"Content-type": "application/json"},
-                    json=data)
+                          headers={"Content-type": "application/json"},
+                          json=data)
         app.logger.error("INFO - {}".format(x.text))
 
-    
     for wallet in queries.get_all_wallets():
         try:
             to = utils.generate_wallet_id(str(wallet.id))
@@ -145,14 +182,15 @@ def start_mining():
 
                 curl_req = "curl -XPOST https://{}/create_tx -H 'Content-type:application/json' -d '{}'".format(
                     app.config["SERVER_NAME"], str(data).replace("'", '"'))
-                x = subprocess.Popen(curl_req, shell=True, stdout=subprocess.PIPE).stdout.read()
-                
+                x = subprocess.Popen(curl_req, shell=True,
+                                     stdout=subprocess.PIPE).stdout.read()
+
                 app.logger.error(x)
 
             else:
-                x = requests.post("http://{}/create_tx?mode={}".format(app.config["SERVER_NAME"], test), 
-                    headers={"Content-type":"application/json"}, 
-                    json=data)
+                x = requests.post("http://{}/create_tx?mode={}".format(app.config["SERVER_NAME"], test),
+                                  headers={"Content-type": "application/json"},
+                                  json=data)
 
                 app.logger.error("INFO - {}".format(x.text))
 
@@ -161,26 +199,25 @@ def start_mining():
 
             amount_usd = grain
             amount_php = grain*usd
-
             transaction = Transaction(
-                txn_id = data["hash"],
-                item_name = "CreativeCoin (Mined)",
-                quantity = data["value"],
-                is_verified = 1,
-                is_transferred = 1,
-                status = "ACCEPTED",
-                received_confirmations = 1,
-                txn_from = data["from_wallet"],
-                txn_to = utils.generate_wallet_id(wallet.id),
-                txn_type = "MINE",
-                amount_php = amount_php,
-                amount_usd = amount_usd,
-                amount_ccn = -1
+                txn_id=data["hash"],
+                item_name="CreativeCoin (Mined)",
+                quantity=data["value"],
+                is_verified=1,
+                is_transferred=1,
+                status="ACCEPTED",
+                received_confirmations=1,
+                txn_from=data["from_wallet"],
+                txn_to=utils.generate_wallet_id(wallet.id),
+                txn_type="MINE",
+                amount_php=amount_php,
+                amount_usd=amount_usd,
+                amount_ccn=-1
             )
 
             db.session.add(transaction)
             queries.commit_db()
         except Exception:
             app.logger.error(traceback.format_exc())
-        
+
     return ""

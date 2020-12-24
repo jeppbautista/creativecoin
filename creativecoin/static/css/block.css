@@ -3,6 +3,9 @@
     font-weight: bold;
 }
 
+.grey > tr:nth-child(1) > th{
+    font-weight: bold;
+}
 
 table.table td{
     padding: 0.5em;
@@ -10,6 +13,11 @@ table.table td{
 
 .navbar {
     background: #222;
+}
+
+.bold-link {
+    font-weight: bold;
+    color: #236267 !important;
 }
 
 

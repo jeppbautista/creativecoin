@@ -21,8 +21,8 @@ def calculate_hash(**kwargs):
 def start_mine(last_block, tx):
     index = int(last_block.index) + 1
     timestamp = datetime.datetime.now()
-    tx['block'] = index
-    data = [tx]
+    # tx['block'] = index
+    data = [tx.hash]
     prev_hash = last_block.hash
     nonce = 0
     
@@ -47,7 +47,7 @@ def start_mine(last_block, tx):
 
     block_data = {}
     block_data['index'] = int(last_block.index) + 1
-    block_data['timestamp'] = datetime.datetime.now()
+    block_data['timestamp'] = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
     block_data['data'] = data
     block_data['prev_hash'] = last_block.hash
     block_data['hash'] = block_hash

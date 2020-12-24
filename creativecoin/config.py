@@ -30,6 +30,8 @@ class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://cisateducation:{password}@206.72.201.67:3306/cisatedu_ccn_test".format(
                                 password="7270TBCcsbn7270###$$$")
 
+    ES_HOST = "https://clabnoc5vg:aj0qpztlvd@kwil-4636440102.ap-southeast-2.bonsaisearch.net:443"
+
     COINPAYMENTS_MERCHANT_ID = "8c79258b6bc2cf3541da99725f6efe8d"
     COINPAYMENTS_PUBLIC_KEY = "71c298dabdaf11759bc427d318c52e87b0163633386ac7d1367990ebe038072e"
     COINPAYMENTS_PRIVATE_KEY = "a3b179B5f4CFeC1f25f69C1B391E0446e78b6D6943e38Ab32644F2112203228f"
@@ -41,6 +43,7 @@ class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://cisateducation:{password}@206.72.201.67:3306/cisatedu_ccn_test".format(
                                 password="7270TBCcsbn7270###$$$")
     #TODO For Production 
+    ES_HOST = "http://127.0.0.1:9200"
     COINPAYMENTS_MERCHANT_ID = "8c79258b6bc2cf3541da99725f6efe8d"                     
     COINPAYMENTS_PUBLIC_KEY = "71c298dabdaf11759bc427d318c52e87b0163633386ac7d1367990ebe038072e"
     COINPAYMENTS_PRIVATE_KEY = "a3b179B5f4CFeC1f25f69C1B391E0446e78b6D6943e38Ab32644F2112203228f"

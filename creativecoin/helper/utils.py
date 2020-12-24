@@ -149,5 +149,8 @@ def sci_notation(x, decimal=10):
 def serialize_datetime(dt):
     return dt.strftime("%Y-%m-%d %H:%M:%S")
 
+def truncate_string(string):
+    return string[:20]+"..."+string[-1]
+
 def utcnow():
     return datetime.datetime.utcnow()
