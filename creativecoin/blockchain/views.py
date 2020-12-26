@@ -21,12 +21,22 @@ import subprocess
 
 node = Blueprint("node", __name__)
 
+@node.route("/ccn/explorer")
+def explorer():
+    test = request.args.get("mode", "live")
+    txs = sync_txs(test)[:10]
+    node_blocks = sync(test)[:10]
+    return render_template("blockchain/explorer.html", 
+        blocks=node_blocks, 
+        txs=txs, 
+        truncate=utils.truncate_string, serialize_dt=utils.serialize_datetime)
+
 
 @node.route("/ccn/blocks")
 def blocks():
     test = request.args.get("mode", "live")
     node_blocks = sync(test)
-    return render_template("blockchain/blocks.html", blocks=node_blocks)
+    return render_template("blockchain/blocks.html", blocks=node_blocks, serialize_dt=utils.serialize_datetime)
 
 
 @node.route("/ccn/block/<block_id>")
@@ -38,6 +48,7 @@ def block(block_id):
         block=node_block, 
         tx=transaction, 
         truncate=utils.truncate_string,
+        serialize_dt=utils.serialize_datetime,
         title="Blockchain - CreativeCoin")
 
 
@@ -45,7 +56,7 @@ def block(block_id):
 def transactions():
     test = request.args.get("mode", "live")
     txs = sync_txs(test)
-    return render_template("blockchain/transactions.html", txs=txs)
+    return render_template("blockchain/transactions.html", txs=txs, serialize_dt=utils.serialize_datetime)
 
 
 @node.route("/ccn/transaction/<txn_id>")
@@ -55,6 +66,7 @@ def transaction(txn_id):
     return render_template("blockchain/transaction.html", 
         txn=txn,
         truncate=utils.truncate_string,
+        serialize_dt=utils.serialize_datetime,
         title="Transaction - CreativeCoin")
 
 

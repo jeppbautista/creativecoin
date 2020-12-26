@@ -147,10 +147,12 @@ def sci_notation(x, decimal=10):
 
 
 def serialize_datetime(dt):
+    if type(dt) == str:
+        return datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
     return dt.strftime("%Y-%m-%d %H:%M:%S")
 
-def truncate_string(string):
-    return string[:20]+"..."+string[-1]
+def truncate_string(string, strlen=20):
+    return string[:strlen]+"..."+string[-1]
 
 def utcnow():
     return datetime.datetime.utcnow()

@@ -4,8 +4,12 @@
 {% include "nav.html" %}
 <div class="c-fafa p-5">
     <div class="transaction__body container">
-        <h4 class="left pt-5 pb-5">
-            Creative Coin / <a>Transactions</a> / {{ truncate(txn.txn_id) }}
+        <h4 class="left pt-3 pb-3 font-montserrat">
+            <a href="{{ url_for('node.explorer') }}">Explorer</a> 
+            &#x25BA; 
+            <a href="{{ url_for('node.transactions') }}">Transactions</a> 
+            &#x25BA; 
+            <a href="{{ url_for('node.transaction', txn_id=txn.txn_id) }}">{{ truncate(txn.txn_id) }}</a> 
         </h4>
         <div class="clearfix"></div>    
         <div class="container">
@@ -20,7 +24,7 @@
                                 </tr>
                                 <tr>
                                     <td width="40%"><p class="font-weight-bold m-0 p-0">Timestamp</p></td>
-                                    <td width="60%">{{txn.created}}</td>
+                                    <td width="60%">{{ serialize_dt(txn.created)}}</td>
                                 </tr>
                                 <tr>
                                     <td width="40%"><p class="font-weight-bold m-0 p-0">Quantity</p></td>

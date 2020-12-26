@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "nav.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/block.css') }}">
+<div class="c-fafa pt-5 pb-5" id="blockchain">
+    <div class="blockchain__body container-fluid">
+        <div class="container">
+            <h4 class="left pt-3 pb-3 font-montserrat c-text-blue">
+                <a href="{{ url_for('node.explorer') }}">Explorer</a> 
+            </h4>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col col-sm-12 col-md-6">
+                    <div class="blockchain__divtbl-main table-responsive">
+                        <h5 class="left">Latest Blocks</h5>
+                        <div class="clearfix"></div>
+                        <table class="table">
+                            <thead class="grey lighten-2">
+                                <tr>
+                                    <th scope="col">Height</th>
+                                    <th scope="col">Hash</th>
+                                    <th scope="col">Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for blck in blocks %}
+                                <tr>
+                                    <td> <a class="bold-link" href="{{ url_for('node.block', block_id=blck.hash) }}">{{ blck.index }}</a> </td>
+                                    <td> <a class="bold-link" href="{{ url_for('node.block', block_id=blck.hash) }}">{{ truncate(blck.hash, 15) }}</a> </td>
+                                    <td>{{ serialize_dt(blck.timestamp) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="btn c-text-blue" href="{{ url_for('node.blocks') }}">
+                        View all Blocks &#x2192;
+                    </a>
+                </div>
+                <div class="col col-sm-12 col-md-6">
+                    <div class="blockchain__divtbl-main table-responsive">
+                        <h5 class="left">Latest Transactions</h5>
+                        <div class="clearfix"></div>
+                        <table class="table">
+                            <thead class="grey lighten-2">
+                                <tr>
+                                    <th scope="col">Hash</th>
+                                    <th scope="col">Timestamp</th>
+                                    <th scope="col">Amount (CCN)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tx in txs %}
+                                <tr>
+                                    <td> <a class="bold-link" href="{{ url_for('node.transaction', txn_id=tx.hash) }}">{{ truncate(tx.hash, 15) }}</a> </td>
+                                    <td> <a class="bold-link" ></a>{{ serialize_dt(tx.timestamp) }}</a> </td>
+                                    <td>{{ tx.value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="btn c-text-blue" href="{{ url_for('node.transactions') }}">
+                        View all Transactions &#x2192;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "footer-simple.html" %}
+{% endblock %}

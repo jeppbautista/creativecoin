@@ -50,6 +50,7 @@ csp = {
 
 
 app = Flask(__name__)
+
 Talisman(app, 
     content_security_policy=csp, 
     content_security_policy_nonce_in=['script-src']
@@ -57,6 +58,7 @@ Talisman(app,
 app.secret_key = app.config['SECRET_KEY']
 app.config['SESSION_TYPE'] = "filesystem"
 app.config['ENV'] = "production" if os.environ['SERVER_NAME'] == "creativecoin.net" else "dev"
+app.url_map.strict_slashes = False
 
 os.environ["TZ"]="Asia/Manila"
 
@@ -64,6 +66,7 @@ if app.config['ENV'] == "production":
     app.config.from_object('creativecoin.config.ProdConfig')
 else:
     app.config.from_object('creativecoin.config.DevConfig')
+    
 
 setup_logging()
 

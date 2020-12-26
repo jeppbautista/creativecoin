@@ -6,8 +6,12 @@
 <div class="c-fafa pt-5 pb-5" id="blockchain">
     <div class="blockchain__body container-fluid">
         <div class="container">
-            <h4 class="left pt-3 pb-3">
-                CreativeCoin / <a href="{{ url_for('node.blocks') }}">Blocks</a> / {{ block.index }}
+            <h4 class="left pt-3 pb-3 font-montserrat c-text-blue">
+                <a href="{{ url_for('node.explorer') }}">Explorer</a> 
+                &#x25BA; 
+                <a href="{{ url_for('node.blocks') }}">Blocks</a> 
+                &#x25BA; 
+                <a href="{{ url_for('node.block', block_id=block.hash) }}">{{ block.index }}</a>  
             </h4>
             <div class="clearfix"></div>
             <div class="row">
@@ -21,7 +25,7 @@
                                 </tr>
                                 <tr>
                                     <td width="40%"><p class="font-weight-bold m-0 p-0">Timestamp</p></td>
-                                    <td width="60%">{{block.timestamp}}</td>
+                                    <td width="60%">{{ serialize_dt(block.timestamp)}}</td>
                                 </tr>
                                 <tr>
                                     <td width="40%"><p class="font-weight-bold m-0 p-0">Height</p></td>

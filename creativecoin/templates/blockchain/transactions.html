@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% include "nav.html" %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/block.css') }}">
 <div class="c-fafa pt-5 pb-5" id="blockchain">
     <div class="blockchain__body container-fluid">
         <div class="container">
-            <h4 class="left pt-3 pb-3">
-                Creative Coin / <a href="{{ url_for('node.transactions') }}">Transactions</a>
+            <h4 class="left pt-3 pb-3 font-montserrat">
+                <a href="{{ url_for('node.explorer') }}">Explorer</a> 
+                &#x25BA; 
+                <a href="{{ url_for('node.transactions') }}">Transactions</a>
             </h4>
             <div class="clearfix"></div>
             <div class="row">
@@ -26,7 +29,7 @@
                                 {% for tx in txs %}
                                 <tr>
                                     <td> <a class="bold-link" href="{{ url_for('node.transaction', txn_id=tx.hash) }}">{{ tx.hash }}</a> </td>
-                                    <td> <a class="bold-link" ></a>{{ tx.timestamp }}</a> </td>
+                                    <td> <a class="bold-link" ></a>{{ serialize_dt(tx.timestamp) }}</a> </td>
                                     <td>{{ tx.value }}</td>
                                 </tr>
                                 {% endfor %}
