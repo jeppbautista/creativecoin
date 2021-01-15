@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 from creativecoin.blockchain.block import Block
 from creativecoin.blockchain.mine import start_mine
 from creativecoin.blockchain import queries
-from creativecoin.blockchain.sync import sync, sync_block, sync_tx, sync_txs
+from creativecoin.blockchain.sync import sync, sync_block, sync_tx, sync_txs, sync_tx_from_wallet, sync_tx_aggs
 from creativecoin.blockchain.tx import Tx
 from creativecoin.blockchain import validate
 from creativecoin.helper import utils
@@ -68,6 +68,36 @@ def transaction(txn_id):
         truncate=utils.truncate_string,
         serialize_dt=utils.serialize_datetime,
         title="Transaction - CreativeCoin")
+
+
+@node.route("/ccn/wallet/<address>")
+def wallet(address):
+    import qrcode
+
+    import base64
+    from io import BytesIO
+
+    qr = qrcode.QRCode(version=1, border=3)
+
+    qr.add_data(address)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill='black', back_color='white')
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+    test = request.args.get("mode", "live")
+    txs = sync_tx_from_wallet(address, test)
+    aggs = sync_tx_aggs(address, test)
+
+    return render_template("blockchain/wallet.html", 
+        address=address,
+        aggs=aggs,
+        img_str=img_str, 
+        txs=txs, 
+        truncate=utils.truncate_string,
+        serialize_dt=utils.serialize_datetime)
 
 
 @node.route("/create-block")

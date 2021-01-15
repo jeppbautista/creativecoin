@@ -39,11 +39,32 @@ def get_block(curr_hash):
     }
 
 
-def get_all_tx(block):
+def get_all_tx_from_block(block):
     return {
         "query": {
             "match": {
                 "block": block
+            }
+        }
+    }
+
+
+def get_all_tx_from_wallet(wallet):
+    return {
+        "query": {
+            "bool": {
+                "should": [
+                    {
+                        "term": {
+                            "from_wallet": wallet
+                        }
+                    },
+                    {
+                        "term": {
+                            "to_wallet": wallet
+                        }
+                    }
+                ]
             }
         }
     }
@@ -60,4 +81,56 @@ def get_all_txs():
                 "timestamp": {"order": "desc"}
             }
         ]
+    }
+
+
+def get_total_trans_aggs_tx_from_wallet(wallet):
+    return {
+        "aggs": {
+            "total_transaction": {
+                "value_count": {
+                    "field": "value"
+                }
+            }
+        }
+    }
+
+def get_total_rec_aggs_tx_from_wallet(wallet):
+    return {
+        "aggs": {
+            "total_received_filter": {
+                "filter": {
+                    "term": {
+                        "to_wallet": wallet
+                    }
+                },
+                "aggs": {
+                    "total_received": {
+                        "sum": {
+                            "field": "value"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+def get_total_sent_aggs_tx_from_wallet(wallet):
+    return {
+        "aggs": {
+            "total_sent_filter": {
+            "filter": {
+                "term": {
+                    "from_wallet": wallet
+                }
+            },
+            "aggs": {
+                "total_sent": {
+                    "sum": {
+                        "field": "value"
+                    }
+                }
+            }
+        }
+        }
     }

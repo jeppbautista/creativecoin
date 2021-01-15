@@ -53,7 +53,7 @@ def sync_tx(block, test='live'):
     txs = []
     index = "tx" if test=="live" else "tx_test"
 
-    res = es.search(index=index, body=queries.get_all_tx(block))["hits"]["hits"]
+    res = es.search(index=index, body=queries.get_all_tx_from_block(block))["hits"]["hits"]
     for tx in res:
         txs.append(Tx(tx["_source"]))
 
@@ -69,3 +69,29 @@ def sync_txs(test='live'):
         txs.append(Tx(tx["_source"]))
 
     return txs
+
+
+def sync_tx_from_wallet(wallet, test='live'):
+    txs = []
+    index = "tx" if test=="live" else "tx_test"
+
+    res = es.search(index=index, body=queries.get_all_tx_from_wallet(wallet))["hits"]["hits"]
+    for tx in res:
+        txs.append(Tx(tx["_source"]))
+
+    return txs
+
+
+def sync_tx_aggs(wallet, test='live'):
+    txs = []
+    index = "tx" if test=="live" else "tx_test"
+
+    total_trans = es.search(index=index, body=queries.get_total_trans_aggs_tx_from_wallet(wallet))["aggregations"]["total_transaction"]["value"]
+    total_received = es.search(index=index, body=queries.get_total_rec_aggs_tx_from_wallet(wallet))["aggregations"]["total_received_filter"]["total_received"]["value"]
+    total_sent = es.search(index=index, body=queries.get_total_sent_aggs_tx_from_wallet(wallet))["aggregations"]["total_sent_filter"]["total_sent"]["value"]
+
+    return {
+        "total_trans": total_trans,
+        "total_received": total_received,
+        "total_sent": total_sent
+    }
