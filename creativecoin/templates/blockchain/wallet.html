@@ -13,10 +13,10 @@
             <a href="">{{ address }}</a>
         </h4>
         <div class="row">
-            <div class="col col-sm-12 col-md-3 text-center">
+            <div class="col col-12 col-sm-12 col-md-3 text-center">
                 <img src="data:image/png;base64,{{ img_str }}" alt="qrcode" id="qrcode" style="max-width: 100%;">
             </div>
-            <div class="col col-sm-12 col-md-6">
+            <div class="col col-12 col-sm-12 col-md-6">
                 <div class="blockchain__divtbl-main table-responsive">
                     <table class="table">
                         <tbody>
@@ -49,29 +49,32 @@
                 </div>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col col-sm-12 col-md-9">
                 <h5>Transactions</h5>
                 <div class="clearfix"></div>
-                <table class="table">
-                    <thead class="grey lighten-2">
-                        <tr>
-                            <th scope="col">Hash</th>
-                            <th scope="col">Timestamp</th>
-                            <th scope="col">Amount (CCN)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for tx in txs %}
-                        <tr>
-                            <td> <a class="bold-link"
-                                    href="{{ url_for('node.transaction', txn_id=tx.hash) }}">{{ tx.hash }}</a> </td>
-                            <td> <a class="bold-link"></a>{{ serialize_dt(tx.timestamp) }}</a> </td>
-                            <td>{{ tx.value }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="grey lighten-2">
+                            <tr>
+                                <th scope="col">Hash</th>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Amount (CCN)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tx in txs %}
+                            <tr>
+                                <td> <a class="bold-link"
+                                        href="{{ url_for('node.transaction', txn_id=tx.hash) }}">{{ tx.hash }}</a> </td>
+                                <td> <a class="bold-link"></a>{{ serialize_dt(tx.timestamp) }}</a> </td>
+                                <td>{{ tx.value }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

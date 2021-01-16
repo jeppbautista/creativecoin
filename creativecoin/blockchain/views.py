@@ -16,6 +16,7 @@ from creativecoin import app, db, es
 
 import datetime
 import decimal
+import time
 import traceback
 import subprocess
 
@@ -138,7 +139,8 @@ def mine():
 
 
 @node.route('/create_tx', methods=["GET", "POST"])
-def create_tx():
+@node.route('/create_tx/<confirm>', methods=["GET", "POST"])
+def create_tx(confirm=0):
     """
     ```
     curl -XPOST localhost:5000/create_tx?mode=test -H 'Content-type:application/json' -d '{
@@ -157,14 +159,17 @@ def create_tx():
     app.logger.error("INFO - /create_tx")
     test = request.args.get('mode', 'live')
 
-    confirmation = 5
-    # TODO conformations
+    confirmation = 3
+    if confirm > 0:
+        for i in range(confirm):
+            time.sleep(60)
+
     new_tx = Tx(request.get_json())
 
     if validate.valid_tx(new_tx):
         new_tx.confirm = confirmation
 
-    if confirmation == 5:
+    if confirmation == 3:
         node_blocks = sync(test)
         last_block = node_blocks[0]
         data = last_block.data
@@ -248,7 +253,7 @@ def start_mining():
                 is_verified=1,
                 is_transferred=1,
                 status="ACCEPTED",
-                received_confirmations=1,
+                received_confirmations=3,
                 txn_from=data["from_wallet"],
                 txn_to=utils.generate_wallet_id(wallet.id),
                 txn_type="MINE",

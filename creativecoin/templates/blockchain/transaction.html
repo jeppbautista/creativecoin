@@ -2,6 +2,7 @@
 
 {% block content %}
 {% include "nav.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/block.css') }}">
 <div class="c-fafa p-5">
     <div class="transaction__body container">
         <h4 class="left pt-3 pb-3 font-montserrat c-text-blue">
@@ -36,11 +37,19 @@
                                 </tr>
                                 <tr>
                                     <td width="40%"><p class="font-weight-bold m-0 p-0">From</p></td>
-                                    <td width="60%">{{txn.txn_from}}</td>
+                                    <td width="60%"> 
+                                        <a class="bold-link" href="{{ url_for('node.wallet', address=txn.txn_from) }}">
+                                            {{txn.txn_from}}
+                                        </a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td width="40%"><p class="font-weight-bold m-0 p-0">To</p></td>
-                                    <td width="60%">{{txn.txn_to}}</td>
+                                    <td width="60%">
+                                        <a class="bold-link" href="{{ url_for('node.wallet', address=txn.txn_to) }}">
+                                            {{txn.txn_to}}
+                                        </a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td width="40%"><p class="font-weight-bold m-0 p-0">Transaction type</p></td>

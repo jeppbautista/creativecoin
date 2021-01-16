@@ -5,6 +5,34 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
 
 <div id="wallet">
+    <div class="modal fade" id="receive-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Scan the QR code or share the address below.</h5>
+                    <button id="receive-close" type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="row">
+                        <div class="col col-12 text-center">
+                            <img src="data:image/png;base64,{{ img_str }}" alt="qrcode" id="qrcode" style="max-width: 100%;">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <span>Wallet Address</span>
+                            <input id="wallet-code" type="text" class="form-control c-666" readonly
+                                value="{{ wallet_id }}" aria-label=""
+                                aria-describedby="basic-addon1">
+
+                            <button class="btn btn-info btn-block copy2">Copy address</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="wrapper d-flex align-items-stretch">
 
         {% set isverified = current_user.emailverified %}
@@ -12,19 +40,22 @@
         {% set total_mined = wallet.free_mined + wallet.mined + wallet.referral%}
         {% include "wallet/side.html" %}
         <div id="content" class="p-4 p-md-5 pt-5 container-fluid">
-            
-        {% if not isverified %}
+
+            {% if not isverified %}
             <div class="alert alert-danger text-center mb-3" style="margin-bottom: 0;" role="alert">
-                WARNING: Your email is not verified. <a class="c-text-dark-blue font-weight-bold" href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
+                WARNING: Your email is not verified. <a class="c-text-dark-blue font-weight-bold"
+                    href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
             </div>
-        {% endif %}
+            {% endif %}
             <div class="row">
                 <div class="col-12 col-md-4 offset-md-8">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                          <span class="input-group-text transparent" id="basic-addon1">Referral code:</span>
+                            <span class="input-group-text transparent" id="basic-addon1">Referral code:</span>
                         </div>
-                        <input id="ref-code" type="text" class="form-control c-666" readonly value="https://creativecoin.net/login?ref={{ generate_ref(current_user.id) }}" aria-label="" aria-describedby="basic-addon1">
+                        <input id="ref-code" type="text" class="form-control c-666" readonly
+                            value="https://creativecoin.net/login?ref={{ generate_ref(current_user.id) }}" aria-label=""
+                            aria-describedby="basic-addon1">
                         <div class="input-group-append" id="button-addon4">
                             <button class=" copy btn c-666 m-0 px-3 py-2 z-depth-0 waves-effect" type="button">
                                 <i class="fa fa-clipboard" aria-hidden="true">
@@ -48,7 +79,7 @@
                         <h2 class="font-montserrat c-text-fafa">${{ (total_mined * grainprice)  | round(4) }}</h2>
                     </div>
                 </div>
-                
+
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">System mined</h5>
@@ -65,7 +96,7 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Earned from referral</h5>
-                        <h2 class="font-montserrat c-text-fafa">{{ wallet.referral | round(4) }}</h2>
+                        <h2 class="font-montserrat c-text-fafa">${{ (wallet.referral* grainprice) | round(4) }}</h2>
                     </div>
                 </div>
 
@@ -93,7 +124,8 @@
                         {% for tx in txn %}
                         <tr>
                             <td class="p-2">
-                                <a class="c-text-blue" href="{{ url_for('node.transaction', txn_id=tx['txn_id']) }}">{{tx["txn_id"]}}</a> 
+                                <a class="c-text-blue"
+                                    href="{{ url_for('node.transaction', txn_id=tx['txn_id']) }}">{{tx["txn_id"]}}</a>
                             </td>
                             <td class="p-2">
                                 {{tx["txn_type"]}}

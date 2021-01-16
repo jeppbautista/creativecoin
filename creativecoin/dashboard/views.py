@@ -31,12 +31,27 @@ def wallet():
     # txs = Transaction.query.filter_by()
     now = datetime.now()
 
-    print(wallet_id)
+    import qrcode
+
+    import base64
+    from io import BytesIO
+
+    qr = qrcode.QRCode(version=1, border=3)
+
+    qr.add_data(wallet_id)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill='black', back_color='white')
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
     return render_template('wallet/wallet.html', 
             wallet=walletmodel, 
+            wallet_id=wallet_id,
             now=now, 
             grainprice=grainprice, 
             generate_ref=generate_referral_id, 
             txn=transactions,
+            img_str=img_str,
             title="Wallet - CreativeCoin")
