@@ -2,6 +2,7 @@ import requests
 import hashlib
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
+from werkzeug import secure_filename
 
 from creativecoin.blockchain.block import Block
 from creativecoin.blockchain.mine import start_mine
@@ -16,6 +17,7 @@ from creativecoin import app, db, es
 
 import datetime
 import decimal
+import os
 import time
 import traceback
 import subprocess
@@ -73,20 +75,10 @@ def transaction(txn_id):
 
 @node.route("/ccn/wallet/<address>")
 def wallet(address):
-    import qrcode
-
-    import base64
-    from io import BytesIO
-
-    qr = qrcode.QRCode(version=1, border=3)
-
-    qr.add_data(address)
-    qr.make(fit=True)
-
-    img = qr.make_image(fill='black', back_color='white')
-    buffered = BytesIO()
-    img.save(buffered, format="PNG")
-    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+    import pyqrcode
+    filepath = "creativecoin/static/image/qr/{}".format(secure_filename(address))
+    qr = pyqrcode.create(address)
+    qr.svg("{}.svg".format(filepath), scale=6)
 
     test = request.args.get("mode", "live")
     txs = sync_tx_from_wallet(address, test)
@@ -95,7 +87,6 @@ def wallet(address):
     return render_template("blockchain/wallet.html", 
         address=address,
         aggs=aggs,
-        img_str=img_str, 
         txs=txs, 
         truncate=utils.truncate_string,
         serialize_dt=utils.serialize_datetime)

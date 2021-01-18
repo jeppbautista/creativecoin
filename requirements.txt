@@ -29,6 +29,7 @@ Flask-SQLAlchemy==2.4.1
 flask-talisman==0.7.0
 Flask-WTF==0.14.3
 forex-python==1.5
+future-fstrings==1.2.0
 idna==2.8
 isort==4.3.21
 itsdangerous==1.1.0
@@ -40,11 +41,13 @@ mccabe==0.6.1
 oauthlib==3.1.0
 passlib==1.7.2
 paypalrestsdk==1.13.1
+pip-autoremove==0.9.1
 pycodestyle==2.5.0
 pycparser==2.19
 pylint==2.5.3
 PyMySQL==0.9.3
 pyOpenSSL==19.0.0
+PyQRCode==1.2.1
 python-dateutil==2.8.0
 python-editor==1.0.4
 pytz==2019.3

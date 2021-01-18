@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, request, url_for, render_template
 from flask_login import login_required, current_user
+from werkzeug import secure_filename
 
 from datetime import datetime
 from sqlalchemy import or_
@@ -9,6 +10,7 @@ from creativecoin.dashboard import helpers
 from creativecoin.helper.utils import get_grain, sci_notation, generate_referral_id, generate_wallet_id
 from creativecoin.models import *
 
+import os
 
 dash = Blueprint('dash', __name__)
 
@@ -31,20 +33,10 @@ def wallet():
     # txs = Transaction.query.filter_by()
     now = datetime.now()
 
-    import qrcode
-
-    import base64
-    from io import BytesIO
-
-    qr = qrcode.QRCode(version=1, border=3)
-
-    qr.add_data(wallet_id)
-    qr.make(fit=True)
-
-    img = qr.make_image(fill='black', back_color='white')
-    buffered = BytesIO()
-    img.save(buffered, format="PNG")
-    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+    import pyqrcode
+    filepath = "creativecoin/static/image/qr/{}".format(secure_filename(wallet_id))
+    qr = pyqrcode.create(wallet_id)
+    qr.svg("{}.svg".format(filepath), scale=8)
 
     return render_template('wallet/wallet.html', 
             wallet=walletmodel, 
@@ -53,5 +45,4 @@ def wallet():
             grainprice=grainprice, 
             generate_ref=generate_referral_id, 
             txn=transactions,
-            img_str=img_str,
             title="Wallet - CreativeCoin")

@@ -80,9 +80,12 @@ def contact_us():
 
 @app.route(rule='/test', strict_slashes=False, methods=["GET", "POST"])
 def test():
-    import datetime
-    response = requests.get("http://127.0.0.1:9200")
-    return  str(response.__dict__)
+    import pyqrcode
+    # x = os.path.join(os.getcwd(), "creativecoin\\static")
+    qr = pyqrcode.create("123456")
+    qr.svg("uskjdad.svg", scale=8)
+
+    return str("FOO")
 
 
 @app.errorhandler(503)
