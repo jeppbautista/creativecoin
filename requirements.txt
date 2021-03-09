@@ -8,7 +8,7 @@ beautifulsoup4==4.9.1
 blinker==1.4
 bs4==0.0.1
 certifi==2019.9.11
-cffi==1.13.2
+cffi
 chardet==3.0.4
 Click==7.0
 coinpayments-py==0.1.0

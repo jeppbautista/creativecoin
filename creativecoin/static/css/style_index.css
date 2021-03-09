@@ -284,6 +284,12 @@ hr.style-eight {
     font-family: "PT Sans" sans-serif;
 }
 
+.navbar {
+    width: 100%;
+    z-index: 99;
+    background: #222;
+}
+
 #bar1 {
     background: #E0004A;
 }

@@ -37,7 +37,7 @@
 
         {% set isverified = current_user.emailverified %}
         {% set enable = "" if isverified else "disabled" %}
-        {% set total_mined = wallet.free_mined + wallet.mined + wallet.referral%}
+        {% set total_mined = wallet.free_mined + wallet.mined %}
         {% include "wallet/side.html" %}
         <div id="content" class="p-4 p-md-5 pt-5 container-fluid">
 

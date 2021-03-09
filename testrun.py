@@ -12,4 +12,4 @@ if __name__ == "__main__":
     os.environ['OAUTHLIB_INSECURE_TRANSPORT']='1'
     from creativecoin import app
 
-    app.run(host='localhost')    
+    app.run(host='localhost')

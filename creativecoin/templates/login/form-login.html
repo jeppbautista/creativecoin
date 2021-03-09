@@ -23,7 +23,6 @@
             {{ loginform.email }}
             {{ loginform.password }}
 
-
             <div class="d-flex justify-content-around">
                 <div>
                     <a class="na" href="#">Forgot password?</a>
@@ -31,7 +30,8 @@
             </div>
             {{ loginform.login }}
             <hr>
-            <a id="btn-login__create-account" class="c-blue btn btn-info btn-block mt-2 mb-2" type="button">Create an account</a>
+            <a id="btn-login__create-account" class="c-light-blue btn btn-block mt-2 mb-2" type="button">Create an account</a>
+            <a href="{{ url_for('index') }}" class="c-dark-red c-text-fafa btn btn-block mt-2 mb-2" type="button">Back to Home</a>
         </form>
     </div>
 </div>
