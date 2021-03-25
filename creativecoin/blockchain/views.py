@@ -47,7 +47,7 @@ def block(block_id):
     test = request.args.get("mode", "live")
     node_block = sync_block(block_id, test)
     transaction = sync_tx(block_id, test)
-    return render_template("blockchain/block.html", 
+    return render_template("blockchain/block.html",
         block=node_block, 
         tx=transaction, 
         truncate=utils.truncate_string,

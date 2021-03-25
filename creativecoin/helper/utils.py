@@ -16,14 +16,17 @@ def generate_txn_id(salt):
     return hashlib.sha1("{}-{}".format(serialize_datetime(utcnow()), str(salt))\
             .encode("utf-8")).hexdigest()
 
+
 def generate_wallet_id(salt):
     return hashlib.md5(str(salt).encode("utf-8")).hexdigest()
+
 
 def generate_referral_id(salt=1):
     salt_padded = str(salt).zfill(5)
     salt_bytes = salt_padded.encode("utf-8")
     b64_salt = base64.b64encode(salt_bytes)
     return b64_salt.decode('utf-8')
+
 
 def encode_referral_id(enc):
     enc_bytes = enc.encode('utf-8')
@@ -121,6 +124,11 @@ def crawl_grain():
 
     return (price*TROY_OUNCE)*0.05
 
+
+def diff_month(d1, d2):
+    return int((d1.year - d2.year) * 12 + d1.month - d2.month)
+
+
 def get_usd():
     app.logger.error("INFO - Getting USD...")
     file_usd = app.config["FILE_USD"]
@@ -131,15 +139,20 @@ def get_usd():
 
     return float(usd)
 
+
 def get_grain():
     app.logger.error("INFO - Getting grain value...")
     file_grain = app.config["FILE_GRAIN"]
 
     with open(os.path.join(os.getcwd(), file_grain), "r") as f:
         grain = f.read()
+
+    m = diff_month(datetime.datetime.now(), datetime.datetime.strptime("2021-02-01", "%Y-%m-%d"))
+    grain = float(grain) + float(grain) * (0.05 * m)
+
     app.logger.error("INFO - Extracted grain value: {}".format(grain))
 
-    return float(grain)
+    return grain
 
 
 def sci_notation(x, decimal=10):
@@ -151,8 +164,10 @@ def serialize_datetime(dt):
         return datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
     return dt.strftime("%Y-%m-%d %H:%M:%S")
 
+
 def truncate_string(string, strlen=20):
     return string[:strlen]+"..."+string[-1]
+
 
 def utcnow():
     return datetime.datetime.utcnow()

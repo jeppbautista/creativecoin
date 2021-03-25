@@ -1,13 +1,18 @@
 import hashlib
-import os
-import json
-
 import datetime
 
 from creativecoin import app, es
 
+
 class Block(object):
     def __init__(self, kwargs):
+        self.index = None
+        self.timestamp = None
+        self.prev_hash = None
+        self.hash = None
+        self.nonce = None
+        self.confirm = None
+
         BLOCK_VAR_CONVERSIONS = {
             'index': int, 
             'nonce': int, 
@@ -45,14 +50,11 @@ class Block(object):
                 self.data == other.data and 
                 self.nonce == other.nonce)
 
-    
     def __ne__(self, other):
         return not self.__eq__(other)
-
     
     def __repr__(self):
         return "Block<index: {} , hash: {}>".format(self.index, self.hash)
-
 
     def is_valid(self):
         self.update_self_hash()
@@ -66,16 +68,16 @@ class Block(object):
         else:
             return False
 
-
     def header_string(self):
         return str(self.index) + str(self.prev_hash) + str(self.data) + str(self.timestamp) + str(self.nonce)
 
+    def compute_height(self):
+        return (datetime.datetime.now() - datetime.datetime.strptime(self.timestamp, "%Y-%m-%dT%H:%M:%SZ")).days * 48
 
     def create_self_hash(self):
         sha = hashlib.sha256()
         sha.update(self.header_string().encode('utf-8'))
         return sha.hexdigest()
-
 
     def update_self_hash(self):
         sha = hashlib.sha256()
