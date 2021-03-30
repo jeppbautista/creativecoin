@@ -119,14 +119,12 @@ def mine():
 
         new_block.confirm = confirmation
         block_created = new_block.self_save(test)
-        # tx_created = tx.self_save(test)
+        tx_created = tx.self_save(test)
 
         return str(block_created and tx_created)
     except Exception:
         app.logger.error(traceback.format_exc())
         return "FAILED"
-
-    return "ERROR"
 
 
 @node.route('/create_tx', methods=["GET", "POST"])
@@ -207,6 +205,8 @@ def start_mining():
                           headers={"Content-type": "application/json"},
                           json=data)
         app.logger.error("INFO - {}".format(x.text))
+
+    wallets = queries.get_all_wallets()
 
     for wallet in queries.get_all_wallets():
         try:

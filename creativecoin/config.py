@@ -27,8 +27,10 @@ class DevConfig(Config):
     # LOGIN_DISABLED = True
     
     SERVER_NAME = "localhost:5000"
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://cisateducation:{password}@206.72.201.67:3306/cisatedu_ccn_test".format(
-                                password="7270TBCcsbn7270###$$$")
+    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://cisateducation:{password}@206.72.201.67:3306/cisatedu_ccn_test".format(
+                                # password="7270TBCcsbn7270###$$$")
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:{password}@127.0.0.1:3306/cisatedu_ccn_test".format(
+                                password="")
 
     ES_HOST = "https://clabnoc5vg:aj0qpztlvd@kwil-4636440102.ap-southeast-2.bonsaisearch.net:443"
 

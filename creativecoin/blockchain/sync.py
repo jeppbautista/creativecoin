@@ -22,7 +22,6 @@ def sync(test='live'):
 
     index = "block" if test=="live" else "block_test"
 
-
     res = es.search(index=index, body=queries.get_all_blocks())["hits"]["hits"]
     for block in res:
         block_object = Block(block["_source"])

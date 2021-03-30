@@ -4,6 +4,8 @@ from sqlalchemy.sql import func
 
 from creativecoin import app, db, login_manager
 
+import datetime
+
 
 class User(UserMixin, db.Model):
 
@@ -90,6 +92,9 @@ class Transaction(db.Model):
     is_verified = db.Column(db.Boolean(), default=False)
     is_transferred = db.Column(db.Boolean(), default=False)
 
+    def compute_confirmation(self):
+        return ((datetime.datetime.now() - self.created).days + 1) * 48
+
 
 class Payment(db.Model):
 
@@ -103,5 +108,4 @@ class Payment(db.Model):
     created = db.Column(db.TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     reference = db.Column(db.String(256), unique=True)
     status = db.Column(db.String(128), default='PENDING')
-    updated  = db.Column(db.TIMESTAMP(timezone=True), nullable=True)
-    
+    updated = db.Column(db.TIMESTAMP(timezone=True), nullable=True)

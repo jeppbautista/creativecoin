@@ -3,6 +3,7 @@ import datetime
 
 from creativecoin import app, es
 
+
 class Tx(object):
     def __init__(self, kwargs):
         TX_VAR_CONVERSIONS = {
@@ -31,7 +32,6 @@ class Tx(object):
         except AttributeError as e:
             self.hash = None
 
-
     def __dict__(self):
         info = {}
         info['from_wallet'] = str(self.from_wallet)
@@ -47,10 +47,8 @@ class Tx(object):
         info['size'] = self.size
         return info
 
-
     def __repr__(self):
         return "Transaction<hash: {} >".format(self.hash)
-
 
     def create_self_hash(self):
         sha = hashlib.sha1()
@@ -59,7 +57,6 @@ class Tx(object):
 
         return new_hash
 
-    
     def self_save(self, test='live'):
         index = "tx" if test == "live" else "tx_test"
 
@@ -70,3 +67,4 @@ class Tx(object):
             return False
 
         return True
+

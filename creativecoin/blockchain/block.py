@@ -71,8 +71,6 @@ class Block(object):
     def header_string(self):
         return str(self.index) + str(self.prev_hash) + str(self.data) + str(self.timestamp) + str(self.nonce)
 
-    def compute_height(self):
-        return (datetime.datetime.now() - datetime.datetime.strptime(self.timestamp, "%Y-%m-%dT%H:%M:%SZ")).days * 48
 
     def create_self_hash(self):
         sha = hashlib.sha256()
