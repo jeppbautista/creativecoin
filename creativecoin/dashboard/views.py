@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, request, url_for, render_template
 from flask_login import login_required, current_user
 from werkzeug import secure_filename
 
-from datetime import datetime
+import datetime
 from sqlalchemy import or_
 
 from creativecoin import app
@@ -31,7 +31,7 @@ def wallet():
     grainprice = get_grain()
     grainprice = round(grainprice, 4)
     # txs = Transaction.query.filter_by()
-    now = datetime.now()
+    now = datetime.datetime.now()
 
     import pyqrcode
     filepath = "creativecoin/static/image/qr/{}".format(secure_filename(wallet_id))
