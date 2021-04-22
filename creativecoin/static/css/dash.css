@@ -154,6 +154,11 @@ h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
     color: #fafafa !important;
 }
 
+.send-input{
+    border-bottom: 1px solid #666 !important;
+    border-radius: 0 !important;
+}
+
 @media (max-width: 991.98px) {
     #sidebar {
         margin-left: -250px;
@@ -261,25 +266,7 @@ a[data-toggle="collapse"] {
     border-color: #000;
 }
 
-.form-control::-webkit-input-placeholder {
-    /* Chrome/Opera/Safari */
-    color: rgba(255, 255, 255, 0.5);
-}
 
-.form-control::-moz-placeholder {
-    /* Firefox 19+ */
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.form-control:-ms-input-placeholder {
-    /* IE 10+ */
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.form-control:-moz-placeholder {
-    /* Firefox 18- */
-    color: rgba(255, 255, 255, 0.5);
-}
 
 .subscribe-form .form-control {
     background: #4897fc;

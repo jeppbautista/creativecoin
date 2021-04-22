@@ -3,36 +3,8 @@
 {% block content %}
 {% include "wallet/nav.html" %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
-
 <div id="wallet">
-    <div class="modal fade" id="receive-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Scan the QR code or share the address below.</h5>
-                    <button id="receive-close" type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"><i class="fa fa-times-circle" aria-hidden="true"></i>
-                    </button>
-                </div>
-                <div class="modal-body p-3">
-                    <div class="row">
-                        <div class="col col-12 text-center">
-                            <img src="{{ url_for('static', filename='image/qr/'+wallet_id+'.svg') }}" alt="qrcode" id="qrcode" style="max-width: 100%;">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <span>Wallet Address</span>
-                            <input id="wallet-code" type="text" class="form-control c-666" readonly
-                                value="{{ wallet_id }}" aria-label=""
-                                aria-describedby="basic-addon1">
-
-                            <button class="btn btn-info btn-block copy2">Copy address</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include "wallet/modal.html" %}
     <div class="wrapper d-flex align-items-stretch">
 
         {% set isverified = current_user.emailverified %}

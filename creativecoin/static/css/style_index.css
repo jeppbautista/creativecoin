@@ -252,6 +252,10 @@ hr.style-eight {
     margin: 10px;
 }
 
+.w-100 {
+    width: 100%;
+}
+
 .w-60 {
     width: 60%;
 }
