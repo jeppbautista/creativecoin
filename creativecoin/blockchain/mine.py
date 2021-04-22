@@ -22,7 +22,7 @@ def start_mine(last_block, tx):
     index = int(last_block.index) + 1
     timestamp = datetime.datetime.now()
     # tx['block'] = index
-    data = [tx.hash]
+    data = []
     prev_hash = last_block.hash
     nonce = 0
     

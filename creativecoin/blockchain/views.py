@@ -65,8 +65,11 @@ def transactions():
 @node.route("/ccn/transaction/<txn_id>")
 def transaction(txn_id):
     test = request.args.get("mode", "live")
+    index = "tx" if test == "live" else "tx_test"
+
     txn = Transaction.query.filter(Transaction.txn_id == txn_id).first()
-    return render_template("blockchain/transaction.html", 
+
+    return render_template("blockchain/transaction.html",
         txn=txn,
         truncate=utils.truncate_string,
         serialize_dt=utils.serialize_datetime,
@@ -119,9 +122,9 @@ def mine():
 
         new_block.confirm = confirmation
         block_created = new_block.self_save(test)
-        tx_created = tx.self_save(test)
+        # tx_created = tx.self_save(test)
 
-        return str(block_created and tx_created)
+        return str(block_created)
     except Exception:
         app.logger.error(traceback.format_exc())
         return "FAILED"
@@ -171,6 +174,7 @@ def create_tx(confirm=0):
         return "Transaction created"
     else:
         return "Transaction Failed"
+
 
 
 def create_first_block():

@@ -84,6 +84,16 @@ def get_all_txs():
     }
 
 
+def get_tx(txn_id):
+    return {
+           "query": {
+              "match": {
+                "_id": txn_id
+              }
+           }
+    }
+
+
 def get_total_trans_aggs_tx_from_wallet(wallet):
     return {
         "query": {
