@@ -2,7 +2,7 @@
 
 {% block content %}
 {% include "wallet/nav.html" %}
- <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
 <div id="wallet">
     {% include "wallet/modal.html" %}
     <div class="wrapper d-flex align-items-stretch">
@@ -14,19 +14,21 @@
         <div id="content" class="p-4 p-md-5 pt-5 container-fluid">
 
             {% if err %}
-            <div class="alert alert-danger text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;" role="alert">
+            <div class="alert alert-danger text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;"
+                 role="alert">
                 {{ err }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
+                    <span aria-hidden="true">×</span>
                 </button>
             </div>
             {% endif %}
 
             {% if status %}
-            <div class="alert alert-success text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;" role="alert">
+            <div class="alert alert-success text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;"
+                 role="alert">
                 Transfer was successful!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
+                    <span aria-hidden="true">×</span>
                 </button>
             </div>
             {% endif %}
@@ -34,7 +36,7 @@
             {% if not isverified %}
             <div class="alert alert-warning text-center mb-3" style="margin-bottom: 0;" role="alert">
                 WARNING: Your email is not verified. <a class="c-text-dark-blue font-weight-bold"
-                    href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
+                                                        href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
             </div>
             {% endif %}
 
@@ -45,8 +47,9 @@
                             <span class="input-group-text transparent" id="basic-addon1">Referral code:</span>
                         </div>
                         <input id="ref-code" type="text" class="form-control c-666" readonly
-                            value="https://creativecoin.net/login?ref={{ generate_ref(current_user.id) }}" aria-label=""
-                            aria-describedby="basic-addon1">
+                               value="https://creativecoin.net/login?ref={{ generate_ref(current_user.id) }}"
+                               aria-label=""
+                               aria-describedby="basic-addon1">
                         <div class="input-group-append" id="button-addon4">
                             <button class=" copy btn c-666 m-0 px-3 py-2 z-depth-0 waves-effect" type="button">
                                 <i class="fa fa-clipboard" aria-hidden="true">
@@ -61,13 +64,13 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Total Balance</h5>
-                        <h2 class="font-montserrat c-text-fafa ">{{ total_mined | round(4) }} CCN</h2>
+                        <h2 class="font-montserrat c-text-fafa ">{{ wallet.total_balance | round(4) }} CCN</h2>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Total Balance in USD</h5>
-                        <h2 class="font-montserrat c-text-fafa">${{ (total_mined * grainprice)  | round(2) }}</h2>
+                        <h2 class="font-montserrat c-text-fafa">${{ (total_mined * grainprice) | round(2) }}</h2>
                     </div>
                 </div>
 
@@ -104,31 +107,31 @@
             <div class="row table-responsive">
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th>Transaction ID</th>
-                            <th>Transaction Type</th>
-                            <th>Amount</th>
-                            <th>Timestamp</th>
-                        </tr>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Transaction Type</th>
+                        <th>Amount</th>
+                        <th>Timestamp</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {% for tx in txn %}
-                        <tr>
-                            <td class="p-2">
-                                <a class="c-text-blue"
-                                    href="{{ url_for('node.transaction', txn_id=tx['txn_id']) }}">{{tx["txn_id"]}}</a>
-                            </td>
-                            <td class="p-2">
-                                {{tx["txn_type"]}}
-                            </td>
-                            <td class="p-2">
-                                {{tx["quantity"]}}
-                            </td>
-                            <td class="p-2">
-                                {{tx["created"]}}
-                            </td>
-                        </tr>
-                        {% endfor %}
+                    {% for tx in txn %}
+                    <tr>
+                        <td class="p-2">
+                            <a class="c-text-blue"
+                               href="{{ url_for('node.transaction', txn_id=tx['txn_id']) }}">{{tx["txn_id"]}}</a>
+                        </td>
+                        <td class="p-2">
+                            {{tx["txn_type"]}}
+                        </td>
+                        <td class="p-2">
+                            {{tx["quantity"]}}
+                        </td>
+                        <td class="p-2">
+                            {{tx["created"]}}
+                        </td>
+                    </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
