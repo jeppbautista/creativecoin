@@ -1,7 +1,5 @@
 import requests
-import hashlib
 from flask import Blueprint, redirect, render_template, request, url_for
-from flask_login import login_required, current_user
 from werkzeug import secure_filename
 
 from creativecoin.blockchain.block import Block
@@ -17,7 +15,6 @@ from creativecoin import app, db, es
 
 import datetime
 import decimal
-import os
 import time
 import traceback
 import subprocess
@@ -140,7 +137,6 @@ def create_tx(confirm=0):
         "to_wallet":"21232f297a57a5a743894a0e4a801fc3",
         "value":150,
         "item_name": "",
-        "quantity": 1,
         "txn_type" : "",
         "amount_php": 0,
         "amount_usd": 0,
@@ -151,12 +147,14 @@ def create_tx(confirm=0):
     app.logger.error("INFO - /create_tx")
     test = request.args.get('mode', 'live')
 
+    data = request.get_json()
+
     confirmation = 3
     if confirm > 0:
         for i in range(confirm):
             time.sleep(60)
 
-    new_tx = Tx(request.get_json())
+    new_tx = Tx(data)
 
     if validate.valid_tx(new_tx):
         new_tx.confirm = confirmation
@@ -164,12 +162,36 @@ def create_tx(confirm=0):
     if confirmation == 3:
         node_blocks = sync(test)
         last_block = node_blocks[0]
-        data = last_block.data
-        data.append(new_tx.hash)
+        blockdata = last_block.data
+        blockdata.append(new_tx.hash)
         new_tx.block = last_block.hash
         new_tx.self_save(test)
-        last_block.data = data
+        last_block.data = blockdata
         last_block.self_save(test)
+
+        grain = utils.get_grain()
+        usd = utils.get_usd()
+
+        amount_usd = grain
+        amount_php = grain * usd
+        transaction = Transaction(
+            txn_id=data["hash"],
+            item_name="CreativeCoin (Mined)",
+            quantity=data["value"],
+            is_verified=1,
+            is_transferred=1,
+            status="ACCEPTED",
+            received_confirmations=3,
+            txn_from=data["from_wallet"],
+            txn_to=data["to_wallet"],
+            txn_type=data.get("txn_type", "MINE"),
+            amount_php=amount_php,
+            amount_usd=amount_usd,
+            amount_ccn=-1
+        )
+
+        db.session.add(transaction)
+        queries.commit_db()
 
         return "Transaction created"
     else:
@@ -236,29 +258,6 @@ def start_mining():
 
                 app.logger.error("INFO - {}".format(x.text))
 
-            grain = utils.get_grain()
-            usd = utils.get_usd()
-
-            amount_usd = grain
-            amount_php = grain*usd
-            transaction = Transaction(
-                txn_id=data["hash"],
-                item_name="CreativeCoin (Mined)",
-                quantity=data["value"],
-                is_verified=1,
-                is_transferred=1,
-                status="ACCEPTED",
-                received_confirmations=3,
-                txn_from=data["from_wallet"],
-                txn_to=utils.generate_wallet_id(wallet.id),
-                txn_type="MINE",
-                amount_php=amount_php,
-                amount_usd=amount_usd,
-                amount_ccn=-1
-            )
-
-            db.session.add(transaction)
-            queries.commit_db()
         except Exception:
             app.logger.error(traceback.format_exc())
 

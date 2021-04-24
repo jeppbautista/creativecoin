@@ -37,39 +37,45 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="sendModallabel">Send Money</h5>
+                <h5 class="modal-title" id="sendModallabel">Send CreativeCoin</h5>
                 <button id="send-close" type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times-circle" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="modal-body p-3">
-                <div class="row m-2">
-                    <div class="col col-12">
-                        <span>Source wallet</span>
-                        <input class="form-control" value="(CCN) 50.00" disabled></input>
+                <form method="POST" action="{{ url_for('dash.send_ccn') }}">
+                    {{ sendform.csrf_token }}
+                    <div class="row m-2">
+                        <div class="col col-12">
+                            <span>Source wallet (CCN)</span>
+<!--                            <input class="form-control" value="(CCN) 50.00" disabled></input>-->
+                            {{ sendform.balance(value=500.00) }}
+                        </div>
                     </div>
-                </div>
-                <div class="row m-2">
-                    <div class="col col-12">
-                        <span>Amount</span>
-                        <input class="send-input form-control" type="text" value="0"></input>
+                    <div class="row m-2">
+                        <div class="col col-12">
+                            <span>Amount</span>
+                            {{ sendform.amount }}
+                        </div>
                     </div>
-                </div>
-                <div class="row m-2">
-                    <div class="col col-12">
-                        <span>Send to:</span>
-                        <input class="send-input form-control" type="text"
-                               placeholder="Enter CCN wallet address"></input>
+                    <div class="row m-2">
+                        <div class="col col-12">
+                            <span>Send to:</span>
+                            {{ sendform.to_wallet }}
+                            <!--                        <input class="send-input form-control" type="text" placeholder="Enter CCN wallet address"></input>-->
+                        </div>
                     </div>
-                </div>
-                <div class="row p-3">
-                    <div class="col-xs-12 col-6">
-                        <button id="send-close2" class="btn btn-block c-666">Close</button>
+                    <div class="row p-3">
+                        <div class="col-xs-12 col-6">
+                            <button id="send-close2" class="btn btn-block c-666">Close</button>
+                        </div>
+                        <div class="col-xs-12 col-6" id="send-submit">
+                            {{ sendform.submit }}
+                            <!--                        <button class="btn btn-block c-light-blue c-text-fafa">Submit</button>-->
+                        </div>
                     </div>
-                    <div class="col-xs-12 col-6">
-                        <button class="btn btn-block c-light-blue c-text-fafa">Submit</button>
-                    </div>
-                </div>
+                </form>
+
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@
 
 {% block content %}
 {% include "wallet/nav.html" %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
 <div id="wallet">
     {% include "wallet/modal.html" %}
     <div class="wrapper d-flex align-items-stretch">
@@ -13,14 +13,33 @@
         {% include "wallet/side.html" %}
         <div id="content" class="p-4 p-md-5 pt-5 container-fluid">
 
+            {% if err %}
+            <div class="alert alert-danger text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;" role="alert">
+                {{ err }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            {% endif %}
+
+            {% if status %}
+            <div class="alert alert-success text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;" role="alert">
+                Transfer was successful!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            {% endif %}
+
             {% if not isverified %}
-            <div class="alert alert-danger text-center mb-3" style="margin-bottom: 0;" role="alert">
+            <div class="alert alert-warning text-center mb-3" style="margin-bottom: 0;" role="alert">
                 WARNING: Your email is not verified. <a class="c-text-dark-blue font-weight-bold"
                     href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
             </div>
             {% endif %}
+
             <div class="row">
-                <div class="col-12 col-md-4 offset-md-8">
+                <div class="col-12 col-md-6 offset-md-6">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text transparent" id="basic-addon1">Referral code:</span>
@@ -48,7 +67,7 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Total Balance in USD</h5>
-                        <h2 class="font-montserrat c-text-fafa">${{ (total_mined * grainprice)  | round(4) }}</h2>
+                        <h2 class="font-montserrat c-text-fafa">${{ (total_mined * grainprice)  | round(2) }}</h2>
                     </div>
                 </div>
 
@@ -117,7 +136,9 @@
     </div>
 </div>
 
+
 <script src="{{ url_for('static', filename='js/wallet.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+
 {% endblock %}

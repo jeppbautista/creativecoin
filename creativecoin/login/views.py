@@ -69,7 +69,7 @@ def login():
     data["error"] = request.args.get("error", "").split(" ")
 
     data["error"][:] = [ERROR_MESSAGE_LOOKUP.get(
-        e, ERROR_MESSAGE_LOOKUP["na"]) for e in data["error"]]
+        e, ERROR_MESSAGE_LOOKUP["default_error"]) for e in data["error"]]
     data["error"][:] = [err for err in data["error"] if err]
 
     return render_template("login/login.html", loginform=loginform, signupform=signupform, data=data, title="Login - CreativeCoin")
