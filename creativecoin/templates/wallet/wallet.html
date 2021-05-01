@@ -70,7 +70,7 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Total Balance in USD</h5>
-                        <h2 class="font-montserrat c-text-fafa">${{ (total_mined * grainprice) | round(2) }}</h2>
+                        <h2 class="font-montserrat c-text-fafa">${{ ( wallet.total_balance * grainprice) | round(2) }}</h2>
                     </div>
                 </div>
 
@@ -90,7 +90,7 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Earned from referral</h5>
-                        <h2 class="font-montserrat c-text-fafa">${{ (wallet.referral* grainprice) | round(4) }}</h2>
+                        <h2 class="font-montserrat c-text-fafa">${{ (wallet.referral * grainprice) | round(2) }}</h2>
                     </div>
                 </div>
 

@@ -120,6 +120,8 @@ def wallet():
     walletmodel.free_mined = sci_notation(walletmodel.free_mined)
     walletmodel.mined = sci_notation(walletmodel.mined)
     walletmodel.referral = sci_notation(walletmodel.referral)
+    walletmodel.total_balance = sci_notation(walletmodel.total_balance)
+
 
     wallet_id = generate_wallet_id(walletmodel.id)
 
