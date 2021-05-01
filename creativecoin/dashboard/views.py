@@ -43,6 +43,7 @@ def send_ccn():
     if send.validate():
 
         wallet = Wallet.query.filter_by(user_id=current_user.id).first()
+        to_wallet = Wallet.query.filter_by(wallet_id=send.to_wallet.data).first()
         from_wallet_id = wallet.wallet_id
 
         app.logger.error("INFO - Sending... WalletID: {}".format(str(wallet.id)))
@@ -93,7 +94,6 @@ def send_ccn():
         if response and response.status_code == 200:
 
             # try:
-            #     wallet.
             # except Exception:
             #     app.logger.error(traceback.format_exc())
 

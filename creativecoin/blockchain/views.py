@@ -172,8 +172,8 @@ def create_tx(confirm=0):
         grain = utils.get_grain()
         usd = utils.get_usd()
 
-        amount_usd = grain
-        amount_php = grain * usd
+        amount_usd = grain * data["value"]
+        amount_php = (grain * usd)*data["value"]
         transaction = Transaction(
             txn_id=data["hash"],
             item_name="CreativeCoin (Mined)",
@@ -238,6 +238,7 @@ def start_mining():
         try:
             to = wallet.wallet_id
             wallet.mined = wallet.mined+decimal.Decimal(1.0)
+            wallet.total_balance = wallet.total_balance+decimal.Decimal(1.0)
 
             data["to_wallet"] = to
             data["hash"] = utils.generate_txn_id(wallet.id)
@@ -260,5 +261,5 @@ def start_mining():
 
         except Exception:
             app.logger.error(traceback.format_exc())
-
+    queries.commit_db()
     return ""

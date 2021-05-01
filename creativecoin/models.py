@@ -66,6 +66,7 @@ class Wallet(db.Model):
     created = db.Column(db.TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     free_mined = db.Column(db.DECIMAL(precision=30, scale=10), default=0)
     mined = db.Column(db.DECIMAL(precision=30, scale=10), default=0)
+    received = db.Column(db.DECIMAL(precision=30, scale=10), default=0)
     referral = db.Column(db.DECIMAL(precision=30, scale=10), default=0)
     total_balance = db.Column(db.DECIMAL(precision=30, scale=10), default=0)
 
