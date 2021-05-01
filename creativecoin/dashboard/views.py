@@ -43,7 +43,7 @@ def send_ccn():
     if send.validate():
 
         wallet = Wallet.query.filter_by(user_id=current_user.id).first()
-        from_wallet_id = generate_wallet_id(str(wallet.id))
+        from_wallet_id = wallet.wallet_id
 
         app.logger.error("INFO - Sending... WalletID: {}".format(str(wallet.id)))
 
@@ -123,7 +123,7 @@ def wallet():
     walletmodel.total_balance = sci_notation(walletmodel.total_balance)
 
 
-    wallet_id = generate_wallet_id(walletmodel.id)
+    wallet_id = walletmodel.wallet_id
 
     transactions = Transaction.query \
         .filter(or_(wallet_id == Transaction.txn_from, wallet_id == Transaction.txn_to)) \

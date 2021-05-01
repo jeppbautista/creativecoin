@@ -236,7 +236,7 @@ def start_mining():
 
     for wallet in queries.get_all_wallets():
         try:
-            to = utils.generate_wallet_id(str(wallet.id))
+            to = wallet.wallet_id
             wallet.mined = wallet.mined+decimal.Decimal(1.0)
 
             data["to_wallet"] = to

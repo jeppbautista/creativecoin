@@ -152,7 +152,7 @@ def callback_signup():
             queries.commit_db()
 
             app.logger.error("INFO - User is created")
-            wallet = models.Wallet(user_id=user.id)
+            wallet = models.Wallet(user_id=user.id, wallet_id=utils.generate_wallet_id(str(user.id)))
             queries.add(wallet)
 
             referrer_wallet = queries.get_wallet(user_id=user.referrer)

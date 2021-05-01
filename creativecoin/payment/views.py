@@ -42,7 +42,7 @@ def payment():
     except KeyError as e:
         app.logger.error(traceback.format_exc())
         return redirect(url_for("auth.login"))
-    
+
 
 @pay.route('/verifypayment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
@@ -53,22 +53,22 @@ def verifypayment():
 
     if paymentform.validate():
         app.logger.error("INFO - FORM is valid")
-        txn_id =  generate_txn_id(current_user.id)
+        txn_id = generate_txn_id(current_user.id)
 
         _itemname = re.search('\((.*)\)', paymentform.item_name.data).group(1).upper()
         quantity = MAP_CCN[_itemname]*int(paymentform.quantity.data)
 
         transaction = models.Transaction(
-            txn_id = txn_id,
-            txn_from = generate_wallet_id(str(current_user.wallet)),
-            txn_to = "CCN-ADMIN",
-            txn_type = "PAYMENT",
-            item_name = paymentform.item_name.data,
-            quantity = quantity,
-            amount_php = paymentform.amount_php.data,
-            amount_usd = paymentform.amount_usd.data,
-            status = "PENDING",
-            received_confirmations = 0,
+            txn_id=txn_id,
+            txn_from=generate_wallet_id(str(current_user.id)),
+            txn_to="CCN-ADMIN",
+            txn_type="PAYMENT",
+            item_name=paymentform.item_name.data,
+            quantity=quantity,
+            amount_php=paymentform.amount_php.data,
+            amount_usd=paymentform.amount_usd.data,
+            status="PENDING",
+            received_confirmations=0,
 
             is_verified = False,
             is_transferred = False
@@ -105,7 +105,7 @@ def verifypayment():
 
             mail.send_mail(app.config["ADMIN_MAIL"], "Payment was sent", "Payment was sent. <br>Transaction number: {txn_id} <br>Email: {email}".format(txn_id=txn_id, email=current_user.email))
             app.logger.error("INFO - PAYMENT RECEIVED")
-            
+
             return redirect(url_for("pay.payment_received"))
 
         except IntegrityError as e:

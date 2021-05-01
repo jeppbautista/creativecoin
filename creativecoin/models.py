@@ -61,6 +61,7 @@ class Wallet(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    wallet_id = db.Column(db.String(255), unique=True)
 
     created = db.Column(db.TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     free_mined = db.Column(db.DECIMAL(precision=30, scale=10), default=0)
