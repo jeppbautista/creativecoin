@@ -1,3 +1,10 @@
+$(document).ready(function(){
+    $("#sourceWallet").on('change', function(e){
+        var idx = $("#sourceWallet").find(":selected").val()
+        $("#balance").val(+$("#balance-"+idx).val())
+    })
+})
+
 $(".copy").on("click", function(e){
     e.preventDefault();
     var text = $("#ref-code").select();
@@ -29,4 +36,3 @@ $("#send-close").on("click", function(e){
 $("#send-close2").on("click", function(e){
     $("#send-modal").modal('hide')
 })
-
