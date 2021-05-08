@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-
 import wtforms as wtf
+from wtforms.fields import html5
 from wtforms import validators
 
 
@@ -12,7 +12,7 @@ class Send(FlaskForm):
             "disabled": ""
         }
     )
-    amount = wtf.IntegerField(
+    amount = html5.IntegerField(
         "Amount:",
         validators=[
             validators.NumberRange(min=100, message="Minimum of 100 CCN is required."),
@@ -20,8 +20,8 @@ class Send(FlaskForm):
         ],
         render_kw={
             "class": "send-input form-control",
-            "value": "0"
-        }
+            "placeholder": "Amount of CCN to send"
+        },
     )
     to_wallet = wtf.StringField(
         "Send to:",
@@ -36,7 +36,6 @@ class Send(FlaskForm):
     submit = wtf.SubmitField(
         "Submit",
         render_kw={
-            "class": "btn btn-block c-light-blue c-text-fafa",
-            "id": "send-submit"
+            "class": "btn btn-block c-light-blue c-text-fafa"
         }
     )

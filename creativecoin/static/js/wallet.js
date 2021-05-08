@@ -2,7 +2,37 @@ $(document).ready(function(){
     $("#sourceWallet").on('change', function(e){
         var idx = $("#sourceWallet").find(":selected").val()
         $("#balance").val(+$("#balance-"+idx).val())
+        validate_balance()
     })
+
+    $("#amount").on("input", function(e){
+        var amount = $("#amount").val()
+        validate_balance();
+    })
+
+    var idx = $("#sourceWallet").find(":selected").val()
+    $("#balance").val(+$("#balance-"+idx).val())
+    validate_balance()
+
+    function validate_balance(){
+        var idx = $("#sourceWallet").find(":selected").val()
+        var balance = parseFloat($("#balance-"+idx).val())
+        var amount = parseFloat($("#amount").val())
+
+        if (balance < amount) {
+            $("#balance-error").html("Insufficient funds")
+            $("#submit").prop("disabled", true)
+        }
+        else if (balance < 100 || amount < 100){
+            $("#balance-error").html("Minimum transfer is 100 CCN")
+            $("#submit").prop("disabled", true)
+        }
+        else {
+           $("#balance-error").html("&nbsp;")
+            $("#submit").prop("enabled", true)
+        }
+    }
+
 })
 
 $(".copy").on("click", function(e){

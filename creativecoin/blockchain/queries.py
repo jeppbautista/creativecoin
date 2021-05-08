@@ -1,18 +1,21 @@
 from creativecoin import app, db
 from creativecoin.models import User, Wallet
 
+
 def commit_db():
     db.session.commit()
+
 
 def rollback():
     db.session.rollback()
 
+
 def get_all_wallets():
-    raw_wallets = Wallet.query\
-        .join(User, Wallet.user_id == User.id)\
-            .filter(User.emailverified == 1)\
-                .filter(Wallet.free_mined > 0)
-    
+    raw_wallets = Wallet.query \
+        .join(User, Wallet.user_id == User.id) \
+        .filter(User.emailverified == 1) \
+        .filter((Wallet.free_mined > 0) | (Wallet.received > 0))
+
     return raw_wallets
 
 
@@ -32,7 +35,7 @@ def get_all_blocks():
 def get_block(curr_hash):
     return {
         "query": {
-            "match":{
+            "match": {
                 "hash": curr_hash
             }
         }
@@ -86,11 +89,11 @@ def get_all_txs():
 
 def get_tx(txn_id):
     return {
-           "query": {
-              "match": {
+        "query": {
+            "match": {
                 "_id": txn_id
-              }
-           }
+            }
+        }
     }
 
 
@@ -120,7 +123,7 @@ def get_total_trans_aggs_tx_from_wallet(wallet):
             }
         }
     }
-    
+
 
 def get_total_rec_aggs_tx_from_wallet(wallet):
     return {
@@ -141,6 +144,7 @@ def get_total_rec_aggs_tx_from_wallet(wallet):
             }
         }
     }
+
 
 def get_total_sent_aggs_tx_from_wallet(wallet):
     return {
