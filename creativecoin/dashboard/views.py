@@ -4,12 +4,14 @@ from werkzeug import secure_filename
 
 from sqlalchemy import or_
 
+from creativecoin import app, db, es
 from creativecoin.dashboard.forms import Send
 from creativecoin.error import ERROR_MESSAGE_LOOKUP
 from creativecoin.helper.utils import get_grain, get_usd, sci_notation, generate_referral_id, generate_txn_id, \
     generate_wallet_id
 from creativecoin.models import *
 
+import decimal
 import requests
 import subprocess
 import traceback
@@ -93,16 +95,45 @@ def send_ccn():
 
         if response and response.status_code == 200:
 
-            # try:
-            # except Exception:
-            #     app.logger.error(traceback.format_exc())
+            try:
+                if send.sourcewallet.data == "0":
+                    wallet.mined = wallet.mined - send.amount.data
+                elif send.sourcewallet.data == "1":
+                    wallet.free_mined = wallet.free_mined - send.amount.data
+                elif send.sourcewallet.data == "2":
+                    wallet.received = wallet.received - send.amount.data
+                else:
+                    raise Exception("Invalid source wallet selected")
 
+                db.session.commit()
+                app.logger.error("INFO - {} credited from source: {}".format(send.amount.data, wallet.wallet_id))
+
+                transaction_fee = send.amount.data * 0.1
+                net_amount = send.amount.data - transaction_fee
+                net_amount = decimal.Decimal(net_amount)
+
+                if send.sourcewallet.data == "0":
+                    to_wallet.mined = to_wallet.mined + net_amount
+                elif send.sourcewallet.data == "1":
+                    to_wallet.free_mined = to_wallet.free_mined + net_amount
+                elif send.sourcewallet.data == "2":
+                    to_wallet.received = to_wallet.received + net_amount
+                else:
+                    raise Exception("Invalid source wallet selected")
+
+                db.session.commit()
+                app.logger.error("INFO - {} debited to source: {}".format(net_amount, to_wallet.wallet_id))
+            except Exception:
+                app.logger.error(traceback.format_exc())
 
             params["status"] = "transfer_successful"
             return redirect(url_for("dash.wallet", **params))
 
+    app.logger.error("ERROR - {}".format(send.errors))
     if "amount" in send.errors.keys():
-        params["error"] = "send_form_minimum"
+        params["error"] = "send_form_amount"
+    elif "to_wallet" in send.errors.keys():
+        params["error"] = "send_form_invalid_wallet"
     else:
         params["error"] = "default_error"
     return redirect(url_for("dash.wallet", **params))
