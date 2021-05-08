@@ -18,6 +18,8 @@ import traceback
 
 dash = Blueprint('dash', __name__)
 
+def db_transaction():
+    pass
 
 @dash.route("/send_ccn", methods=["GET", "POST"])
 def send_ccn():
@@ -67,17 +69,22 @@ def send_ccn():
             "amount_usd": amount_usd
         }
 
+        status_code = 500
+
         try:
             if app.config['ENV'] == "production":
 
                 curl_req = "curl -XPOST https://{}/create_tx -H 'Content-type:application/json' -d '{}'".format(
                     app.config["SERVER_NAME"], str(data).replace("'", '"'))
-                response = subprocess.Popen(
+                with subprocess.Popen(
                     curl_req,
                     shell=True,
-                    stdout=subprocess.PIPE).stdout.read()
+                    stdout=subprocess.PIPE) as process:
+                    response = process.communicate()[0].decode("utf-8")
 
-                app.logger.error("INFO - {}".format(response.text))
+                    app.logger.error("INFO RESPONSE - {}".format(response))
+                    if str(response) == "Transaction created":
+                        status_code = 200
 
             else:
                 response = requests.post(
@@ -86,14 +93,16 @@ def send_ccn():
                     headers={"Content-type": "application/json"},
                     json=data)
 
-                app.logger.error("INFO - {}".format(response.text))
+                app.logger.error("INFO RESPONSE - {}".format(response.text))
+                status_code = response.status_code
 
         except Exception:
             app.logger.error(traceback.format_exc())
             params["error"] = "default_error"
             return redirect(url_for("dash.wallet", **params))
 
-        if response and response.status_code == 200:
+
+        if response and status_code == 200:
 
             try:
                 if send.sourcewallet.data == "0":
