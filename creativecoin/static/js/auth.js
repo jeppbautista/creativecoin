@@ -37,7 +37,7 @@ $(document).ready(function () {
         "signup_form_error": "Invalid information provided",
         "signup_email_exists": "Email already exists",
         "default_error": "Something went wrong",
-        "na": ""
+        "na": "N/A"
     }
 
     var err = param('error');

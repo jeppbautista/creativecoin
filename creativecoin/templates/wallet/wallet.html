@@ -12,26 +12,28 @@
         {% set total_mined = wallet.free_mined + wallet.mined %}
         {% include "wallet/side.html" %}
         <div id="content" class="p-4 p-md-5 pt-5 container-fluid">
-
-            {% if err %}
-            <div class="alert alert-danger text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;"
-                 role="alert">
-                {{ err }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+            <div class="alert-wallet-error">
+                <div class="alert alert-danger text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;"
+                     role="alert">
+                <span id="span-wallet__alert">
+                    <p></p>
+                </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
             </div>
-            {% endif %}
 
-            {% if status %}
-            <div class="alert alert-success text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;"
-                 role="alert">
-                Transfer was successful!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+            <div class="alert-wallet-success">
+                <div class="alert alert-success text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;"
+                     role="alert">
+                    Transfer was successful!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
             </div>
-            {% endif %}
+
 
             {% if not isverified %}
             <div class="alert alert-warning text-center mb-3" style="margin-bottom: 0;" role="alert">
@@ -70,7 +72,8 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Total Balance in USD</h5>
-                        <h2 class="font-montserrat c-text-fafa">${{ "%.2f" | format( wallet.total_balance * grainprice) }}</h2>
+                        <h2 class="font-montserrat c-text-fafa">${{ "%.2f" | format( wallet.total_balance * grainprice)
+                            }}</h2>
                     </div>
                 </div>
 
@@ -95,7 +98,8 @@
                 <div class="col-12 col-md-6">
                     <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
                         <h5 class="c-text-yellow">Earned from referral</h5>
-                        <h2 class="font-montserrat c-text-fafa">${{ "%.2f" | format(wallet.referral * grainprice) }}</h2>
+                        <h2 class="font-montserrat c-text-fafa">${{ "%.2f" | format(wallet.referral * grainprice)
+                            }}</h2>
                     </div>
                 </div>
 

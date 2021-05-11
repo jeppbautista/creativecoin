@@ -39,6 +39,39 @@ $(document).ready(function(){
 
 })
 
+$(document).ready(function() {
+    function param(name){
+        return (location.search.split(name + '=')[1] || '').split('&')[0];
+    }
+
+    var currURL = window.location.href;
+
+    var ERROR_MESSAGE_LOOKUP = {
+        "login_form_error": "Invalid  information provided",
+        "pass_email_error": "Incorrect email and/or password",
+        "send_form_amount": "Invalid amount. Transaction failed",
+        "send_form_invalid_wallet": "Invalid wallet address. Transaction failed",
+        "signup_form_error": "Invalid information provided",
+        "signup_email_exists": "Email already exists",
+        "default_error": "Something went wrong. Transaction failed",
+        "na": "Transaction failed"
+    }
+
+
+    var err = param("error");
+    var error_message = ERROR_MESSAGE_LOOKUP[err];
+
+    var status = param("status")
+
+    $("#span-wallet__alert > p").html(error_message);
+    if (error_message){
+        $(".alert-wallet-error").show();
+    } else if (status) {
+        $(".alert-wallet-success").show();
+    }
+
+})
+
 $(".copy").on("click", function(e){
     e.preventDefault();
     var text = $("#ref-code").select();

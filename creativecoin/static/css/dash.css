@@ -41,6 +41,17 @@ h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
     color: #000;
 }
 
+.alert-wallet-error,
+.alert-wallet-success{
+    display: none
+}
+
+.alert-wallet-error p,
+.alert-wallet-success p{
+    margin-bottom: 0
+}
+
+
 .btn-close{
     background: transparent;
     border: 0

@@ -159,7 +159,6 @@ def wallet():
     walletmodel.referral = sci_notation(walletmodel.referral)
     walletmodel.total_balance = sci_notation(walletmodel.total_balance)
 
-
     wallet_id = walletmodel.wallet_id
 
     transactions = Transaction.query \
