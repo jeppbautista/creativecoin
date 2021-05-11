@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, redirect, render_template, render_template_string, request, url_for
 from flask_login import current_user
 
 main = Blueprint('main', __name__)
 
 from creativecoin import app
+from creativecoin.email import EmailSender
+from creativecoin.forms import Contact
 from creativecoin.helper.utils import crawl_usd, crawl_grain
 
 env = app.config['ENV']
@@ -78,7 +80,28 @@ def news():
 
 @app.route(rule="/get-in-touch", strict_slashes=False)
 def contact_us():
-    return render_template("contact-us.html")
+    contactform = Contact()
+    return render_template("contact-us.html", contactform=contactform)
+
+
+@app.route(rule="/contact", strict_slashes=False, methods=["GET", "POST"])
+def contact():
+    app.logger.error("INFO - /contact")
+    contact = Contact(request.form)
+
+    mail = EmailSender()
+    mail.sender = "contact-form@creativecoin.net"
+    params = {
+        "$email": contact.email.data,
+        "$name": contact.name.data,
+        "$message": contact.message.data
+    }
+
+    body = mail.prepare_body(params, path="contact.html")
+    if not mail.send_mail(app.config["ADMIN_MAIL"], "Contact Form", body):
+        app.logger.error("ERROR - sending email failed")
+        return redirect(url_for("contact_us"))
+    return redirect(url_for("contact_us"))
 
 
 @app.route(rule='/test', strict_slashes=False, methods=["GET", "POST"])

@@ -13,7 +13,7 @@ class Config:
     SMTP_FROM = "CreativeCoin<autoemail@creativecoin.net>"
 
     # ADMIN_MAIL = "clcefiedu@gmail.com"
-    ADMIN_MAIL = "tbcmsapp@gmail.com"
+    ADMIN_MAIL = "administrator@creativecoin.net"
     TEST_TO = "jeppbautista@gmail.com"
     REFERRAL_PCT = 0.05
 

@@ -18,9 +18,6 @@ import traceback
 
 dash = Blueprint('dash', __name__)
 
-def db_transaction():
-    pass
-
 @dash.route("/send_ccn", methods=["GET", "POST"])
 def send_ccn():
     """
