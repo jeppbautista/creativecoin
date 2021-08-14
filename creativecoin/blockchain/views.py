@@ -78,7 +78,7 @@ def wallet(address):
     import pyqrcode
     filepath = "creativecoin/static/image/qr/{}".format(secure_filename(address))
     qr = pyqrcode.create(address)
-    qr.svg("{}.svg".format(filepath), scale=6)
+    qr.png("{}.png".format(filepath), scale=6)
 
     test = request.args.get("mode", "live")
     txs = sync_tx_from_wallet(address, test)

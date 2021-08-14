@@ -175,7 +175,7 @@ def wallet():
     import pyqrcode
     filepath = "creativecoin/static/image/qr/{}".format(secure_filename(wallet_id))
     qr = pyqrcode.create(wallet_id)
-    qr.svg("{}.svg".format(filepath), scale=8)
+    qr.png("{}.png".format(filepath), scale=8)
 
     return render_template('wallet/wallet.html',
                            wallet=walletmodel,

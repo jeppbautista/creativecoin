@@ -108,9 +108,8 @@ def contact():
 def test():
     import pyqrcode
     # x = os.path.join(os.getcwd(), "creativecoin\\static")
-    qr = pyqrcode.create("123456")
-    qr.svg("uskjdad.svg", scale=8)
-
+    big_code = pyqrcode.create('0987654321', error='L', version=27, mode='binary')
+    big_code.png('code.png', scale=6, module_color=[0, 0, 0, 128], background=[0xff, 0xff, 0xcc])
     return str("FOO")
 
 
@@ -126,6 +125,7 @@ def internal_error2(e):
 
 @app.errorhandler(404)
 def not_found(e):
+    print(request.path)
     return render_template("error/404.html")
 
 
