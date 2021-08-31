@@ -46,7 +46,9 @@ def login_callback_login():
 
 @api.route("/api/login/is_auth")
 def login_is_auth():
-    return str(current_user)
+    if current_user is not None:
+        return jsonify(status=True)
+    return jsonify(status=False)
 
 
 @api.route("/api/wallet/qr", methods=["GET", "POST"], strict_slashes=False)

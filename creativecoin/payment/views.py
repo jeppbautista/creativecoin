@@ -22,6 +22,9 @@ MAP_CCN = {
 
 @pay.route('/buy')
 def buy():
+    """
+    Renders the Buy page: https://creativecoin.net/buy
+    """
     usd_val = get_usd()
     return render_template('buy/buy.html', usd=usd_val, title="Buy - CreativeCoin")
 
@@ -29,6 +32,9 @@ def buy():
 @pay.route('/payment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
 def payment():
+    """
+    Checks if the user is email verified then renders the Payment page else redirects to the Buy page.
+    """
     if current_user.emailverified != 1:
         return redirect(url_for("pay.buy"))
     app.logger.error("INFO - /payment")
@@ -47,6 +53,9 @@ def payment():
 @pay.route('/verifypayment', strict_slashes=False, methods=['POST', 'GET'])
 @login_required
 def verifypayment():
+    """
+    Verifies the payment, adds it to the database and sends an email to confirm the payment.
+    """
     app.logger.error("INFO - /verifypayment")
     paymentform = Payment(request.form)
     # app.logger.error("{}".format(str(request.form)))
@@ -123,6 +132,9 @@ def verifypayment():
 
 @pay.route('/payment-received', strict_slashes=False, methods=['POST', 'GET'])
 def payment_received():
+    """
+    Renders the payment received page
+    """
     app.logger.error("INFO - /payment-received")
     return render_template("email/token.html",
         message="Your payment was received by the system. Please wait a few hours for the admin to approve your payment.",
@@ -133,6 +145,9 @@ def payment_received():
 
 @pay.route('/payment-failed', strict_slashes=False,)
 def payment_failed():
+    """
+    Renders the payment failed page
+    """
     app.logger.error("INFO - /payment-failed")
     return render_template("email/token.html",
         message="Payment FAILED! Please contact us.",

@@ -15,6 +15,18 @@ def generate_email_token(email):
 
 
 def confirm_token(token, expiration=3600):
+    """
+    Verifies the token for email verification.
+
+    Parameters:
+    -----------
+    token (str): The token to be verified
+    expiration (int): The duration in seconds on how long before the token expires
+
+    Returns:
+    --------
+    email (str): The email of the user if the token is valid else throw exception
+    """
     decoded_token = base64.b64decode(token).decode("utf-8")
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
@@ -28,6 +40,7 @@ def confirm_token(token, expiration=3600):
         raise Exception()
 
     return email
+
 
 def send_verification_email(email):
     token = generate_email_token(email)

@@ -5,6 +5,9 @@ from wtforms.widgets import TextArea
 
 
 class Contact(FlaskForm):
+    """
+    Form class for the contacts field in contact-us.html
+    """
     email = wtf.StringField(
         "Email:",
         validators=[

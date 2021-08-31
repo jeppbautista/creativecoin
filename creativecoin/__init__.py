@@ -18,6 +18,9 @@ import os
 import traceback
 
 def setup_logging():
+    """
+        Initialize logging instance.
+    """
     format_str = "[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(message)s"
     file_handler = logging.FileHandler("logs/{:%Y-%m-%d}.log".format(datetime.now()))
     formatter = logging.Formatter(format_str)
@@ -31,7 +34,7 @@ def setup_logging():
     app.logger.addHandler(file_handler)
     app.logger.addHandler(stream_handler)
 
-
+"""======Content Security Policies======"""
 csp = {
     'script-src': [
         '\'self\''
@@ -48,6 +51,7 @@ csp = {
     ]
 }
 
+os.environ["TZ"]="Asia/Manila"
 
 app = Flask(__name__)
 
@@ -55,29 +59,31 @@ Talisman(app,
     content_security_policy=csp, 
     content_security_policy_nonce_in=['script-src']
 )
+
 app.secret_key = app.config['SECRET_KEY']
 app.config['SESSION_TYPE'] = "filesystem"
-app.config['ENV'] = "production" if os.environ['SERVER_NAME'] == "creativecoin.net" else "dev"
 app.url_map.strict_slashes = False
 
-os.environ["TZ"]="Asia/Manila"
-
+"""======Loads the proper configuration file depending on the environment======"""
+app.config['ENV'] = "production" if os.environ['SERVER_NAME'] == "creativecoin.net" else "dev"
 if app.config['ENV'] == "production":
     app.config.from_object('creativecoin.config.ProdConfig')
 else:
     app.config.from_object('creativecoin.config.DevConfig')
-    
 
 setup_logging()
 
+"""======Initialization of Flask_Login======"""
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "auth.login"
 
+"""======Initialization of Database instances======"""
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 es = Elasticsearch([app.config["ES_HOST"]])
 
+"""======Registration of Blueprints/Modules======"""
 from creativecoin.views import main
 from creativecoin.admin.views import adm
 from creativecoin.blockchain.views import node
@@ -122,5 +128,3 @@ def shutdown_session(exception):
     if exception:
         db.session.rollback()
     db.session.remove()
-
-

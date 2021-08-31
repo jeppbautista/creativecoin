@@ -21,6 +21,20 @@ dash = Blueprint('dash', __name__)
 @dash.route("/send_ccn", methods=["GET", "POST"])
 def send_ccn():
     """
+    Endpoint for sending CCN to another wallet
+
+    Parameters (form):
+    ------------------
+    from_wallet (str): the source wallet
+    to_wallet (str): the recipient wallet
+    value (double): the value in ccn
+    item_name (str): the name of the item
+    txn_type (str): the type of transaction eg. SEND, PAYMENT
+    amount_php (double): the value in php
+    amoyunt_usd (double): the value in usd
+    amount_ccn (double): the value in ccn
+
+    Sample call: 
        ```
        curl -XPOST localhost:5000/create_tx?mode=test -H 'Content-type:application/json' -d '{
            "from_wallet":"ccn-system",
@@ -33,7 +47,7 @@ def send_ccn():
            "amount_ccn": 0
        }'
        ```
-       """
+    """
     test = request.args.get("mode", "live")
     response = None
 
@@ -42,7 +56,6 @@ def send_ccn():
     send = Send(request.form)
 
     if send.validate():
-
         wallet = Wallet.query.filter_by(user_id=current_user.id).first()
         to_wallet = Wallet.query.filter_by(wallet_id=send.to_wallet.data).first()
         from_wallet_id = wallet.wallet_id

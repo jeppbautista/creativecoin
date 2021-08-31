@@ -20,6 +20,13 @@ auth = Blueprint("auth", __name__)
 
 @auth.route("/confirm/<token>", strict_slashes=False)
 def confirm_email(token):
+    """
+    Renders the email confirmation page.
+
+    Parameters:
+    -----------
+    token (str): Unique token generated in `helpers.generate_email_token`
+    """
     app.logger.error("INFO - /confirm/{}".format(token))
     try:
         email = helpers.confirm_token(token)
@@ -58,6 +65,9 @@ def confirm_email(token):
 
 @auth.route("/login", methods=["GET"], strict_slashes=False)
 def login():
+    """
+    Renders the login page
+    """
     if current_user.is_authenticated:
         return redirect(url_for("dash.wallet"))
 
@@ -74,12 +84,24 @@ def login():
 
 @auth.route("/logout")
 def logout():
+    """
+    Endpoint for logging out
+    """
     logout_user()
     return redirect(url_for("index"))
 
 
 @auth.route("/callback_login", methods=["GET", "POST"], strict_slashes=False)
 def callback_login():
+    """
+    Endpoint for logging in
+
+    Parameters (form):
+    ------------------
+    email (str): email of the user
+    password (str): hashed password of the user
+    login (str): a token generated to verify if the form was submitted
+    """
     redirect_url = request.form.get("redirect", None)
     loginform = Login(request.form)
     signupform = Signup()
@@ -123,7 +145,19 @@ def callback_login():
 
 @auth.route("/callback_signup", methods=["GET", "POST"], strict_slashes=False)
 def callback_signup():
+    """
+    Endpoint for signing-up
 
+    Parameters (form):
+    ------------------
+    email (str): email of the user
+    password (str): hashed password of the user
+    firstname (str): first name of the user
+    lastname (str): last name of the user
+    phonenumber (str): phone number of the user
+    referrer (str): the referrer of the user
+    register (str): a token generated to verify if the form was submitted
+    """
     loginform = Login()
     signupform = Signup(request.form)
 
@@ -195,12 +229,19 @@ def callback_signup():
 
 @auth.route("/verify-email")
 def verify_email():
+    """
+    Renders the verification sent page
+    """
     app.logger.error("INFO - /verify-email")
-    return render_template("email/verification-sent.html", title="Email verified - CreativeCoin")
+    return render_template("email/verification-sent.html", 
+        title="Email verified - CreativeCoin")
 
 
 @auth.route("/verify-email-2")
 def verify_email_2():
+    """
+    Renders the verification failed page
+    """
     app.logger.error("INFO - /verify-email-2")
     email = current_user.email
     firstname = current_user.firstname
@@ -235,6 +276,18 @@ def test():
 
 
 def _verify_email(email, firstname):
+    """
+    Generates the token and sends the email for verification
+
+    Parameters:
+    -----------
+    email (str): email of the recepient
+    firstname (str): first name of the recepient
+
+    Returns:
+    --------
+    boolean: True if the email sending is successful else False
+    """
     token = helpers.generate_email_token(email)
     params = {
         "verification_link": "http://{root_url}/confirm/{token}".format(root_url = app.config["SERVER_NAME"], token = token),

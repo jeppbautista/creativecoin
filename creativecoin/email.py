@@ -15,6 +15,18 @@ class EmailSender:
 
 
     def prepare_body(self, parameters, path):
+        """
+        Inserts the proper text and values (defined in `parameters`) to the placeholders in the the template html provided by `path`
+        
+        Parameters:
+        -----------
+        parameters (dict): Key-value pair containing the name of the placeholder. eg. {"customer_name": "John Doe"}
+        path (string): Path of the template html to be used
+
+        Returns:
+        -----------
+        body (str): The html codes with parameters inserted
+        """
         with open('creativecoin/templates/email/{}'.format(path)) as f:
             body = f.read()
 
@@ -24,7 +36,19 @@ class EmailSender:
         return body
 
 
-    def send_mail(self, to, subject, body):      
+    def send_mail(self, to, subject, body):
+        """
+        Sends the email
+
+        Parameters:
+        -----------
+        to (str): email of the recepient
+        subject (str): subject of the email
+        body (str): html codes of the whole message
+
+        Returns:
+        boolean: True if sending is successful else False
+        """      
         try:
             msg = MIMEMultipart('alternative')
             msg['Subject'] = subject
