@@ -54,6 +54,7 @@ def login_is_auth():
 @api.route("/api/wallet/qr", methods=["GET", "POST"], strict_slashes=False)
 def wallet_qr():
     try:
+        app.logger.error("APP INFO - /api/wallet/qr")
         data = {"wallet": ""}
         app.logger.error("TEST")
     

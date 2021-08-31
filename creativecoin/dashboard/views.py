@@ -53,6 +53,7 @@ def send_ccn():
 
     params = {}
     app.logger.error("INFO - /send_ccn")
+    app.logger.error("INFO - User: {}".format(current_user))
     send = Send(request.form)
 
     if send.validate():
@@ -60,7 +61,7 @@ def send_ccn():
         to_wallet = Wallet.query.filter_by(wallet_id=send.to_wallet.data).first()
         from_wallet_id = wallet.wallet_id
 
-        app.logger.error("INFO - Sending... WalletID: {}".format(str(wallet.id)))
+        app.logger.error("INFO - SENDING... WalletID: {}".format(str(wallet.id)))
 
         grain = get_grain()
         usd = get_usd()
@@ -113,7 +114,7 @@ def send_ccn():
 
 
         if response and status_code == 200:
-
+            app.logger.error("INFO - UPDATING DATABASE... WalletID: {}".format(str(wallet.id)))
             try:
                 if send.sourcewallet.data == "0":
                     wallet.mined = wallet.mined - send.amount.data
@@ -125,7 +126,7 @@ def send_ccn():
                     raise Exception("Invalid source wallet selected")
 
                 db.session.commit()
-                app.logger.error("INFO - {} credited from source: {}".format(send.amount.data, wallet.wallet_id))
+                app.logger.error("INFO - {} CREDITED FROM SOURCE: {}".format(send.amount.data, wallet.wallet_id))
 
                 transaction_fee = send.amount.data * 0.1
                 net_amount = send.amount.data - transaction_fee
@@ -141,7 +142,7 @@ def send_ccn():
                     raise Exception("Invalid source wallet selected")
 
                 db.session.commit()
-                app.logger.error("INFO - {} debited to source: {}".format(net_amount, to_wallet.wallet_id))
+                app.logger.error("INFO - {} DEBITED TO DESTINATION: {}".format(net_amount, to_wallet.wallet_id))
             except Exception:
                 app.logger.error(traceback.format_exc())
 
@@ -161,11 +162,15 @@ def send_ccn():
 @dash.route("/wallet")
 @login_required
 def wallet():
+    app.logger.error("INFO - /wallet")
+    app.logger.error("INFO - User: {}".format(current_user))
+    
     err = request.args.get("error", None)
     status = request.args.get("status", None)
     if err:
         err = ERROR_MESSAGE_LOOKUP.get(err, ERROR_MESSAGE_LOOKUP["default_error"])
 
+    app.logger.error("INFO - QUERYING DATABASE... User: {}".format(current_user.id))
     walletmodel = Wallet.query.filter_by(user_id=current_user.id).first()
     walletmodel.free_mined = sci_notation(walletmodel.free_mined)
     walletmodel.mined = sci_notation(walletmodel.mined)
@@ -185,6 +190,7 @@ def wallet():
 
     sendform = Send()
 
+    app.logger.error("INFO - GENERATING QR CODE... User: {}".format(current_user.id))
     import pyqrcode
     filepath = "creativecoin/static/image/qr/{}".format(secure_filename(wallet_id))
     qr = pyqrcode.create(wallet_id)

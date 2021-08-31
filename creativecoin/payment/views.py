@@ -25,6 +25,8 @@ def buy():
     """
     Renders the Buy page: https://creativecoin.net/buy
     """
+    app.logger.error("INFO - /buy")
+    app.logger.error("INFO - User: {}".format(current_user))
     usd_val = get_usd()
     return render_template('buy/buy.html', usd=usd_val, title="Buy - CreativeCoin")
 
@@ -35,9 +37,11 @@ def payment():
     """
     Checks if the user is email verified then renders the Payment page else redirects to the Buy page.
     """
+    app.logger.error("INFO - /payment")
+    app.logger.error("INFO - User: {}".format(current_user))
+
     if current_user.emailverified != 1:
         return redirect(url_for("pay.buy"))
-    app.logger.error("INFO - /payment")
     try:
         data = request.form.to_dict()
         paymentform = Payment(request.form)
@@ -57,6 +61,7 @@ def verifypayment():
     Verifies the payment, adds it to the database and sends an email to confirm the payment.
     """
     app.logger.error("INFO - /verifypayment")
+    app.logger.error("INFO - User: {}".format(current_user))
     paymentform = Payment(request.form)
     # app.logger.error("{}".format(str(request.form)))
 
@@ -82,7 +87,7 @@ def verifypayment():
             is_verified = False,
             is_transferred = False
         )
-        app.logger.error("Transaction: {}".format(str(transaction.__dict__)))
+        app.logger.error("INFO - TRANSACTION: {}".format(str(transaction.__dict__)))
 
         payment = models.Payment(
             txn_id = txn_id,
@@ -93,14 +98,16 @@ def verifypayment():
             updated = utcnow()
         )
 
-        app.logger.error("Payment: {}".format(str(payment.__dict__)))
+        app.logger.error("INFO - PAYMENT: {}".format(str(payment.__dict__)))
 
         try:
+            app.logger.error("INFO - CREATING TRANSACTION... Txn_id: {}".format(txn_id))
             db.session.add(transaction)
             db.session.add(payment)
             db.session.commit()
-            app.logger.error("INFO - Transaction was created: {}".format(txn_id))
+            app.logger.error("INFO - TRANSACTION CREATED! Txn_id: {}".format(txn_id))
 
+            app.logger.error("INFO - Sending email... user_id: {}".format(current_user.id))
             mail = EmailSender()
             params = {
                 "login_link": "http://{root_url}/login".format(root_url = app.config["SERVER_NAME"]),
@@ -109,11 +116,11 @@ def verifypayment():
             body = mail.prepare_body(params, path="received-email.html")
 
             if not mail.send_mail(current_user.email, "We have received your payment", body):
-                app.logger.error("ERROR - PAYMENT FAILED!")
+                app.logger.error("ERROR - EMAIL SENDING FAILED! TRANSACTION: {}".format(str(transaction.__dict__)))
                 return redirect(url_for("pay.payment_failed"))
 
             mail.send_mail(app.config["ADMIN_MAIL"], "Payment was sent", "Payment was sent. <br>Transaction number: {txn_id} <br>Email: {email}".format(txn_id=txn_id, email=current_user.email))
-            app.logger.error("INFO - PAYMENT RECEIVED")
+            app.logger.error("INFO - EMAIL SENDING SUCCESS! TRANSACTION: {}".format(str(transaction.__dict__)))
 
             return redirect(url_for("pay.payment_received"))
 
