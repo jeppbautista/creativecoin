@@ -74,3 +74,4 @@ webencodings==0.5.1
 Werkzeug==0.16.0
 wrapt==1.12.1
 WTForms==2.2.1
+WTForms-JSON==0.3.3

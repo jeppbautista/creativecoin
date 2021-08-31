@@ -96,6 +96,9 @@ app.register_blueprint(api)
 
 from creativecoin import models
 
+import wtforms_json
+wtforms_json.init()
+
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
