@@ -81,6 +81,8 @@ def crawl_usd():
 def crawl_grain():
     mail = EmailSender()
     TROY_OUNCE = 0.002083333
+    OUNCE_TO_GRAM = 31.1035
+    GRAM_TO_GRAIN = 15.4324
 
     file_grain = app.config["FILE_GRAIN"]
     file_grain = os.path.join(os.getcwd(), file_grain)
@@ -106,8 +108,8 @@ def crawl_grain():
             if response.status_code != 200:
                 mail.send_mail(app.config["ADMIN_MAIL"], "Grain value API failed!", message)
                 with open(file_grain, "w+") as f:
-                    f.write(str(0.20))
-                return 0.20
+                    f.write(str(3.5))
+                return 3.5
 
             raw_price = response.json()["price"]
             price = float(raw_price)
@@ -116,13 +118,13 @@ def crawl_grain():
             message = traceback.format_exc()
             mail.send_mail(app.config["ADMIN_MAIL"], "Grain value API failed!", message)
             with open(file_grain, "w+") as f:
-                f.write(str(0.20))
-            return 0.20
+                f.write(str(3.5))
+            return 3.5
 
     with open(file_grain, "w+") as f:
-        f.write(str((price*TROY_OUNCE)*0.05))
+        f.write(str((price/OUNCE_TO_GRAM)/GRAM_TO_GRAIN))
 
-    return (price*TROY_OUNCE)*0.05
+    return (price/OUNCE_TO_GRAM)/GRAM_TO_GRAIN
 
 
 def diff_month(d1, d2):
