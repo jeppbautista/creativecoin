@@ -149,12 +149,12 @@ def get_grain():
     with open(os.path.join(os.getcwd(), file_grain), "r") as f:
         grain = f.read()
 
-    m = diff_month(datetime.datetime.now(), datetime.datetime.strptime("2021-02-01", "%Y-%m-%d"))
-    grain = float(grain) + float(grain) * (0.05 * m)
+    # m = diff_month(datetime.datetime.now(), datetime.datetime.strptime("2021-02-01", "%Y-%m-%d"))
+    # grain = float(grain) + float(grain) * (0.05 * m)
 
     app.logger.error("INFO - Extracted grain value: {}".format(grain))
 
-    return grain
+    return float(grain)
 
 
 def sci_notation(x, decimal=10):
