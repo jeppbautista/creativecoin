@@ -182,7 +182,7 @@ def callback_signup():
             queries.add(user)
             queries.commit_db()
 
-            app.logger.error("INFO - User is created")
+            app.logger.error("INFO - User was created")
             wallet = models.Wallet(user_id=user.id, wallet_id=utils.generate_wallet_id(str(user.id)))
             queries.add(wallet)
 
@@ -190,7 +190,7 @@ def callback_signup():
             referrer_wallet.referral = referrer_wallet.referral + (referrer_wallet.free_mined*decimal.Decimal(app.config["REFERRAL_PCT"]))
             queries.commit_db()
 
-            app.logger.error("INFO - Wallet is created")
+            app.logger.error("INFO - Wallet was created")
             app.logger.error(str(wallet.__dict__))
 
             email = formdata["email"]
@@ -266,13 +266,9 @@ def load_user(id):
 
 @auth.route("/logintest")
 def test():
-    mail = EmailSender()
-    params = {"firstname": "HOOOO"}
-    body = mail.prepare_body(params, path="verify-email.html")
-    if not mail.send_mail("jeppbautista@gmail.com", "Confirm your email address", body):
-        return "Email sending failed"
-
-    return "TAENG YAN"
+    ref = "XKJDKLSJLDKJD"
+    x = utils.encode_referral_id(ref)
+    return str(x)
 
 
 def _verify_email(email, firstname):

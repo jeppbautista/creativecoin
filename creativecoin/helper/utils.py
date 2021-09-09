@@ -29,10 +29,17 @@ def generate_referral_id(salt=1):
 
 
 def encode_referral_id(enc):
-    enc_bytes = enc.encode('utf-8')
-    decode_bytes = base64.b64decode(enc_bytes)
-    raw_ref = decode_bytes.decode('utf-8')
-    return int(raw_ref.replace('ccn', ''))
+    
+    try:
+        enc_bytes = enc.encode('utf-8')
+        decode_bytes = base64.b64decode(enc_bytes)
+        raw_ref = decode_bytes.decode('utf-8')
+        return int(raw_ref.replace('ccn', ''))
+    except:
+        app.logger.error(traceback.format_exc())
+        app.logger.error("ERROR - Invalid referral code")
+
+    return encode_referral_id(app.config["ADMIN_REF"])
 
 
 def crawl_usd():

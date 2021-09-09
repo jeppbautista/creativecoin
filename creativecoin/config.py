@@ -21,6 +21,8 @@ class Config:
     FILE_GRAIN = "creativecoin/repo-grain.txt"
     BLOCKCHAIN_FEE = 0.05
 
+    ADMIN_REF = "MDAwMDE="
+
 
 class DevConfig(Config):
     DEBUG = True
