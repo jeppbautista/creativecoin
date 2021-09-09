@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
+{% include "index/1navbar.html" %}
+{% include "index/2banner.html" %}
+{% include "index/3missionvision.html" %}
+{% include "index/5ccnecosystem.html" %}
+{% include "index/4whatisccn.html" %}
+{% include "index/6timerunningout.html" %}
+{% include "footer.html" %}
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+
+{% block content %}

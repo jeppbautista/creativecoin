@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "wallet/nav.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+<div id="wallet">
+    {% include "wallet/modal.html" %}
+    <div class="wrapper d-flex align-items-stretch">
+
+        {% set isverified = current_user.emailverified %}
+        {% set enable = "" if isverified else "disabled" %}
+        {% set total_mined = wallet.free_mined + wallet.mined %}
+        {% include "wallet/side.html" %}
+        <div id="content" class="p-4 p-md-5 pt-5 container-fluid">
+            <div class="alert-wallet-error">
+                <div class="alert alert-danger text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;"
+                     role="alert">
+                <span id="span-wallet__alert">
+                    <p></p>
+                </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="alert-wallet-success">
+                <div class="alert alert-success text-center mb-3 alert-dismissible fade show" style="margin-bottom: 0;"
+                     role="alert">
+                    Transfer was successful!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div>
+
+
+            {% if not isverified %}
+            <div class="alert alert-warning text-center mb-3" style="margin-bottom: 0;" role="alert">
+                WARNING: Your email is not verified. <a class="c-text-dark-blue font-weight-bold"
+                                                        href=" {{ url_for('auth.verify_email_2') }} ">Verify email</a>
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-12 col-md-6 offset-md-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text transparent" id="basic-addon1">Referral code:</span>
+                        </div>
+                        <input id="ref-code" type="text" class="form-control c-666" readonly
+                               value="https://creativecoin.net/login?ref={{ generate_ref(current_user.id) }}"
+                               aria-label=""
+                               aria-describedby="basic-addon1">
+                        <div class="input-group-append" id="button-addon4">
+                            <button class=" copy btn c-666 m-0 px-3 py-2 z-depth-0 waves-effect" type="button">
+                                <i class="fa fa-clipboard" aria-hidden="true">
+                                </i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Total Balance</h5>
+                        <h2 class="font-montserrat c-text-fafa ">{{ "%.2f" | format(wallet.total_balance) }} CCN</h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Total Balance in USD</h5>
+                        <h2 class="font-montserrat c-text-fafa">${{ "%.2f" | format( wallet.total_balance * grainprice)
+                            }}</h2>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">System mined</h5>
+                        <h2 class="font-montserrat c-text-fafa">{{ "%.2f" | format(wallet.mined) }} CCN</h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Free mined</h5>
+                        <h2 class="font-montserrat c-text-fafa">{{ "%.2f" | format(wallet.free_mined) }} CCN</h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Received</h5>
+                        <h2 class="font-montserrat c-text-fafa">{{ "%.2f" | format(wallet.received) }} CCN</h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Earned from referral</h5>
+                        <h2 class="font-montserrat c-text-fafa">${{ "%.2f" | format(wallet.referral * grainprice)
+                            }}</h2>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="dashcard shadow c-dark-blue p-md-3 pl-md-4 pr-md-4">
+                        <h5 class="c-text-yellow">Since joined</h5>
+                        <h2 class="font-montserrat c-text-fafa">{{ ( now - wallet.created ).days + 1 }} days</h2>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Recent Transaction history</h2>
+
+            <div class="row table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Transaction Type</th>
+                        <th>Amount</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for tx in txn %}
+                    <tr>
+                        <td class="p-2">
+                            <a class="c-text-blue"
+                               href="{{ url_for('node.transaction', txn_id=tx['txn_id']) }}">{{tx["txn_id"]}}</a>
+                        </td>
+                        <td class="p-2">
+                            {{tx["txn_type"]}}
+                        </td>
+                        <td class="p-2">
+                            {{tx["quantity"]}}
+                        </td>
+                        <td class="p-2">
+                            {{tx["created"]}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/wallet.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+
+{% endblock %}

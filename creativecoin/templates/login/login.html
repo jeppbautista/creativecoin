@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block content %}
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+
+<div class="container-login">
+	<div class="container-fluid">
+		<div class="div-home" id="no-pad">
+			<div class="col m12 s12 gradient" id="no-pad">
+				<div id="particles-js"></div>
+				<div class="div-login center-flex">
+					<div class="container p-2">
+						{% include "login/form-login.html" %}
+						{% include "login/form-signup.html" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<script>
+
+	
+</script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+{% endblock %}

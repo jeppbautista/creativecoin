@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/buy.css') }}">
+
+<div class="body p-3" style="height: 100vh">
+    <div class="container container-token center-flex" style="height: inherit">
+        <div class="extend-on-sm inner-div " style="width: 100%">
+            <form action="{{ url_for('pay.verifypayment') }}" method="POST">
+                {{ paymentform.csrf_token }}
+                <div class="row m-2 p-3 shadow white">
+                    <div class="col-md-4 p-3">
+                        <h3>Choose Payment Method</h3>
+                        <div class="row p-3 div-payment-method">
+                            <div class="text-info" style="margin: auto;">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="payment_category"
+                                        id="inlineRadio1" value="coinsph" checked>
+                                    <label class="form-check-label" for="inlineRadio1"><strong>Coins.PH</strong></label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="payment_category"
+                                        id="inlineRadio2" value="gcash">
+                                    <label class="form-check-label" for="inlineRadio2"><strong>GCash</strong></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="coinsph">
+                            <div class="text-center p-3 w-100">
+                                <strong>
+                                    <p class="m-0">Scan the QR code:</p>
+                                </strong>
+                                <img src="{{ url_for('static', filename='image/qr-coinsph.png') }}" alt=""
+                                    style="max-width: 100%;">
+                                <p>or</p>
+                                <strong>
+                                    <p class="m-0">Copy the address:</p>
+                                </strong>
+                                <p>3A9qBQkV9tu3zQ7cDosenG5ev3TyJ56CfG</p>
+
+                            </div>
+
+                        </div>
+                        <div class="row" id="gcash" style="display: none;">
+                            <div class="text-center p-3 w-100">
+                                <img class="mt-3 mb-3" src="{{ url_for('static', filename='image/gcash.png') }}" alt=""
+                                    style="max-width: 100%;">
+                                <p>Send the payment to: <br><strong>09758680883</strong> </p>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-8 mt-3">
+                        <table class="table table-bordered mb-3" style="width:100%">
+                            <thead class="grey lighten-2">
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th class="w-40" scope="col">Item name</th>
+                                    <th class="w-20" scope="col">Quantity</th>
+                                    <th class="w-20" scope="col">Price in USD</th>
+                                    <th class="w-20" scope="col">Price in PHP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td id="item-name" data-item="{{ data.item_name }}"> 
+                                        {{ data.item_name }} 
+                                        {{ paymentform.item_name }}
+                                        <!-- <input hidden name="item_name" type="text" value="{{ data.item_name }}"> -->
+                                    </td>
+                                    <td> 
+                                        <input class="form-control" type="number" id="quantity" name="quantity" value="1" min="1" max="10"> 
+                                    </td>
+                                    <td> 
+                                        <span id="amount-usd" data-amount="{{ data.amount_usd }}">{{ data.amount_usd }}</span>
+                                        
+                                        <!-- <input hidden ype="text" name="amount_usd" value="{{ data.amount_usd }} "> -->
+                                        {{ paymentform.amount_usd }}
+                                    </td>
+                                    <td> 
+                                        <span id="amount-php" data-amount="{{ data.amount_php }}">{{ data.amount_php }}</span>
+                                        
+                                        <!-- <input hidden type="text" name="amount_php" value="{{ data.amount_php }} "> -->
+                                        {{ paymentform.amount_php }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <hr>
+                        <div class="text-center mt-3">
+                            <strong>
+                                <h5>Payment steps</h5>
+                            </strong>
+                        </div>
+                        <div>
+                            <ol>
+                                <li>
+                                    Choose your mode of payment and use the wallet address or phone number on the left
+                                    side
+                                    to send your payment.
+                                </li>
+                                <br>
+                                <li>
+                                    Once the payment has been sent, copy the <strong>Reference ID</strong> and paste it
+                                    in the field below.
+                                    <p id="where-reference" href=""><strong>You can see the Reference ID in you
+                                            Transaction History</strong>
+                                    </p>
+                                </li>
+                                <li>
+                                    Click the Verify button below.
+                                </li>
+                                <br>
+                                <li>
+                                    Please wait for 20-60 minutes for your payment to be approved and receive your
+                                    creative
+                                    coins.
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="text-center mb-3">
+                            <div class="d-table-cell w-100" style="vertical-align: middle;">
+                                {{ paymentform.reference }}
+                            </div>
+                            <div class="d-table-cell align-middle " style="vertical-align: middle;">
+                                <button class="btn btn-mdb-color pt-2 pb-2 pr-4 pl-4 m-0 ml-1"
+                                    type="submit">VERIFY</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <p>Need assitance? <strong><a href="">Contact us</a></strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </form>
+            {% include "footer-simple.html" %}
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/buy.js') }}"></script>
+
+{% endblock %}

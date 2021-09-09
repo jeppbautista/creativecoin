@@ -1,0 +1,51 @@
+<div class="modal fade" id="wallet__modal-send" role="dialog" class="wallet__modal">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 style="text-align: center">Send Creative coins</h3>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <table id="wallet__modal-send-tbl-balance">
+                            <tbody>
+                                <tr>
+                                    <td> <b>Total balance: </b> </td>
+                                    <td style="text-align: right">
+                                        xx
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+
+                <form action="" method="post" id="wallet__modal-send-form">
+                     form.hidden_tag() 
+                     form.amount.label 
+                     form.amount(size=32, id="wallet__modal-send-txt-amount", class="validate-decimal-only") 
+
+                    <br>
+                     form.to.label 
+                     form.to(size=32, id="wallet__modal-send-txt-to", placeholder="Wallet address / email") 
+                    <br> <br>
+
+                     form.details.label  <br>
+                     form.details(id="wallet__modal-send-txtarea-details", placeholder="What is this for?") 
+                    <br>
+                    <br>
+
+                    <a type="submit" id="wallet__modal-send-submit" class="btn btn-lg btn-success btn-main">
+                        Send
+                    </a>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/validation.js') }}"></script>

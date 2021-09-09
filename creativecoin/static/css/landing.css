@@ -1,0 +1,318 @@
+img.banner {
+    max-width: 100%;
+}
+
+.cust-card {
+    border-radius:  25% 2% 25% 2%;
+    margin: auto;
+}
+
+.cust-card.intro {
+    background-color: #D7B89D;
+}
+
+.cust-card.truth {
+    background-color: #5E8181;
+}
+
+.cust-card.reason {
+    background-color: #D79D9D;
+}
+
+.roadmap {
+    border-right: 4px solid #333;
+}
+
+.navbar {
+    position: absolute;
+    width: 100%;
+    z-index: 99;
+    background: #222;
+}
+
+.nav-item.active > .nav-link{
+    background-color: rgba(250, 250, 250, 0.5);
+}
+
+.nav-item:hover > .nav-link{
+    background-color: rgba(250, 250, 250, 0.5);
+}
+
+.nav-link{
+    font-weight: 400;
+}
+
+#border-white {
+    border-bottom: 1px solid #666;
+}
+
+#para-banner {
+    color: white;
+    height: 100vh;
+    background-image: url("/static/image/Gold-backed-cryptocurrency.jpg");
+}
+
+#para-banner h1 {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: bolder;
+    font-size: 3.0rem;
+}
+
+#para-banner h2 {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+#para-banner .font-montserrat{
+    font-size: 2.1rem;
+    font-weight: 700;
+}
+
+#para-misVis {
+    background-image: url("/static/image/misVis.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#para-misVis h1 {
+    font-weight: 500;
+}
+
+#para-misVis img {
+    max-width: 100%;
+}
+
+#para-misVis p {
+    font-size: 1.1em;
+}
+
+#para-initiation p {
+    font-size: 1.6rem;
+}
+
+#para-problemSolution {
+    background-image: url("/static/image/bgproblem.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 60vh;
+}
+
+#para-problemSolution h3 {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+#para-problemSolution p {
+    font-size: 1.3em;
+}
+
+.overlay {
+    background-color: #1F203F;
+    opacity: 0.65;
+    height: 100%;
+}
+
+#para-problemSolution .problem-logo{
+    border-radius:  5% 5% 5% 40%;
+}
+
+#para-problemSolution .solution-logo{
+    border-radius:  5% 5% 40% 5%;
+}
+
+#para-privacy > div{
+    position: relative;
+    height: 40vh;
+}
+
+#para-privacy h1{
+    margin-top: 10%;
+}
+
+#para-privacy-policy h1,h2,h3,h4,h5{
+    font-family: 'Fira Sans', sans-serif;
+}
+
+#para-privacy-2 p {
+    margin-left: 1rem;
+}
+
+#para-privacy-2 h2 {
+    color: #BD984F;
+}
+
+#para-roadmap {
+    background: #222;
+}
+
+#para-roadmap p {
+    font-size: 1.2rem;
+}
+
+#quote {
+    color: #fafafa;
+    font-size: 2rem;
+}
+
+.wrapper-image > img {
+    max-width: 65% !important;
+}
+
+.wrapper-text {
+    width: 35%;
+    border-radius: 1%;
+}
+
+@media only screen and (min-device-width : 601px) and (max-device-width : 1000px) {
+    #para-banner {
+        height: 120vh;
+    }
+
+    #para-misVis > .mask > .container {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    #para-misVis {
+        /* height: 280vh; */
+    }
+
+    .wrapper-image > img {
+        max-width: 100% !important;
+    }
+    
+    .wrapper-text {
+        width: 100%;
+        border-radius: 1%;
+    }
+
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+    h1{
+        font-size: 2.3rem;
+    }
+    #para-banner {
+        height: 150vh;
+    }
+
+    #para-misVis > .mask > .container {
+        width: 100%;
+    }
+    #para-misVis {
+        /* height: 260vh !important; */
+    }
+
+    #para-roadmap p {
+        font-size: 1rem;
+    }
+
+    #para-problemSolution {
+        height: 130vh;
+    }
+    .wrapper-image > img {
+        max-width: 100% !important;
+    }
+    
+    .wrapper-text {
+        width: 100%;
+        border-radius: 1%;
+    }
+
+    .w-60 {
+        width: 90%;
+    }
+}
+
+/* The Magic */
+.accordion:hover .accordion-item:hover .accordion-item-content,
+.accordion .accordion-item--default .accordion-item-content {
+    height: 10em;
+}
+
+.accordion-item-content,
+.accordion:hover .accordion-item-content {
+    height: 0;
+    overflow: hidden;
+    transition: height .25s;
+}
+
+
+.accordion .accordion-item:nth-child(1) {
+    /* background-color: hsl(200, 80%, 60%);
+    background-image: linear-gradient(-90deg, hsl(200, 80%, 60%), hsl(200, 80%, 45%) 2em, hsl(200, 80%, 60%)); */
+      background-image: url("/static/image/bg-roadmap1.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(2) {
+      background-image: url("/static/image/bg-roadmap2.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(3) {
+      background-image: url("/static/image/bg-roadmap3.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(4) {
+      background-image: url("/static/image/bg-roadmap4.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(5) {
+      background-image: url("/static/image/bg-roadmap5.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(6) {
+      background-image: url("/static/image/bg-roadmap6.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion .accordion-item:nth-child(7) {
+      background-image: url("/static/image/bg-roadmap7.png");
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+  
+  .accordion-item:nth-child(1):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      padding-bottom: 0;
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(2):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(3):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(4):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(5):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(6):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  
+  .accordion-item:nth-child(7):hover{
+      background-image: linear-gradient(-90deg, rgb(189, 152, 79), rgb(189, 152, 79) 2em, rgb(189, 152, 79));
+      /* background-color: green; */
+  }
+  

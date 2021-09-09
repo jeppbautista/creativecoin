@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+
+
+<div class="body p-3" style="height: 100vh">
+    <div class="container container-token center-flex">
+        <div class="inner-div " style="width: 100%">
+            <div class="shadow white p-5">
+                <div class="row mb-2">
+                    <div class="col-md-12 text-center">
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='image/ccn-logo-new.png') }}" alt=""
+                                 style="max-height: 50px">
+                            <h3>CreativeCoin</h3>
+                        </a>
+                    </div>
+                </div>
+                <hr>
+                <form method="POST" action="{{ url_for('contact') }}">
+                    {{ contactform.csrf_token }}
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h4>HAVE QUESTIONS?</h4>
+                        </div>
+                        <br>
+                        <div class="col-12 contact-div pb-2">
+                            <div class="form-group">
+                                <label for="email">Your email:</label>
+                                {{ contactform.email }}
+
+                            </div>
+                        </div>
+                        <div class="col-12 contact-div pb-2">
+                            <div class="form-group">
+                                <label for="name">Your Name:</label>
+                                {{ contactform.name }}
+                            </div>
+                        </div>
+                        <div class="col-12 contact-div p-3">
+                            <div class="form-group">
+                                <label for="message">Your message:</label>
+                                {{ contactform.message(rows="5") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-lg-4 col-md-4 offset-lg-4 offset-md-4 col-sm-12 mt-3">
+                            {{ contactform.contact }}
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            {% include "footer-simple.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}

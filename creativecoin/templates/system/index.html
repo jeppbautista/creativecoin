@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/system.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/accordion.css') }}" />
+{% include "nav.html" %}
+{% include "system/1banner.html" %}
+{% include "system/2ccnpowpos.html" %}
+{% include "system/3algorithm.html" %}
+{% include "system/4formula.html" %}
+{% include "system/5blockchainworks.html" %}
+{% include "system/6whyccn.html" %}
+{% include "system/7ideology.html" %}
+{% include "footer.html" %}
+<script src="{{ url_for('static', filename='js/system.js') }}"></script>
+{% endblock %}
