@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/buy.css') }}">
+{% include "nav.html" %}
+
+<div class="body p-3">
+    <div class="container container-token center-flex">
+        <div class="inner-div " style="width: 100%">
+            <div class="row">
+                <div class="col-12 m-2">
+                    <h2 class="text-center">CHOOSE YOUR PACKAGE BELOW</h2>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-4 col-sm-12 text-center mb-3">
+                    <div class="c-bronze p-4"">
+                        <h2>
+                            BRONZE PLAN
+                        </h2>
+                    </div>
+                    <div class="c-basic p-1 center-flex">
+                        <h6 class="p-1 mb-0"> <strong>BASIC</strong> </h6>
+                    </div>
+                    <div class="shadow white p-4">
+                        <!-- <img src="/static/image/ccn-logo.png" alt="" style="max-height: 50px"> -->
+                        <h1><small>$</small><b>25</b> <br></h1>
+                        <br>
+                        <ul class="checklist">
+                            <li>One time payment</li>
+                            <hr>
+                            <li>25 FREE CCN</li>
+                            <hr>
+                            <li>Value increases</li>
+                        </ul>
+                        <hr class="gradient">
+                        <form class="p-0 pr-3 pl-3" action=" {{ url_for('pay.payment') }} " method="post">
+                            <input type="hidden" name="item_name" value="CreativeCoin (Bronze)">
+                            <input type="hidden" name="buyer_email" value="{{ current_user.email }}">
+                            <input type="hidden" name="buyer_name" value="{{ current_user.firstname }} {{ current_user.lastname }}">
+                            <input type="hidden" name="amount_usd" value="25">
+                            <input type="hidden" name="amount_php" value="{{ 25*usd }}">
+                            <input type="hidden" name="success_url" value="https://creativecoin.net/login">
+                            <button class="btn text-white c-basic"  type="submit">BUY NOW</button>
+                        </form>
+                        
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 text-center mb-3">
+                    <div class="c-silver p-4" >
+                        <h2>
+                            SILVER PLAN
+                        </h2>
+                    </div>
+                    <div class="c-best p-1 center-flex">
+                        <h6 class="p-1 mb-0"> <strong>BEST CHOICE</strong> </h6>
+                    </div>
+                    <div class="shadow white p-4">
+                        <!-- <img src="/static/image/ccn-logo.png" alt="" style="max-height: 50px"> -->
+                        <h1><small>$</small><b>50</b> <br></h1>
+                        <br>
+                        <ul class="checklist">
+                            <li>One time payment</li>
+                            <hr>
+                            <li>50 FREE CCN</li>
+                            <hr>
+                            <li>Value increases</li>
+                        </ul>
+                        <hr class="gradient">
+                        <form class="p-0 pr-3 pl-3" action=" {{ url_for('pay.payment') }} " method="post">
+                            <input type="hidden" name="item_name" value="CreativeCoin (Silver)">
+                            <input type="hidden" name="buyer_email" value="{{ current_user.email }}">
+                            <input type="hidden" name="buyer_name" value="{{ current_user.firstname }} {{ current_user.lastname }}">
+                            <input type="hidden" name="amount_usd" value="50">
+                            <input type="hidden" name="amount_php" value="{{ 50*usd }}">
+                            <input type="hidden" name="success_url" value="https://creativecoin.net/login">
+                            <button class="c-best btn text-white" type="submit">BUY NOW</button>
+                        </form>
+                    </div>
+  
+                </div>
+                <div class="col-md-4 col-sm-12 text-center mb-3">
+                    <div class="c-gold p-4">
+                        <h2>
+                            GOLD PLAN
+                        </h2>
+                    </div>
+                    <div class="c-pro p-1 center-flex">
+                        <h6 class="p-1 mb-0"> <strong>PROFESSIONAL MINDSET</strong> </h6>
+                    </div>
+                    <div class="shadow white p-4">
+                        <!-- <img src="/static/image/ccn-logo.png" alt="" style="max-height: 50px"> -->
+                        <h1><small>$</small><b>100</b> <br></h1>
+                        <br>
+                        <ul class="checklist">
+                            <li>One time payment</li>
+                            <hr>
+                            <li>100 FREE CCN</li>
+                            <hr>
+                            <li>Value increases</li>
+                        </ul>
+                        <hr class="gradient">
+                        <form class="p-0 pr-3 pl-3" action=" {{ url_for('pay.payment') }} " method="post">
+                            <input type="hidden" name="item_name" value="CreativeCoin (Gold)">
+                            <input type="hidden" name="buyer_email" value="{{ current_user.email }}">
+                            <input type="hidden" name="buyer_name" value="{{ current_user.firstname }} {{ current_user.lastname }}">
+                            <input type="hidden" name="amount_usd" value="100">
+                            <input type="hidden" name="amount_php" value="{{ 100*usd }}">
+                            <input type="hidden" name="success_url" value="https://creativecoin.net/login">
+                            <button href="" class="c-pro btn text-white" type="submit">BUY NOW</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% include "footer-simple.html" %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

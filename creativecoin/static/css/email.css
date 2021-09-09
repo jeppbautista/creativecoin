@@ -1,0 +1,16 @@
+.body {
+    height: 100vh;
+}
+
+img{
+    max-height: 50px;
+}
+
+.container-token {
+    height: inherit;
+}
+
+.inner-div {
+    width: 100%;
+}
+

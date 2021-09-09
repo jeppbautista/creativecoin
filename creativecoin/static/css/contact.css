@@ -1,0 +1,22 @@
+.contact-div input,
+.form-group {
+    width: 70vh;
+    margin: auto;
+}
+
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+    .body {
+        height: inherit !important;
+    }
+
+    .contact-div input, .form-group {
+        width: 100%;
+        margin: auto;
+    }
+
+    .p-5 {
+        padding: 15px !important;
+    }
+    
+}

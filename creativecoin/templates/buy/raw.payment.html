@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="body p-3" style="height: 100vh">
+    <div class="container container-token center-flex" style="height: inherit">
+        <div class="inner-div " style="width: 100%">
+            <div class="row m-2" style="background-color: #0A579B;">
+                <div class="col-md-12" >
+                    <div class="shadow pr-3 pl-3 text-center">
+                        <img src="https://www.coinpayments.net/images/new2/logo.png" alt="">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row m-2 p-3 shadow white">
+                <div class="col-md-4">
+                    <div class="text-center p-3">
+                        <strong><p class="m-0">Scan the QR code:</p></strong> 
+                        <img src="{{ tx.qrcode_url }}" alt="">
+                        <p>or</p>
+                        <strong> <p class="m-0">Copy the address:</p> </strong>
+                        <input type="text" id="address" class="form-control mt-1 mb-3" value="{{ tx.address }}" readonly>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div>
+                        <h4>You are purchasing:</h4>
+                    </div>
+                    <table class="table table-bordered mb-3">
+                        <thead class="grey lighten-2">
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Item name</th>
+                                <th scope="col">Price in USD</th>
+                                <th scope="col">Price in BTC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>CreativeCoin (Bronze)</td>
+                                <td>{{ details.amount }}</td>
+                                <td>{{ tx.amount }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div class="text-center mt-3">
+                        <strong><h5>Payment steps</h5></strong>
+                    </div>
+                    <div>
+                        <ol>
+                            <li>
+                                Send the payment (Bitcoin) on the wallet address or scan the QR code using any bitcoin payment application like Coins.PH.
+                            </li>
+                            <br>
+                            <li>
+                                Once the payment has been sent click the Verify button below.
+                            </li>
+                            <br>
+                            <li>
+                                Please wait for 20-40 minutes for your payment to be approved and receive your creative coins.
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="text-right">
+                        <form action="{{ url_for('pay.verifypayment') }}">
+                            <input type="hidden" name="status_url" value="{{ tx.status_url }}">
+                            <a id="submit-verify-payment" type="submit" class="btn btn-mdb-color" href="#">Verify payment</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Need assitance? <strong><a href="">Contact us</a></strong></p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<style>
+    table.table td, table.table th{
+        padding: .5rem;
+    }
+    
+    @media only screen and (max-device-width : 1000px) {
+        .body {
+            height: auto !important;
+        }
+    }
+
+</style>
+
+{% endblock %}

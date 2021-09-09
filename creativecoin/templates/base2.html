@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='image/ccn-logo-new.png') }}"/>
+    <title>Creative Coin | Wallet</title>
+
+    <link href="{{ url_for('static', filename='libraries/gentelella-master/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='libraries/gentelella-master/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='libraries/gentelella-master/build/css/custom.min.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Encode+Sans:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">   
+    <link href="{{ url_for('static', filename='css/style_index2.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='libraries/gentelella-master/vendors/jquery/dist/jquery.min.js') }}"></script> 
+  </head>
+
+  <body class="nav-md">
+    {% block content %}
+    {% endblock %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{{ url_for('static', filename='libraries/gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libraries/gentelella-master/build/js/custom.min.js') }}"></script>
+   
+  </body>
+</html>

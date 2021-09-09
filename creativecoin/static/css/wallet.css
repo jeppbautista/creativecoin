@@ -1,0 +1,145 @@
+
+.btn-main{
+    margin-top: 2em;
+}
+
+.disabled{
+    pointer-events: none;
+}
+
+.dropdown > a{
+    line-height: 125% !important;
+}
+
+.left-col {
+    background-color: transparent !important;
+}
+
+.icon-btn{
+    font-size: 275%;
+}
+
+.navbar.nav_title {
+    border: 0px;
+}
+
+.nav-side-menu > li > a.disable:hover {
+    color: inherit !important;
+    background: inherit !important;
+}
+
+.right_col > .alert {
+    margin-bottom: 0;
+}
+
+.top_tiles{
+    width: 80%;
+    margin: auto;
+}
+
+.wallet__btn-container > div {
+    margin: 20px 0;
+}
+
+.wallet__btn-container > div > a{
+    border-radius: 10%;
+}
+
+.x_content > .row{
+    border-bottom: 1px solid #E0E0E0; 
+    padding-bottom: 5px; 
+    margin-bottom: 5px;
+}
+
+.wallet__modal>.modal-dialog>.modal-body {
+    padding: 25px;
+}
+
+/* -------------- modal-send */
+
+#wallet__modal-send-tbl-balance {
+    width: 50%;
+    margin: auto;
+}
+
+#wallet__modal-send-tbl-balance>tbody>tr>td {
+    font-size: 16px;
+}
+
+#wallet__modal-send-form {
+    width: 90%;
+    margin: auto;
+    font-family: 'Encode Sans', sans-serif !important;
+}
+
+#wallet__modal-send-txt-amount {
+    background-image: url(/static/image/ccn-logo.jpg);
+    background-position: right;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+}
+
+#wallet__modal-send-txt-to {
+    background-image: url(/static/image/logo_account_balance_wallet.png);
+    background-position: right;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+}
+
+#wallet__model-send-txtarea-details {
+    resize: none;
+}
+
+#wallet__modal-send-form input[type="text"],
+#wallet__modal-send-form input[type="email"],
+#wallet__modal-send-form input[type="tel"],
+#wallet__modal-send-form input[type="url"],
+#wallet__modal-send-form textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    margin: 0 0 5px;
+    padding: 10px;
+}
+
+#wallet__modal-send-form input[type="text"]:hover,
+#wallet__modal-send-form input[type="email"]:hover,
+#wallet__modal-send-form input[type="tel"]:hover,
+#wallet__modal-send-form input[type="url"]:hover,
+#wallet__modal-send-form textarea:hover {
+    -webkit-transition: border-color 0.3s ease-in-out;
+    -moz-transition: border-color 0.3s ease-in-out;
+    transition: border-color 0.3s ease-in-out;
+    border: 1px solid #aaa;
+}
+
+#wallet__modal-send-submit {
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    color: #FFF;
+    margin: 0 0 5px;
+    padding: 10px;
+    font-size: 15px;
+}
+
+#wallet__modal-send-submit:hover {
+    background: #250863;
+    -webkit-transition: background 0.3s ease-in-out;
+    -moz-transition: background 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#wallet__modal-send-submit:active {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+@media only screen 
+and (min-device-width : 280px) 
+and (max-device-width : 600px) {
+    .btn-main{
+        padding: 5px;
+    }
+
+}

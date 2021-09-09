@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+<div class="body" style="height: 100vh;">
+    {% include "admin/sidebar.html" %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="shadow white mt-4 p-4">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="row">
+                                <div class="col-8">
+                                    <form action=" {{ url_for('adm.admin_payment') }} " id="form-filter" method="POST">
+                                        <select class="browser-default custom-select custom-select-sm mb-3" name="filter"
+                                        id="filter">
+                                            <option value="PENDING" {% if filter_str=="PENDING" %} selected {% endif %}>PENDING</option>
+                                            <option value="DECLINED" {% if filter_str=="DECLINED" %} selected {% endif %}>DECLINED</option>
+                                            <option value="ACCEPTED" {% if filter_str=="ACCEPTED" %} selected {% endif %}>ACCEPTED</option>
+                                        </select>
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped" id="tbl-adminPayment">
+                        <thead>
+                            <tr>
+                                <th scope="col">Payment ID</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Mode of Payment</th>
+                                <th scope="col">Amount(PHP)</th>
+                                <th scope="col">Amount(USD)</th>
+                                <th scope="col">Payment date</th>
+                                <th scope="col">Reference ID</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="row">
+                        <div style="margin:auto">
+                            <button id="prev" class="btn btn-mdb-color p-3 btn-adminNavigation" {% if not has_prev %}
+                                disabled {% endif %}>
+                                Prev</button>
+                            <button id="next" class="btn btn-mdb-color p-3 btn-adminNavigation" {% if not has_next %}
+                                disabled {% endif %}>Next</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+
+    $("#filter").on("change", function(){
+        $("#form-filter").submit()
+    });
+
+    var refreshTable = function(payments, has_next, has_prev){
+        
+        $("#tbl-adminPayment > tbody").remove();
+        createTable(payments, "#tbl-adminPayment");
+
+        if (has_next) {
+            $("#next").attr("disabled", false);
+        }
+        else {
+            $("#next").attr("disabled", true);
+        }
+        if (has_prev) {
+            $("#prev").attr("disabled", false);
+        }
+        else {
+            $("#prev").attr("disabled", true);
+        }
+    }
+
+    var createTable = function (data) {
+        var tbl_body = document.createElement("tbody");
+        var odd_even = false;
+
+        $.each(data, function () {
+            var tbl_row = tbl_body.insertRow();
+            var id = this.id;
+            tbl_row.className = odd_even ? "odd" : "even";
+
+            let cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.id.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.email.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.phonenumber.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.category.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.amount_php.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.amount_usd.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.created.toString()))
+            cell = tbl_row.insertCell();
+            cell.appendChild(document.createTextNode(this.reference.toString()))
+ 
+
+            {% if filter_str=="PENDING" %}
+                var email = this.email;
+                var temp = document.createElement('div');
+                temp.innerHTML = "<button value='ACCEPTED' "+
+                        "id='acceptPayment-" + id + "'"+
+                        "data-email='"+ email + "'"+
+                        "data-id='"+ id + "'"+
+                        " class='btn btn-info p-2 btn-adminAcceptPayment btn-adminActionPayment'>ACCEPT</button>"+
+                    "<button value='DECLINED' "+
+                        "id='declinePayment-" + id + "' "+
+                        "data-email='"+ email + "'"+
+                        "data-id='"+ id + "'"+
+                        "class='btn btn-danger p-2 btn-adminDeclinePayment btn-adminActionPayment'>DECLINE</button>";
+                while (temp.firstChild)
+                    tbl_row.appendChild(temp.firstChild);
+            {% endif %}
+
+        });
+        $("#tbl-adminPayment").append(tbl_body);
+    }
+
+    var processPayment = function(paymentID, choice, email) {
+        
+        let postURL = "{{ url_for('adm.admin_payment_process', choice='') }}";
+        postURL += choice;
+        $.post(postURL, {
+            email: email,
+            paymentID: paymentID,
+            page: page,
+            filterStr: "{{ filter_str }}"
+        }).done(function(response){
+            $(".loading-wrap").hide();
+            response = JSON.parse(response);
+            alert("SUCCESS");
+            refreshTable(response["payments"], response["has_next"], response["has_prev"]);
+        }).fail(function(){
+            $(".loading-wrap").hide();
+            alert("FAILED");
+        });
+    }
+
+    
+    var has_next = {% if has_next %} true {% else %} false {% endif %}
+    var has_prev = {% if has_prev %} true {% else %} false {% endif %}
+    var data = JSON.parse({{ payments| tojson | safe }});
+    var page = 1;
+    refreshTable(data, has_next, has_prev);
+
+    $(".btn-adminNavigation").on("click", function () {
+
+        if (this.id == "next") {
+            page++;
+        }
+        else if (this.id == "prev") {
+            page--;
+        }
+
+        $.post("{{ url_for('adm.admin_retrieve_payments') }}", {
+            page: page
+        }).done(function (response) {
+            console.log(response);
+            response = JSON.parse(response);
+            refreshTable(response["payments"], response["has_next"], response["has_prev"]);
+        }).fail(function (e) {
+            console.log(e);
+        });
+    });
+    $("#filter").on("change", function(){
+        $("#form-filter").submit()
+    });
+
+    var actionDone = function(paymentID, choice, email){
+        if(confirm("Are you sure?")){
+            $(".loading-wrap").show();
+            processPayment(paymentID, choice, email);
+        }
+        else{
+            return false;
+        }
+    }
+ 
+
+    $(".btn-adminActionPayment").on("click", function(){
+        actionDone( $(this).data("id"), this.value, $(this).data("email"));
+    });
+
+
+</script>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+
+{% endblock %}

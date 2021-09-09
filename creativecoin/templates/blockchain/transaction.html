@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "nav.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/block.css') }}">
+<div class="c-fafa p-5">
+    <div class="transaction__body container">
+        <h4 class="left pt-3 pb-3 font-montserrat c-text-blue">
+            <a href="{{ url_for('node.explorer') }}">Explorer</a> 
+            &#x25BA; 
+            <a href="{{ url_for('node.transactions') }}">Transactions</a> 
+            &#x25BA; 
+            <a href="{{ url_for('node.transaction', txn_id=txn.txn_id) }}">{{ truncate(txn.txn_id) }}</a> 
+        </h4>
+        <div class="clearfix"></div>    
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m9">
+                    <div class="blockchain__divtbl-main table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Hash</p></td>
+                                    <td width="60%">{{txn.txn_id}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Timestamp</p></td>
+                                    <td width="60%">{{ serialize_dt(txn.created)}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Quantity</p></td>
+                                    <td width="60%">{{txn.quantity}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Confirmations</p></td>
+                                    <td width="60%">{{txn.compute_confirmation() }}</td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">From</p></td>
+                                    <td width="60%"> 
+                                        <a class="bold-link" href="{{ url_for('node.wallet', address=txn.txn_from) }}">
+                                            {{txn.txn_from}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">To</p></td>
+                                    <td width="60%">
+                                        <a class="bold-link" href="{{ url_for('node.wallet', address=txn.txn_to) }}">
+                                            {{txn.txn_to}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%"><p class="font-weight-bold m-0 p-0">Transaction type</p></td>
+                                    <td width="60%">{{txn.txn_type}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% include "footer-simple.html" %}
+{% endblock %}

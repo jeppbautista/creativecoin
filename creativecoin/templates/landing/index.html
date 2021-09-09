@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/accordion.css') }}" />
+{% include "nav.html" %}
+{% include "landing/2banner.html" %}
+{% include "landing/3intro.html" %}
+{% include "landing/4misVis.html" %}
+{% include "landing/5whatisccn.html" %}
+{% include "landing/6initiation.html" %}
+{% include "landing/7problemSolution.html" %}
+{% include "landing/8economy.html" %}
+{% include "landing/9roadmap.html" %}
+{% include "footer.html" %}
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+{% endblock %}

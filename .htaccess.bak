@@ -1,0 +1,6 @@
+Options +ExecCGI 
+AddHandler cgi-script .py
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^(.*)$ /home/cisateducation/public_html/creativecoin.net/app.cgi/$1 [L]
+
