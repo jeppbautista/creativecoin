@@ -1,5 +1,12 @@
+from email import message
+from logging import ERROR
 from flask import Blueprint, redirect, request, url_for, render_template, jsonify
 from flask_login import current_user, login_user, logout_user
+from sqlalchemy.exc import IntegrityError
+
+import decimal
+from sqlalchemy.exc import IntegrityError
+import traceback
 
 from creativecoin.helper import utils
 from creativecoin import app, db, models
@@ -7,10 +14,9 @@ from creativecoin.email import EmailSender
 from creativecoin.error import ERROR_MESSAGE_LOOKUP
 from creativecoin.helper import utils
 from creativecoin.login import helpers, queries
+from creativecoin.login.views import _verify_email
 from creativecoin.login.forms import Login, Signup
 from creativecoin import app, db, login_manager, models
-
-import traceback
 
 import os
 
@@ -65,17 +71,17 @@ def login_callback_signup():
 
         try:
             user = models.User(**formdata)
-            # queries.add(user)
-            # queries.commit_db()
+            queries.add(user)
+            queries.commit_db()
 
             app.logger.error("APP INFO - User was created")
 
             wallet = models.Wallet(user_id=user.id, wallet_id=utils.generate_wallet_id(str(user.id)))
-            # queries.add(wallet)
+            queries.add(wallet)
 
             referrer_wallet = queries.get_wallet(user_id=user.referrer)
             referrer_wallet.referral = referrer_wallet.referral + (referrer_wallet.free_mined*decimal.Decimal(app.config["REFERRAL_PCT"]))
-            # queries.commit_db()
+            queries.commit_db()
 
             app.logger.error("APP INFO - Wallet was created")
             app.logger.error(str(wallet.__dict__))
@@ -83,10 +89,31 @@ def login_callback_signup():
             email = formdata["email"]
             firstname = formdata["firstname"]
 
+            if not _verify_email(email, firstname):
+                app.logger.error("APP ERROR - Email sending failed")
+                return jsonify(message="Email sending failed", level="error")
+            
+            return jsonify(message="Success", level="info")
+            
+        except IntegrityError as e:
+            app.logger.error("APP ERROR")
+            app.logger.error(traceback.format_exc())
+            if "Duplicate" in str(e.__cause__):
+                return jsonify(message=ERROR_MESSAGE_LOOKUP["signup_email_exists"], level="error")
+            db.session.rollback()
         except Exception as e:
-            pass
+            app.logger.error("APP ERROR")
+            app.logger.error(traceback.format_exc())
+            return jsonify(message=ERROR_MESSAGE_LOOKUP["default_error"], level="error")
+        
+    elif signupform.errors:
+        app.logger.error("APP ERROR - There are ERRORS in the form")
+        app.logger.error(signupform.errors)
+        return jsonify(message=ERROR_MESSAGE_LOOKUP["signup_form_error"], level="error")
 
-    return jsonify(message=str(formdata), level="info")
+    else:
+        app.logger.error("ERROR - FORM is invalid")
+        return jsonify(message=ERROR_MESSAGE_LOOKUP["default_error"], level="error")
 
 
 
