@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     phonenumber = db.Column(db.String(20))
     referrer = db.Column(db.Integer, default=1)
+    created = db.Column(db.TIMESTAMP(timezone=True), server_default=func.current_timestamp())
 
     emailverified = db.Column(db.Boolean(), default=False)
     is_admin = db.Column(db.Boolean(), default=False)
