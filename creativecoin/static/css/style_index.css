@@ -321,7 +321,7 @@ hr.style-eight {
 #para1 {
     color: white;
     height: 100vh;
-    background-image: url("/static/image/Gold-backed-cryptocurrency.jpg");
+    background-image: url("/static/image/para1header.png");
 }
 
 #para2 {
@@ -385,6 +385,7 @@ hr.style-eight {
 #time-is-gold {
     font-size: 90px;
 }
+
 
 .timer {
     font-family: 'Encode Sans', sans-serif;

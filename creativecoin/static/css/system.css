@@ -78,10 +78,17 @@
     overflow: hidden;
 }
 
-#para-blockchainworks img {
+#para-blockchainworks  .ccnblockchain{
+    max-width: 60%;
+    max-height: auto;
+}
+
+#para-blockchainworks .ccnblockchain2 {
     border-radius: 10%;
     max-width: 100%;
 }
+
+
 
 #para-blockchainworks p{
     font-size: 1.2rem;

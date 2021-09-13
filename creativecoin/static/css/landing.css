@@ -49,7 +49,7 @@ img.banner {
 #para-banner {
     color: white;
     height: 100vh;
-    background-image: url("/static/image/Gold-backed-cryptocurrency.jpg");
+    background-image: url("/static/image/para1header.png");
 }
 
 #para-banner h1 {
@@ -90,7 +90,7 @@ img.banner {
 }
 
 #para-problemSolution {
-    background-image: url("/static/image/bgproblem.png");
+    background-image: url("/static/image/bgproblem-new.gif");
     background-repeat: no-repeat;
     background-size: cover;
     height: 60vh;
