@@ -91,6 +91,7 @@ from creativecoin.dashboard.views import dash
 from creativecoin.login.views import auth
 from creativecoin.payment.views import pay
 from creativecoin.api.views import api
+from creativecoin.dev.views import dev
 
 app.register_blueprint(main)
 app.register_blueprint(auth)
@@ -99,6 +100,7 @@ app.register_blueprint(pay)
 app.register_blueprint(adm)
 app.register_blueprint(node)
 app.register_blueprint(api)
+app.register_blueprint(dev)
 
 from creativecoin import models
 
