@@ -132,3 +132,8 @@ def not_found(e):
 @app.errorhandler(400)
 def bad_request(e):
     return render_template("error/400.html")
+
+
+# 0 */6 * * * /usr/bin/curl --silent -XGET https://creativecoin.net/Z2V0LXVzZA &> /dev/null
+# 0 */6 * * * /usr/bin/curl --silent -XGET https://creativecoin.net/Z2V0LWdyYWlu &> /dev/null
+# 59 23 * * * /usr/bin/curl --silent -XGET https://creativecoin.net/c3RhcnRtaW5pbmc &> /dev/null

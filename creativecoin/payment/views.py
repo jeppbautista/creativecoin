@@ -71,6 +71,8 @@ def verifypayment():
 
         _itemname = re.search('\((.*)\)', paymentform.item_name.data).group(1).upper()
         quantity = MAP_CCN[_itemname]*int(paymentform.quantity.data)
+        raw_amount_ccn = float(float(paymentform.amount_usd.data) / get_grain())
+        amount_ccn = raw_amount_ccn + float((raw_amount_ccn * 0.5))
 
         transaction = models.Transaction(
             txn_id=txn_id,
@@ -81,6 +83,7 @@ def verifypayment():
             quantity=quantity,
             amount_php=paymentform.amount_php.data,
             amount_usd=paymentform.amount_usd.data,
+            amount_ccn=amount_ccn,
             status="PENDING",
             received_confirmations=0,
 
@@ -103,6 +106,7 @@ def verifypayment():
         try:
             app.logger.error("INFO - CREATING TRANSACTION... Txn_id: {}".format(txn_id))
             db.session.add(transaction)
+            db.session.commit()
             db.session.add(payment)
             db.session.commit()
             app.logger.error("INFO - TRANSACTION CREATED! Txn_id: {}".format(txn_id))

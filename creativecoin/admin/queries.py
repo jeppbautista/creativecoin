@@ -108,7 +108,8 @@ def update_wallet_free_mined(payment_id, selected_user, choice):
             .filter(Wallet.user_id == user.id)\
                 .first()
 
-        wallet.free_mined = wallet.free_mined + transaction.quantity
+        wallet.free_mined = wallet.free_mined + transaction.amount_ccn
+        wallet.total_balance = wallet.total_balance + transaction.amount_ccn
 
     except Exception as e:
         app.logger.error(traceback.format_exc())
