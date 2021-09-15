@@ -216,7 +216,7 @@ def start_mining():
     data = {
         "from_wallet": "21232f297a57a5a743894a0e4a801fc3",
         "to_wallet": "",
-        "value": 1.0
+        "value": 0.033333
     }
 
     test = request.args.get('mode', 'live')
@@ -237,8 +237,8 @@ def start_mining():
     for wallet in queries.get_all_wallets():
         try:
             to = wallet.wallet_id
-            wallet.mined = wallet.mined+decimal.Decimal(1.0)
-            wallet.total_balance = wallet.total_balance+decimal.Decimal(1.0)
+            wallet.mined = wallet.mined+decimal.Decimal(data["value"])
+            wallet.total_balance = wallet.total_balance+decimal.Decimal(data["value"])
 
             data["to_wallet"] = to
             data["hash"] = utils.generate_txn_id(wallet.id)

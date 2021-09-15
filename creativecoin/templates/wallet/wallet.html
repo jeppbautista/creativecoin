@@ -128,16 +128,16 @@
                     <tr>
                         <td class="p-2">
                             <a class="c-text-blue"
-                               href="{{ url_for('node.transaction', txn_id=tx['txn_id']) }}">{{tx["txn_id"]}}</a>
+                               href="{{ url_for('node.transaction', txn_id=tx.txn_id) }}">{{tx.txn_id}}</a>
                         </td>
                         <td class="p-2">
-                            {{tx["txn_type"]}}
+                            {{tx.txn_type}}
                         </td>
                         <td class="p-2">
-                            {{tx["quantity"]}}
+                            {{ "%.4f" | format(tx.amount_ccn) }}
                         </td>
                         <td class="p-2">
-                            {{tx["created"]}}
+                            {{tx.created}}
                         </td>
                     </tr>
                     {% endfor %}
