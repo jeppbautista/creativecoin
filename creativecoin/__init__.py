@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, render_template
+from flask import Flask, g, redirect, request, render_template, session
 from flask_login import (
     LoginManager,
     current_user,
@@ -12,7 +12,7 @@ from flask_talisman import Talisman
 
 from elasticsearch import Elasticsearch
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import os
 import traceback
@@ -115,15 +115,31 @@ def after_request(response):
 
 @app.before_request
 def before_request():
+
+    ################
+    # Flask inactivity
+    #################
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=15)
+    # session.modified = True
+    # g.user = current_user
+
+    ################
+    # ES Initialization
+    #################
+
     es = Elasticsearch([app.config["ES_HOST"]])
     if not es.ping():
         return render_template("error/500.html", code=500)
+
+    ################
+    # Force redirect to https
+    #################
 
     if request.url.startswith('http://') and app.config['ENV'] == "production":
         url = request.url.replace('http://', 'https://', 1)
         code = 301
         return redirect(url, code=code)
-    
 
 @app.teardown_appcontext
 def shutdown_session(exception):

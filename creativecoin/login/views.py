@@ -128,7 +128,7 @@ def callback_login():
             data["error"] = "pass_email_error"
             return redirect(url_for("auth.login", **data))
 
-        login_user(user)
+        login_user(user, remember=False)
         app.logger.error("INFO - user logged in")
 
         if not redirect_url:
@@ -138,6 +138,7 @@ def callback_login():
 
     else:
         app.logger.error("ERROR - FORM is invalid")
+        app.logger.error(loginform.errors)
         data["error"] = "login_form_error"
 
     return redirect(url_for("auth.login", **data))
