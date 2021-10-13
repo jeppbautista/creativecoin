@@ -43,9 +43,9 @@
     max-width: 100%;
 }
 #para-algo .algo{
-    overflow: hidden;
+    /* overflow: hidden;
     border-radius: 20%;
-    border: 5px solid #BD984F;
+    border: 5px solid #BD984F; */
 }
 
 #para-algo .mobile-text{
